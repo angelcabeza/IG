@@ -4,7 +4,9 @@
 #include "ejes.h"
 #include "malla.h"
 #include "cubo.h"
+#include "objply.h"
 #include "tetraedro.h"
+#include "objrevolucion.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 typedef enum {CUBO,TETRAEDRO,NINGUNO} objeto_seleccionado;
@@ -43,6 +45,7 @@ class Escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
+   ObjRevolucion * ply = nullptr; 
 
    
    public:

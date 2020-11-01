@@ -31,6 +31,8 @@ class ObjRevolucion : public Malla3D
    ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
 private:
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
+    bool ordenDescendente(std::vector<Tupla3f> perfil_original);
+    void cambiarOrden(std::vector<Tupla3f> perfil_original);
 
 } ;
 

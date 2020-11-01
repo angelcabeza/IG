@@ -25,6 +25,7 @@ Escena::Escena()
 
     tetraedro = new Tetraedro();
     cubo = new Cubo (50.0);
+    ply = new ObjRevolucion("plys/peon.ply",10);
 
 }
 
@@ -39,7 +40,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	glClearColor( 1.0, 1.0, 1.0, 1.0 );// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
 
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
-   glEnable(GL_CULL_FACE);
+   //glEnable(GL_CULL_FACE);
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -94,6 +95,10 @@ void Escena::dibujar()
 
       tetraedro->draw(modo_dibujado_escogido,ajedrez);
    }
+
+   glScalef(50,50,50);
+   //glPolygonMode(GL_FRONT,GL_POINT);
+   ply->draw(modo_dibujado_escogido,ajedrez);
 
     // COMPLETAR
     //   Dibujar los diferentes elementos de la escena
