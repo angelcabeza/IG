@@ -30,6 +30,14 @@ void Tetraedro::inicializarCaras(){
    f.push_back(c1);
    f.push_back(c2);
    f.push_back(c3);
+
+   // DIVIDO LAS CARAS EN PARES E IMPARES PARA PODER DIBUJARLAS EN MODO AJEDREZ
+   for (int i = 0; i < f.size(); i++){
+      if ( i%2 == 0)
+         caras_pares.push_back(f[i]);
+      else
+         caras_impares.push_back(f[i]);
+   }
 }
 
 void Tetraedro::inicializarColores(){

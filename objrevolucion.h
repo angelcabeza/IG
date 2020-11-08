@@ -27,13 +27,22 @@ class ObjRevolucion : public Malla3D
 {
    public:
        ObjRevolucion();
-   ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
-   ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true) ;
+   ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true,int eje_rotacion=1) ;
+   ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup=true, bool tapa_inf=true,int eje_rotacion=1) ;
 private:
-    void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias);
+    const double CONSTANTE_ROTACION = 2*M_PI;
+    void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_inf, bool tapa_sup,int eje_rotacion=1);
     bool ordenDescendente(std::vector<Tupla3f> perfil_original);
-    void cambiarOrden(std::vector<Tupla3f> perfil_original);
+    void cambiarOrden(std::vector<Tupla3f> & perfil_original);
+    Tupla3f RotarEjeY(Tupla3f vector, int num_instancias, std::vector<Tupla3f> perfil_original, int instancia_actual,int vertice_actual);
+    Tupla3f RotarEjeX(Tupla3f vector, int num_instancias, std::vector<Tupla3f> perfil_original, int instancia_actual,int vertice_actual);
+    Tupla3f RotarEjeZ(Tupla3f vector, int num_instancias, std::vector<Tupla3f> perfil_original, int instancia_actual,int vertice_actual);
+    void inicializarColores();
+    void inicializarVertices(int num_instancias_perfil, std::vector<Tupla3f> & perfil, int eje_rotacion=1);
+    void inicializarCaras(int num_instancias_perfil, std::vector<Tupla3f> & perfil);
 
+protected:
+    void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perfil,const bool conTapas,int eje_rotacion=1);
 } ;
 
 

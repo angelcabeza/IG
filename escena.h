@@ -7,10 +7,13 @@
 #include "objply.h"
 #include "tetraedro.h"
 #include "objrevolucion.h"
+#include "cilindro.h"
+#include "cono.h"
+#include "esfera.h"
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
-typedef enum {CUBO,TETRAEDRO,NINGUNO} objeto_seleccionado;
-typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ} modo_visualizacion;
+typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
+typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS} modo_visualizacion;
 
 class Escena
 {
@@ -45,7 +48,11 @@ class Escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
-   ObjRevolucion * ply = nullptr; 
+   ObjPLY * ply = nullptr;
+   ObjRevolucion * objrevolucion = nullptr;
+   Cilindro * cilindro = nullptr;
+   Cono * cono = nullptr;
+   Esfera * esfera = nullptr;
 
    
    public:

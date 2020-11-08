@@ -25,7 +25,12 @@ Escena::Escena()
 
     tetraedro = new Tetraedro();
     cubo = new Cubo (50.0);
-    ply = new ObjRevolucion("plys/peon.ply",10);
+    ply = new ObjPLY("plys/beethoven.ply");
+    objrevolucion = new ObjRevolucion("plys/peon.ply",10,1);
+    cilindro = new Cilindro(100,100,100,50);
+    cono = new Cono(100,100,100,50);
+    esfera = new Esfera(100,100,10);
+
 
 }
 
@@ -40,7 +45,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 	glClearColor( 1.0, 1.0, 1.0, 1.0 );// se indica cual sera el color para limpiar la ventana	(r,v,a,al)
 
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
-   //glEnable(GL_CULL_FACE);
+   glEnable(GL_CULL_FACE);
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -64,49 +69,92 @@ void Escena::dibujar()
 	change_observer();
    ejes.draw();
    bool ajedrez = false;
+   bool tapas = true;
 
-   if (objeto_a_pintar==CUBO){
-      if (modo_visualizacion_escogido == PUNTOS){
+   switch (modo_visualizacion_escogido)
+   {
+      case PUNTOS:
          glPointSize(7);
          glPolygonMode(GL_FRONT,GL_POINT);
-      }
-      else if (modo_visualizacion_escogido == LINEAS){
-         glPolygonMode(GL_FRONT,GL_LINE);
-      }
-      else if (modo_visualizacion_escogido == SOLIDO)
-         glPolygonMode(GL_FRONT,GL_FILL);
-      else if (modo_visualizacion_escogido == AJEDREZ)
-         ajedrez = true;
+      break;
 
-      cubo->draw(modo_dibujado_escogido,ajedrez);
-   }
-   else if (objeto_a_pintar==TETRAEDRO){
-      if (modo_visualizacion_escogido == PUNTOS){
-         glPointSize(4);
-         glPolygonMode(GL_FRONT,GL_POINT);
-      }
-      else if (modo_visualizacion_escogido == LINEAS){
+      case LINEAS:
          glPolygonMode(GL_FRONT,GL_LINE);
-      }
-      else if (modo_visualizacion_escogido == SOLIDO)
-         glPolygonMode(GL_FRONT,GL_FILL);
-      else if (modo_visualizacion_escogido == AJEDREZ)
-         ajedrez = true;
+      break;
 
-      tetraedro->draw(modo_dibujado_escogido,ajedrez);
+      case SOLIDO:
+         glPolygonMode(GL_FRONT,GL_FILL);
+      break;
+
+      case AJEDREZ:
+         ajedrez = true;
+      break;
+
+      case SINTAPAS:
+         tapas = false;
+      break;
+
+      default:
+         break;
    }
 
-   glScalef(50,50,50);
-   //glPolygonMode(GL_FRONT,GL_POINT);
-   ply->draw(modo_dibujado_escogido,ajedrez);
 
-    // COMPLETAR
-    //   Dibujar los diferentes elementos de la escena
-    // Habrá que tener en esta primera práctica una variable que indique qué objeto se ha de visualizar
-    // y hacer 
-    // cubo.draw()
-    // o
-    // tetraedro.draw()
+   glPushMatrix();
+      glTranslatef(50,50,0);
+      glScalef(5,5,5);
+
+      ply->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-50,50,0);
+      glScalef(4,4,4);
+
+      esfera->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-90,-110,0);
+
+      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(90,-120,0);
+
+      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+
+
+
+   /*
+   switch (objeto_a_pintar)
+   {
+      case CUBO:
+         cubo->draw(modo_dibujado_escogido,ajedrez);
+      break;
+
+      case TETRAEDRO:
+         tetraedro->draw(modo_dibujado_escogido,ajedrez);
+      break;
+
+      case ESFERA:
+         esfera->draw(modo_dibujado_escogido,ajedrez,tapas);
+      break;
+
+      case CILINDRO:
+         cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
+      break;
+
+      case CONO:
+         cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+      break;
+
+      case PLY:
+         ply->draw(modo_dibujado_escogido,ajedrez);
+      break;
+   }*/
     
 }
 
@@ -138,6 +186,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          cout << "Ha entrado en el modo selección de objeto" << endl;
          cout << "Presione 'C' para dibujar un cubo" << endl;
          cout << "Presione 'T' para visualizar un tetraedro" << endl;
+         cout << "Presione 'H' para visualizar la esfera" << endl;
+         cout << "Presione 'E' para visualizar el cono" << endl;
+         cout << "Presione 'R' para visualizar el cilindro" << endl;
+         cout << "Presione 'F' para visualizar un ply" << endl;
          cout << "Presione 'Q' para salir de este modo" << endl;
 
          break ;
@@ -161,6 +213,12 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          cout << "Presione '2' para la visualización con Vertex Buffer Objetcts (VBOs)" << endl;
          cout << "Presione 'Q' para salir de este modo" << endl;
          break ;
+
+       case 'X' :
+         cout << "Has entrado en el menú de selección de tapas" << endl;
+         cout << "Si quiere dibujar el objeto de revolución con tapas pulse Y" << endl;
+         cout << "Si quiere dibujar el objeto de revolución sin tapas pulse N" << endl;
+         break;
          // COMPLETAR con los diferentes opciones de teclado
          case 'C' :
           if (objeto_a_pintar != CUBO){
@@ -180,6 +238,38 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             objeto_a_pintar=NINGUNO;
 
           break;
+
+         case 'H' :
+          if ( objeto_a_pintar != ESFERA)
+            objeto_a_pintar=ESFERA;
+          else
+            objeto_a_pintar=NINGUNO;
+          
+         break;
+
+         case 'E' :
+          if ( objeto_a_pintar != CONO)
+            objeto_a_pintar=CONO;
+          else
+            objeto_a_pintar=NINGUNO;
+          
+         break;
+
+         case 'R' :
+          if ( objeto_a_pintar != CILINDRO)
+            objeto_a_pintar=CILINDRO;
+          else
+            objeto_a_pintar=NINGUNO;
+          
+         break;
+
+         case 'F' :
+          if ( objeto_a_pintar != PLY)
+            objeto_a_pintar=PLY;
+          else
+            objeto_a_pintar=NINGUNO;
+          
+         break;
 
          case '1'  :
             cout << "Ha escogido pintar en modo inmediato" << endl;
@@ -217,10 +307,13 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                modo_visualizacion_escogido = AJEDREZ;
           break;
 
-         
-          
+         case 'Y' :
+            modo_visualizacion_escogido = SOLIDO;
+         break;
 
-
+         case 'N' :
+            modo_visualizacion_escogido = SINTAPAS;
+         break;
    }
    return salir;
 }
