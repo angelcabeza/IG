@@ -13,7 +13,7 @@ Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,const
         perfil.push_back(vertice);
    }
 
-   crearMalla(perfil,num_instancias_perf,true);
+   crearMalla(perfil,num_instancias_perf,true,true);
 
    inicializarColores();
 }

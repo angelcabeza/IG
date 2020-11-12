@@ -28,14 +28,8 @@ class Malla3D
    // dibuja el objeto en modo inmediato
    void draw_ModoInmediato(bool ajedrez);
 
-   // metodo dibujar para objetos de revolucion
-   void draw_ModoInmediato(bool ajedrez,bool tapas,int num_instancias);
-
    // dibuja el objeto en modo diferido (usando VBOs)
    void draw_ModoDiferido();
-
-   // dibuja objetos de revolucion en modo diferido
-   void draw_ModoDiferido(bool tapas,int num_instancias);
 
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
@@ -44,7 +38,6 @@ class Malla3D
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
    void draw(modo_dibujado modo,bool ajedrez) ;
 
-   void draw(modo_dibujado modo,bool ajedrez, bool tapas, int num_instancias) ;
 
    protected:
 
@@ -56,6 +49,7 @@ class Malla3D
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
+   std::vector<Tupla3f> nv ; // tabla de coordenadas de normales de vértices y caras (uuna tupla por vértice y cara, con tres floats)
    std::vector<Tupla3i> caras_pares,caras_impares; // tabla de triángulos necesarias para pintar en modo ajedrez
    std::vector<Tupla3f> color_ajedrez_pares,color_ajedrez_impares;          // tabla de colores para el ajedrez
    std::vector<Tupla3f> color;                                              // tabla de colores para la figura

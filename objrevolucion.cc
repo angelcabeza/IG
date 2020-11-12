@@ -23,13 +23,7 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 
    std::vector<Tupla3f> perfil_original;
    ply::read_vertices(archivo,perfil_original);
-
-   if (tapa_sup && tapa_inf ){
-      crearMalla(perfil_original,num_instancias,true,eje_rotacion);
-   }
-   else{
-      crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
-   }
+   crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
 
    inicializarColores();
 }
@@ -44,76 +38,6 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
    inicializarColores();
 }
 
-void ObjRevolucion::crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perfil, const bool conTapas,int eje_rotacion){
-
-   std::vector<Tupla3f> perfil = perfil_original;
-
-   // Si el perfil viene dado een orden descendente lo pongo en orden ascendente
-   if (ordenDescendente(perfil)){
-      cambiarOrden(perfil);
-   }
-
-   //Extraigo los polos del perfil y los almaceno aparte ¡¡CON UN PERFIL EN ORDEN ASSCENDENTE!!
-   Tupla3f polo_sup, polo_inf;
-
-   if(perfil[0](0) == 0.0){
-      polo_inf = perfil[0];
-      perfil.erase(perfil.begin());
-   }
-   else{
-      polo_inf = {0.0,perfil[0](1),0.0};
-
-   }
-
-   if (perfil[perfil.size()-1](0) == 0.0){
-      polo_sup = perfil[perfil.size()-1];
-      perfil.pop_back();
-   }
-   else{
-      polo_sup = {0.0,perfil[perfil.size()-1](1),0.0};
-   }
-
-   // RELLENAR LA TABLA DE VÉRTICES
-   inicializarVertices(num_instancias_perfil,perfil);
-
-   // RELLENAR LA TABLA DE CARAS (TRIANGULOS)
-
-   inicializarCaras(num_instancias_perfil,perfil);
-
-   // Si hay quee añadirle las tapas
-   if (conTapas){
-      v.push_back(polo_inf);
-      v.push_back(polo_sup);
-
-      const int M = perfil.size();
-
-      // Genero los triangulos de las tapa inferior
-      for(int i=0; i < num_instancias_perfil; i++){
-         Tupla3i caraInf = {M*num_instancias_perfil, (M * (i+1)) % (M*num_instancias_perfil),(M * i)};
-
-         //std::cout << "He insertado el triángulo: " << caraInf(0) << " " << caraInf(1) << " " << caraInf(2) << " " << "como tapa inferior" << std::endl;
-         f.push_back(caraInf);
-      }
-
-
-      // Genero los triangulos de la tapa superior
-      for(int i=0; i < num_instancias_perfil; i++){
-         Tupla3i caraSup = {M * num_instancias_perfil + 1, ((M * (i+1)) -1), (M * (((i+1)%num_instancias_perfil)+1)-1) % (M*num_instancias_perfil)};
-
-         //std::cout << "He insertado el triángulo: " << caraSup(0) << " " << caraSup(1) << " " << caraSup(2) << " " << "como tapa superior" << std::endl;
-         f.push_back(caraSup);
-      }
-   }
-
-   // DIVIDO LAS CARAS EN PARES E IMPARES PARA PODER DIBUJARLAS EN MODO AJEDREZ
-   for (int i = 0; i < f.size(); i++){
-      if ( i%2 == 0)
-         caras_pares.push_back(f[i]);
-      else
-         caras_impares.push_back(f[i]);
-   }
-}
-
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_sup, bool tapa_inf, int eje_rotacion) {
 
 
@@ -125,7 +49,8 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    //Extraigo los polos del perfil y los almaceno aparte ¡¡CON UN PERFIL EN ORDEN ASSCENDENTE!!
    Tupla3f polo_sup, polo_inf;
 
-   if(perfil_original[0](0) == 0.0){
+   const float EPSILON = 0.0000001;
+   if(0.0 - perfil_original[0](0) < EPSILON){
       polo_inf = perfil_original[0];
       perfil_original.erase(perfil_original.begin());
    }
@@ -134,7 +59,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
    }
 
-   if (perfil_original[perfil_original.size()-1](0) == 0.0){
+   if (0.0 - perfil_original[perfil_original.size()-1](0) < EPSILON){
       polo_sup = perfil_original[perfil_original.size()-1];
       perfil_original.pop_back();
    }
@@ -178,6 +103,109 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
          caras_impares.push_back(f[i]);
    }
 
+}
+
+// Visualización en modo inmediato con 'glDrawElements' para OBJETOS DE REVOLUCION
+void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
+{
+
+   // visualizar la malla usando glDrawElements,
+   // habilitar uso de un array de vértices
+   glEnableClientState( GL_VERTEX_ARRAY );
+
+   // indicar eel formato y la direccion de memoria del array de vértices
+   // (son tuplas de 3 valores float, sin espacio entre ellas)
+
+   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+
+   // habilitar uso de un array de colores
+   glEnableClientState ( GL_COLOR_ARRAY);
+
+   if (ajedrez){
+      glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
+      glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
+
+      glColorPointer(3,GL_FLOAT,0,color_ajedrez_impares.data());
+      glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
+   }
+   else{
+      glColorPointer(3,GL_FLOAT,0,color.data());
+      // visualizar, indicando tipo de primitiva, número de índices,
+      // tipo de los índices y dirección de la tabla de índices
+
+      if (tapas)
+         glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
+      else
+         glDrawElements (GL_TRIANGLES, (f.size()-2*num_instancias)*3, GL_UNSIGNED_INT, f.data());
+   }
+
+   //deshabilitar array de vértices
+   glDisableClientState ( GL_VERTEX_ARRAY);
+   glDisableClientState ( GL_COLOR_ARRAY);
+
+}
+
+void ObjRevolucion::draw_ModoDiferido(bool tapas)
+{
+   // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
+   // completar (práctica 1)
+   // .....
+
+   if (id_vbo_ver == 0){
+      id_vbo_ver = CrearVBO( GL_ARRAY_BUFFER, 3*sizeof(float)*v.size(), v.data() );
+   }
+
+   if (id_vbo_col == 0){
+      id_vbo_col = CrearVBO( GL_ARRAY_BUFFER, 3*sizeof(float)*color.size(),color.data());
+   }
+
+   if (id_vbo_tri == 0){
+      id_vbo_tri = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(int)*f.size() ,f.data() );
+   }
+
+   glBindBuffer ( GL_ARRAY_BUFFER, id_vbo_ver);    //activar VBO de vértices
+   glVertexPointer (3, GL_FLOAT,0,0);              // especifica formato y off-set (=0)
+   glBindBuffer ( GL_ARRAY_BUFFER,0);              // desactivar VBO de vértices.
+   glEnableClientState( GL_VERTEX_ARRAY );         // habilitar tabla de vértices
+
+   glBindBuffer (GL_ARRAY_BUFFER,id_vbo_col);
+   glColorPointer (3,GL_FLOAT,0,0);
+   glBindBuffer ( GL_ARRAY_BUFFER,0);
+   glEnableClientState(GL_COLOR_ARRAY);
+
+
+   // visualizar triángulos con glDrawElements(puntero a tabla == 0)
+   glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri);                  // activar VBO de triángulos
+   
+   if (tapas)
+      glDrawElements (GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, 0);
+   else
+      glDrawElements (GL_TRIANGLES, 3*(f.size()-2*num_instancias), GL_UNSIGNED_INT, 0);
+
+   glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,0);                            // desactivar VBO de triángulos
+
+
+   // desactivar uso de array de vértices y de colores
+   glDisableClientState( GL_VERTEX_ARRAY);
+   glDisableClientState( GL_COLOR_ARRAY);
+
+}
+
+void ObjRevolucion::draw(modo_dibujado modo, bool ajedrez,bool tapas)
+{
+   if (modo == DIFERIDO && !ajedrez){
+      draw_ModoDiferido(tapas);
+   }
+   else{
+
+      if (modo == DIFERIDO && ajedrez){
+         std::cout << "El modo ajedrez solo se puede pintar en modo inmediato, ha sido redirigido al modo inmediato" << std::endl;
+      }
+      
+      draw_ModoInmediato(ajedrez,tapas);
+      
+   }
+   
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////

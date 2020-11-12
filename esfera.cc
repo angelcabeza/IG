@@ -24,7 +24,7 @@ Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const fl
 
     Tupla3f vert_inf_esfera = {0.0,-radio,0.0};
     perfil.push_back(vert_inf_esfera);
-    crearMalla(perfil,num_instancias_perf,true);
+    crearMalla(perfil,num_instancias_perf,true,true);
 
     inicializarColores();
 }
