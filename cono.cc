@@ -2,6 +2,8 @@
 #include "cono.h"
 
 Cono::Cono(const int num_vert_perfil,const int num_instancias_perf, const float altura, const float radio){ 
+
+    this->num_instancias = num_instancias_perf;
     std::vector<Tupla3f> perfil;
 
     Tupla3f vertice;

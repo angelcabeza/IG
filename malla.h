@@ -29,13 +29,13 @@ class Malla3D
    void draw_ModoInmediato(bool ajedrez);
 
    // metodo dibujar para objetos de revolucion
-   void draw_ModoInmediato(bool ajedrez,bool tapas);
+   void draw_ModoInmediato(bool ajedrez,bool tapas,int num_instancias);
 
    // dibuja el objeto en modo diferido (usando VBOs)
    void draw_ModoDiferido();
 
    // dibuja objetos de revolucion en modo diferido
-   void draw_ModoDiferido(bool tapas);
+   void draw_ModoDiferido(bool tapas,int num_instancias);
 
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
@@ -44,7 +44,7 @@ class Malla3D
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
    void draw(modo_dibujado modo,bool ajedrez) ;
 
-   void draw(modo_dibujado modo,bool ajedrez, bool tapas) ;
+   void draw(modo_dibujado modo,bool ajedrez, bool tapas, int num_instancias) ;
 
    protected:
 

@@ -60,7 +60,8 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
 
 }
 
-void Malla3D::draw_ModoInmediato(bool ajedrez,bool tapas)
+// Visualización en modo inmediato con 'glDrawElements' para OBJETOS DE REVOLUCION
+void Malla3D::draw_ModoInmediato(bool ajedrez,bool tapas,int num_instancias)
 {
 
    // visualizar la malla usando glDrawElements,
@@ -90,7 +91,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez,bool tapas)
       if (tapas)
          glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
       else
-         glDrawElements (GL_TRIANGLES, (f.size()-2*100)*3, GL_UNSIGNED_INT, f.data());
+         glDrawElements (GL_TRIANGLES, (f.size()-2*num_instancias)*3, GL_UNSIGNED_INT, f.data());
    }
 
    //deshabilitar array de vértices
@@ -142,7 +143,7 @@ void Malla3D::draw_ModoDiferido()
 
 }
 
-void Malla3D::draw_ModoDiferido(bool tapas)
+void Malla3D::draw_ModoDiferido(bool tapas, int num_instancias)
 {
    // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
    // completar (práctica 1)
@@ -177,7 +178,7 @@ void Malla3D::draw_ModoDiferido(bool tapas)
    if (tapas)
       glDrawElements (GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, 0);
    else
-      glDrawElements (GL_TRIANGLES, 3*(f.size()-2*100), GL_UNSIGNED_INT, 0);
+      glDrawElements (GL_TRIANGLES, 3*(f.size()-2*num_instancias), GL_UNSIGNED_INT, 0);
 
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,0);                            // desactivar VBO de triángulos
 
@@ -209,10 +210,10 @@ void Malla3D::draw(modo_dibujado modo, bool ajedrez)
    
 }
 
-void Malla3D::draw(modo_dibujado modo, bool ajedrez,bool tapas)
+void Malla3D::draw(modo_dibujado modo, bool ajedrez,bool tapas,int num_instancias)
 {
    if (modo == DIFERIDO && !ajedrez){
-      draw_ModoDiferido(tapas);
+      draw_ModoDiferido(tapas,num_instancias);
    }
    else{
 
@@ -220,7 +221,7 @@ void Malla3D::draw(modo_dibujado modo, bool ajedrez,bool tapas)
          std::cout << "El modo ajedrez solo se puede pintar en modo inmediato, ha sido redirigido al modo inmediato" << std::endl;
       }
       
-      draw_ModoInmediato(ajedrez,tapas);
+      draw_ModoInmediato(ajedrez,tapas,num_instancias);
       
    }
    

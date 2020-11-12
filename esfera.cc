@@ -1,7 +1,8 @@
 #include "aux.h"
 #include "esfera.h"
 
-Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const float radio){ 
+Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const float radio){
+    this->num_instancias = num_instancias_perf;
     std::vector<Tupla3f> perfil;
 
     Tupla3f vert_sup_esfera = {0,radio,0};

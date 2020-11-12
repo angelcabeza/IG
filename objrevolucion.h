@@ -43,6 +43,10 @@ private:
 
 protected:
     void crearMalla(const std::vector<Tupla3f> & perfil_original, const int num_instancias_perfil,const bool conTapas,int eje_rotacion=1);
+    int num_instancias;
+
+public:
+    int getNumInstancias();
 } ;
 
 

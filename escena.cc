@@ -110,19 +110,19 @@ void Escena::dibujar()
       glTranslatef(-50,50,0);
       glScalef(4,4,4);
 
-      esfera->draw(modo_dibujado_escogido,ajedrez,tapas);
+      esfera->draw(modo_dibujado_escogido,ajedrez,tapas,esfera->getNumInstancias());
    glPopMatrix();
 
    glPushMatrix();
       glTranslatef(-90,-110,0);
 
-      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+      cono->draw(modo_dibujado_escogido,ajedrez,tapas,cono->getNumInstancias());
    glPopMatrix();
 
    glPushMatrix();
       glTranslatef(90,-120,0);
 
-      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
+      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas,cilindro->getNumInstancias());
    glPopMatrix();
 
 

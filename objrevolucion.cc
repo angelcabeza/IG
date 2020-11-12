@@ -19,11 +19,13 @@ ObjRevolucion::ObjRevolucion() {}
 
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, int eje_rotacion){
 
+   this->num_instancias = num_instancias;
+
    std::vector<Tupla3f> perfil_original;
    ply::read_vertices(archivo,perfil_original);
 
    if (tapa_sup && tapa_inf ){
-      crearMalla(perfil_original,num_instancias,true);
+      crearMalla(perfil_original,num_instancias,true,eje_rotacion);
    }
    else{
       crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
@@ -37,6 +39,7 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 
  
 ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf,int eje_rotacion) {
+   this->num_instancias = num_instancias;
    crearMalla(archivo,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
 }
@@ -123,15 +126,16 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    Tupla3f polo_sup, polo_inf;
 
    if(perfil_original[0](0) == 0.0){
-      polo_inf = perfil_original[perfil_original.size()-1];
+      polo_inf = perfil_original[0];
       perfil_original.erase(perfil_original.begin());
    }
    else{
       polo_inf = {0.0,perfil_original[0](1),0.0};
+
    }
 
    if (perfil_original[perfil_original.size()-1](0) == 0.0){
-      polo_sup = perfil_original[0];
+      polo_sup = perfil_original[perfil_original.size()-1];
       perfil_original.pop_back();
    }
    else{
@@ -288,4 +292,8 @@ void ObjRevolucion::inicializarCaras(int num_instancias_perfil, std::vector<Tupl
          f.push_back(cara2);
       }
    }
+}
+
+int ObjRevolucion::getNumInstancias(){
+   return this->num_instancias;
 }

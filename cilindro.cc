@@ -1,15 +1,12 @@
 #include "aux.h"
 #include "cilindro.h"
 
-Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,
-                  const float altura, const float radio){
-
-    
+Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,const float altura, const float radio){
+   this->num_instancias = num_instancias_perf;
    std::vector<Tupla3f> perfil;
 
    Tupla3f vertice;
 
-   perfil.push_back({radio,altura/2,0});
    for (int i = 1; i <= num_vert_perfil;i++){
         vertice = {radio,i*(altura/num_vert_perfil),0};
 
