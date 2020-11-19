@@ -26,7 +26,7 @@ Escena::Escena()
     tetraedro = new Tetraedro();
     cubo = new Cubo (50.0);
     ply = new ObjPLY("plys/beethoven.ply");
-    objrevolucion = new ObjRevolucion("plys/peon.ply",10,1);
+    objrevolucion = new ObjRevolucion("plys/peon.ply",10,true,true);
     cilindro = new Cilindro(100,100,100,50);
     cono = new Cono(100,100,100,50);
     esfera = new Esfera(100,100,10);
@@ -46,6 +46,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
    glEnable(GL_CULL_FACE);
+   glEnable(GL_NORMALIZE);
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -98,7 +99,6 @@ void Escena::dibujar()
          break;
    }
 
-
    glPushMatrix();
       glTranslatef(50,50,0);
       glScalef(5,5,5);
@@ -123,7 +123,7 @@ void Escena::dibujar()
       glTranslatef(80,-110,0);
 
       cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();    
+   glPopMatrix();
 }
 
 //**************************************************************************

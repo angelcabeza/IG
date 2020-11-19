@@ -104,6 +104,66 @@ void Malla3D::draw_ModoDiferido()
 
 }
 
+void Malla3D::draw_Suavizado(bool ajedrez){
+   //acitva el modo de sombreado suave
+   glShadeModel(GL_SMOOTH);
+
+   // visualizar la malla usando glDrawElements,
+   // habilitar uso de un array de vértices
+   glEnableClientState( GL_VERTEX_ARRAY );
+
+   // indicar eel formato y la direccion de memoria del array de vértices
+   // (son tuplas de 3 valores float, sin espacio entre ellas)
+
+   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+
+
+   if (ajedrez){
+      glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
+      glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
+   }
+   else{
+      // visualizar, indicando tipo de primitiva, número de índices,
+      // tipo de los índices y dirección de la tabla de índices
+
+      glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
+   }
+
+   //deshabilitar array de vértices
+   glDisableClientState ( GL_VERTEX_ARRAY);
+   glDisableClientState ( GL_COLOR_ARRAY);
+}
+
+void Malla3D::draw_Plano(bool ajedrez){
+   //acitva el modo de sombreado suave
+   glShadeModel(GL_FLAT);
+
+   // visualizar la malla usando glDrawElements,
+   // habilitar uso de un array de vértices
+   glEnableClientState( GL_VERTEX_ARRAY );
+
+   // indicar eel formato y la direccion de memoria del array de vértices
+   // (son tuplas de 3 valores float, sin espacio entre ellas)
+
+   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
+
+
+   if (ajedrez){
+      glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
+      glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
+   }
+   else{
+      // visualizar, indicando tipo de primitiva, número de índices,
+      // tipo de los índices y dirección de la tabla de índices
+
+      glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
+   }
+
+   //deshabilitar array de vértices
+   glDisableClientState ( GL_VERTEX_ARRAY);
+   glDisableClientState ( GL_COLOR_ARRAY);
+}
+
 
 // -----------------------------------------------------------------------------
 // Función de visualización de la malla,

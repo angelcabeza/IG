@@ -393,8 +393,11 @@ template< class T, unsigned n > inline
 TuplaG<T,n> TuplaG<T,n>::normalized() const
 {
    T lenSq = T(0.0) ;
-   for( unsigned i = 0 ; i < n ; i++ )
+   for( unsigned i = 0 ; i < n ; i++ ){
+      //std:: cout << (*this)(i) << " * " << (*this)(i);
       lenSq += (*this)(i) * (*this)(i) ;
+      //std::cout << "  =  " << lenSq << std::endl;
+   }
 
    if ( ! ( lenSq > 0.0 ) )
    {  using namespace std ;

@@ -31,6 +31,12 @@ class Malla3D
    // dibuja el objeto en modo diferido (usando VBOs)
    void draw_ModoDiferido();
 
+   //dibuja el objeto con el modo con iluminación y sombreado de suave
+   void draw_Suavizado(bool ajedrez);
+
+   //dibuja el objeto con el modo con iluminación y sombreado plano
+   void draw_Plano(bool ajedrez);
+
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
    // función que redibuja el objeto
@@ -50,6 +56,7 @@ class Malla3D
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo
    std::vector<Tupla3f> nv ; // tabla de coordenadas de normales de vértices y caras (uuna tupla por vértice y cara, con tres floats)
+   std::vector<Tupla3f> nf ; // tabla de coordenadas de normales de las caras
    std::vector<Tupla3i> caras_pares,caras_impares; // tabla de triángulos necesarias para pintar en modo ajedrez
    std::vector<Tupla3f> color_ajedrez_pares,color_ajedrez_impares;          // tabla de colores para el ajedrez
    std::vector<Tupla3f> color;                                              // tabla de colores para la figura

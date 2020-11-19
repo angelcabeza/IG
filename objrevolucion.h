@@ -40,7 +40,8 @@ private:
     void inicializarColores();
     void inicializarVertices(int num_instancias_perfil, std::vector<Tupla3f> & perfil, int eje_rotacion=1);
     void inicializarCaras(int num_instancias_perfil, std::vector<Tupla3f> & perfil);
-    void inicializarNormales();
+    void inicializarNormalesCaras();
+    void inicializarNormalesVertices();
 
 protected:
     int num_instancias;

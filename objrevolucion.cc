@@ -20,12 +20,11 @@ ObjRevolucion::ObjRevolucion() {}
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, int eje_rotacion){
 
    this->num_instancias = num_instancias;
-
    std::vector<Tupla3f> perfil_original;
    ply::read_vertices(archivo,perfil_original);
    crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
-
    inicializarColores();
+   inicializarNormalesCaras();
 }
 
 // *****************************************************************************
@@ -36,6 +35,8 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
    this->num_instancias = num_instancias;
    crearMalla(archivo,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
+   inicializarNormalesCaras();
+   inicializarNormalesVertices();
 }
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_sup, bool tapa_inf, int eje_rotacion) {
@@ -50,7 +51,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    Tupla3f polo_sup, polo_inf;
 
    const float EPSILON = 0.0000001;
-   if(0.0 - perfil_original[0](0) < EPSILON){
+   if(fabs(0.0 - perfil_original[0](0)) < EPSILON){
       polo_inf = perfil_original[0];
       perfil_original.erase(perfil_original.begin());
    }
@@ -59,7 +60,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
    }
 
-   if (0.0 - perfil_original[perfil_original.size()-1](0) < EPSILON){
+   if (fabs(0.0 - perfil_original[perfil_original.size()-1](0)) < EPSILON){
       polo_sup = perfil_original[perfil_original.size()-1];
       perfil_original.pop_back();
    }
@@ -77,10 +78,9 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
 
    if (tapa_inf){
       v.push_back(polo_inf);
-
       // Genero los triangulos de las tapa inferior
       for(int i=0; i < num_instancias; i++){
-         Tupla3i caraInf = {M*num_instancias, (M * i), (M * (i+1))};
+         Tupla3i caraInf = {(M*(i+1))%(M*num_instancias),(M * i),M*num_instancias};
          f.push_back(caraInf);
       }
    }
@@ -206,6 +206,56 @@ void ObjRevolucion::draw(modo_dibujado modo, bool ajedrez,bool tapas)
       
    }
    
+}
+
+void ObjRevolucion::inicializarNormalesCaras(){
+   Tupla3f p;
+   Tupla3f q;
+   Tupla3f r;
+   Tupla3f vector_a;
+   Tupla3f vector_b;
+   Tupla3f vector_perpendicular;
+   Tupla3f vector_normal;
+
+   for (int i = 0; i < f.size(); i++){
+      p = v[f[i](0)];
+      q = v[f[i](1)];
+      r = v[f[i](2)];
+
+      //std::cout << "p = " << p[0] << "," << p[1] << "," << p[2] << std::endl;
+      //std::cout << "q = " << q[0] << "," << q[1] << "," << q[2] << std::endl;
+      //std::cout << "r = " << r[0] << "," << r[1] << "," << r[2] << std::endl;
+
+      vector_a = q - p;
+      vector_b = r - p;
+
+      //std::cout << "vector_a = " << vector_a[0] << "," << vector_a[1] << "," << vector_a[2] << std::endl;
+      //std::cout << "vector_b = " << vector_b[0] << "," << vector_b[1] << "," << vector_b[2] << std::endl;
+      
+
+      vector_perpendicular = vector_a.cross(vector_b);
+
+      //std::cout << "Llamo a nomralized en normalesCaras" << std::endl;
+      //std::cout << "x: " << vector_perpendicular[0] << "\ny: " << vector_perpendicular[1] << "\nz: " << vector_perpendicular[2] << std::endl << std::endl;
+      //std::cout << "ERROR OCURRE EN LA CARA: " << i << std::endl;
+      vector_normal = vector_perpendicular.normalized();
+
+      nf.push_back(vector_normal);
+   }
+}
+
+void ObjRevolucion::inicializarNormalesVertices(){
+
+   nv.resize(v.size());
+   for (int i = 0; i < f.size(); i++){
+      nv[f[i](0)] = (nv[f[i](0)] + nf[i]);
+      nv[f[i](1)] = (nv[f[i](1)] + nf[i]);
+      nv[f[i](2)] = (nv[f[i](2)] + nf[i]);
+
+      nv[f[i](0)].normalized();
+      nv[f[i](1)].normalized();
+      nv[f[i](2)].normalized();
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
