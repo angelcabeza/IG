@@ -15,7 +15,7 @@
 // *****************************************************************************
 // objeto de revolución obtenido a partir de un perfil (en un PLY)
 
-ObjRevolucion::ObjRevolucion() {}
+ObjRevolucion::ObjRevolucion(){}
 
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, int eje_rotacion){
 
@@ -25,6 +25,12 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
    crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
    inicializarNormalesCaras();
+
+   for (int i = 0; i < nf.size(); i++){
+      if (nf[i](0) == 0 && nf[i](1) == 0 && nf[i](2) == 0)
+         std::cout << nf[i](0) << " , " << nf[i](1) << " , " << nf[i](2) << std::endl;
+   }
+   inicializarNormalesVertices();
 }
 
 // *****************************************************************************
@@ -118,18 +124,31 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
 
    glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
-   // habilitar uso de un array de colores
-   glEnableClientState ( GL_COLOR_ARRAY);
+     // habilitar uso de un array de colores
+   if (!glIsEnabled(GL_LIGHTING)){
+      glEnableClientState ( GL_COLOR_ARRAY);
+   }
+   else{
+      glEnableClientState( GL_NORMAL_ARRAY);
+      glNormalPointer(GL_FLOAT,0,nv.data());
+
+      m.aplicar();
+   }
 
    if (ajedrez){
-      glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
+      if (!glIsEnabled(GL_LIGHTING))
+         glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
+
       glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
 
-      glColorPointer(3,GL_FLOAT,0,color_ajedrez_impares.data());
+      if (!glIsEnabled(GL_LIGHTING))
+         glColorPointer(3,GL_FLOAT,0,color_ajedrez_impares.data());
+
       glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
    }
    else{
-      glColorPointer(3,GL_FLOAT,0,color.data());
+      if (!glIsEnabled(GL_LIGHTING))
+         glColorPointer(3,GL_FLOAT,0,color.data());
       // visualizar, indicando tipo de primitiva, número de índices,
       // tipo de los índices y dirección de la tabla de índices
 
@@ -142,6 +161,9 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
    //deshabilitar array de vértices
    glDisableClientState ( GL_VERTEX_ARRAY);
    glDisableClientState ( GL_COLOR_ARRAY);
+
+   if (!glIsEnabled(GL_LIGHTING))
+      glDisableClientState ( GL_NORMAL_ARRAY);
 
 }
 
@@ -163,16 +185,28 @@ void ObjRevolucion::draw_ModoDiferido(bool tapas)
       id_vbo_tri = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(int)*f.size() ,f.data() );
    }
 
+   if (id_vbo_normal_vertex == 0){
+      id_vbo_normal_vertex = CrearVBO( GL_ARRAY_BUFFER, 3*sizeof(float) * nv.size(), nv.data());
+   }
+
    glBindBuffer ( GL_ARRAY_BUFFER, id_vbo_ver);    //activar VBO de vértices
    glVertexPointer (3, GL_FLOAT,0,0);              // especifica formato y off-set (=0)
    glBindBuffer ( GL_ARRAY_BUFFER,0);              // desactivar VBO de vértices.
    glEnableClientState( GL_VERTEX_ARRAY );         // habilitar tabla de vértices
 
-   glBindBuffer (GL_ARRAY_BUFFER,id_vbo_col);
-   glColorPointer (3,GL_FLOAT,0,0);
-   glBindBuffer ( GL_ARRAY_BUFFER,0);
-   glEnableClientState(GL_COLOR_ARRAY);
-
+   if (!glIsEnabled(GL_LIGHTING)){
+      glBindBuffer (GL_ARRAY_BUFFER,id_vbo_col);
+      glColorPointer (3,GL_FLOAT,0,0);
+      glBindBuffer ( GL_ARRAY_BUFFER,0);
+      glEnableClientState(GL_COLOR_ARRAY);
+   }
+   else{
+      glEnableClientState(GL_NORMAL_ARRAY);
+      glBindBuffer(GL_ARRAY_BUFFER,id_vbo_normal_vertex);
+      glNormalPointer(GL_FLOAT,0,0);
+      glBindBuffer(GL_ARRAY_BUFFER,0);
+      m.aplicar();
+   }
 
    // visualizar triángulos con glDrawElements(puntero a tabla == 0)
    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri);                  // activar VBO de triángulos
@@ -188,6 +222,10 @@ void ObjRevolucion::draw_ModoDiferido(bool tapas)
    // desactivar uso de array de vértices y de colores
    glDisableClientState( GL_VERTEX_ARRAY);
    glDisableClientState( GL_COLOR_ARRAY);
+
+   if (glIsEnabled(GL_LIGHTING)){
+      glDisableClientState( GL_NORMAL_ARRAY);
+   }
 
 }
 
@@ -254,7 +292,10 @@ void ObjRevolucion::inicializarNormalesVertices(){
 
       nv[f[i](0)].normalized();
       nv[f[i](1)].normalized();
-      nv[f[i](2)].normalized();
+
+      if (nv[f[i](2)].lengthSq() > 0)
+         nv[f[i](2)].normalized();
+
    }
 }
 
@@ -374,4 +415,8 @@ void ObjRevolucion::inicializarCaras(int num_instancias_perfil, std::vector<Tupl
 
 int ObjRevolucion::getNumInstancias(){
    return this->num_instancias;
+}
+
+Tupla4f ObjRevolucion::getMaterial(){
+   return m.getDifuso();
 }

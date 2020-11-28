@@ -11,6 +11,10 @@
 #include "cono.h"
 #include "esfera.h"
 #include "luz.h"
+#include "luzdireccional.h"
+#include "luzposicional.h"
+#include "material.h"
+
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
@@ -45,15 +49,25 @@ class Escena
    objeto_seleccionado objeto_a_pintar = NINGUNO;
    modo_dibujado modo_dibujado_escogido = DEFAULT;
    modo_visualizacion modo_visualizacion_escogido = SOLIDO;
+   bool iluminacion;
+   bool activar_luz0;
+   bool activar_luz1;
+   bool activar_luz2;
+
    // Objetos de la escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
    ObjPLY * ply = nullptr;
-   ObjRevolucion * objrevolucion = nullptr;
+   ObjRevolucion * peon_negro = nullptr;
+   ObjRevolucion * peon_blanco = nullptr;
    Cilindro * cilindro = nullptr;
    Cono * cono = nullptr;
    Esfera * esfera = nullptr;
+   Esfera * esfera_luz2 = nullptr;
+   LuzPosicional * luz1 = nullptr;
+   LuzDireccional * luz0 = nullptr;
+   LuzPosicional * luz2 = nullptr;
 
    
    public:

@@ -4,6 +4,9 @@
 #include "aux.h"
 
 class Luz{
+
+    private:
+        bool activada;
     protected:
         Tupla4f posicion;
         GLenum id;
@@ -13,6 +16,8 @@ class Luz{
 
     public:
         void activar();
+        void desactivar();
+        bool estaActivada();
 };
 
 #endif

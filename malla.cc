@@ -24,7 +24,7 @@ GLuint Malla3D::CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * punter
 
 // Visualización en modo inmediato con 'glDrawElements'
 
-void Malla3D::draw_ModoInmediato(bool ajedrez)
+void Malla3D::draw_ModoInmediato(bool ajedrez,bool iluminacion)
 {
 
    // visualizar la malla usando glDrawElements,
@@ -37,20 +37,32 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
    glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
    // habilitar uso de un array de colores
-   glEnableClientState ( GL_COLOR_ARRAY);
+   if (!iluminacion){
+      glEnableClientState ( GL_COLOR_ARRAY);
+   }
+   else{
+      glEnableClientState( GL_NORMAL_ARRAY);
+      glNormalPointer(GL_FLOAT,0,nv.data());
+      m.aplicar();
+   }
 
    if (ajedrez){
-      glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
+      if (!iluminacion)
+         glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
+
       glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
 
-      glColorPointer(3,GL_FLOAT,0,color_ajedrez_impares.data());
+      if (!!iluminacion)
+         glColorPointer(3,GL_FLOAT,0,color_ajedrez_impares.data());
+
       glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
    }
    else{
-      glColorPointer(3,GL_FLOAT,0,color.data());
+
+      if (!iluminacion)
+         glColorPointer(3,GL_FLOAT,0,color.data());
       // visualizar, indicando tipo de primitiva, número de índices,
       // tipo de los índices y dirección de la tabla de índices
-
       glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
    }
 
@@ -58,12 +70,15 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
    glDisableClientState ( GL_VERTEX_ARRAY);
    glDisableClientState ( GL_COLOR_ARRAY);
 
+   if (iluminacion)
+      glDisableClientState(GL_NORMAL_ARRAY);
+
 }
 
 // -----------------------------------------------------------------------------
 // Visualización en modo diferido con 'glDrawElements' (usando VBOs)
 
-void Malla3D::draw_ModoDiferido()
+void Malla3D::draw_ModoDiferido(bool iluminacion)
 {
    // (la primera vez, se deben crear los VBOs y guardar sus identificadores en el objeto)
    // completar (práctica 1)
@@ -80,20 +95,32 @@ void Malla3D::draw_ModoDiferido()
    if (id_vbo_tri == 0){
       id_vbo_tri = CrearVBO( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(int)*f.size() ,f.data() );
    }
+   if (id_vbo_normal_vertex == 0){
+      id_vbo_normal_vertex = CrearVBO(GL_ARRAY_BUFFER, 3 * sizeof(float)*nv.size(),nv.data());
+   }
 
    glBindBuffer ( GL_ARRAY_BUFFER, id_vbo_ver);    //activar VBO de vértices
    glVertexPointer (3, GL_FLOAT,0,0);              // especifica formato y off-set (=0)
    glBindBuffer ( GL_ARRAY_BUFFER,0);              // desactivar VBO de vértices.
    glEnableClientState( GL_VERTEX_ARRAY );         // habilitar tabla de vértices
 
-   glBindBuffer (GL_ARRAY_BUFFER,id_vbo_col);
-   glColorPointer (3,GL_FLOAT,0,0);
-   glBindBuffer ( GL_ARRAY_BUFFER,0);
-   glEnableClientState(GL_COLOR_ARRAY);
-
+   if (!iluminacion){
+      glBindBuffer (GL_ARRAY_BUFFER,id_vbo_col);
+      glColorPointer (3,GL_FLOAT,0,0);
+      glBindBuffer ( GL_ARRAY_BUFFER,0);
+      glEnableClientState(GL_COLOR_ARRAY);
+   }
+   else{
+      glEnableClientState(GL_NORMAL_ARRAY);
+      glBindBuffer(GL_ARRAY_BUFFER,id_vbo_normal_vertex);
+      glNormalPointer(GL_FLOAT,0,0);
+      glBindBuffer(GL_ARRAY_BUFFER,0);
+      m.aplicar();
+   }
 
    // visualizar triángulos con glDrawElements(puntero a tabla == 0)
    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri);                  // activar VBO de triángulos
+      
    glDrawElements (GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, 0);
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,0);                            // desactivar VBO de triángulos
 
@@ -102,66 +129,13 @@ void Malla3D::draw_ModoDiferido()
    glDisableClientState( GL_VERTEX_ARRAY);
    glDisableClientState( GL_COLOR_ARRAY);
 
+   if (iluminacion)
+      glDisableClientState( GL_NORMAL_ARRAY);
+
 }
 
-void Malla3D::draw_Suavizado(bool ajedrez){
-   //acitva el modo de sombreado suave
-   glShadeModel(GL_SMOOTH);
-
-   // visualizar la malla usando glDrawElements,
-   // habilitar uso de un array de vértices
-   glEnableClientState( GL_VERTEX_ARRAY );
-
-   // indicar eel formato y la direccion de memoria del array de vértices
-   // (son tuplas de 3 valores float, sin espacio entre ellas)
-
-   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
-
-
-   if (ajedrez){
-      glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
-      glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
-   }
-   else{
-      // visualizar, indicando tipo de primitiva, número de índices,
-      // tipo de los índices y dirección de la tabla de índices
-
-      glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
-   }
-
-   //deshabilitar array de vértices
-   glDisableClientState ( GL_VERTEX_ARRAY);
-   glDisableClientState ( GL_COLOR_ARRAY);
-}
-
-void Malla3D::draw_Plano(bool ajedrez){
-   //acitva el modo de sombreado suave
-   glShadeModel(GL_FLAT);
-
-   // visualizar la malla usando glDrawElements,
-   // habilitar uso de un array de vértices
-   glEnableClientState( GL_VERTEX_ARRAY );
-
-   // indicar eel formato y la direccion de memoria del array de vértices
-   // (son tuplas de 3 valores float, sin espacio entre ellas)
-
-   glVertexPointer( 3, GL_FLOAT, 0, v.data() );
-
-
-   if (ajedrez){
-      glDrawElements(GL_TRIANGLES,caras_pares.size()*3, GL_UNSIGNED_INT,caras_pares.data());
-      glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
-   }
-   else{
-      // visualizar, indicando tipo de primitiva, número de índices,
-      // tipo de los índices y dirección de la tabla de índices
-
-      glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
-   }
-
-   //deshabilitar array de vértices
-   glDisableClientState ( GL_VERTEX_ARRAY);
-   glDisableClientState ( GL_COLOR_ARRAY);
+void Malla3D::setMaterial(const Material & mat){
+   m = mat;
 }
 
 
@@ -169,10 +143,10 @@ void Malla3D::draw_Plano(bool ajedrez){
 // Función de visualización de la malla,
 // puede llamar a  draw_ModoInmediato o bien a draw_ModoDiferido
 
-void Malla3D::draw(modo_dibujado modo, bool ajedrez)
+void Malla3D::draw(modo_dibujado modo, bool ajedrez,bool iluminacion)
 {
    if (modo == DIFERIDO && !ajedrez){
-      draw_ModoDiferido();
+      draw_ModoDiferido(iluminacion);
    }
    else{
 
@@ -180,7 +154,7 @@ void Malla3D::draw(modo_dibujado modo, bool ajedrez)
          std::cout << "El modo ajedrez solo se puede pintar en modo inmediato, ha sido redirigido al modo inmediato" << std::endl;
       }
       
-      draw_ModoInmediato(ajedrez);
+      draw_ModoInmediato(ajedrez,iluminacion);
       
    }
    

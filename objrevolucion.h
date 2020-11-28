@@ -53,10 +53,7 @@ public:
    void draw_ModoInmediato(bool ajedrez,bool tapas);
    // dibuja objetos de revolucion en modo diferido
    void draw_ModoDiferido(bool tapas);
+   Tupla4f getMaterial();
 
 } ;
-
-
-
-
 #endif

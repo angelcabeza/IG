@@ -23,13 +23,29 @@ Escena::Escena()
     // .......completar: ...
     // .....
 
-    tetraedro = new Tetraedro();
-    cubo = new Cubo (50.0);
-    ply = new ObjPLY("plys/beethoven.ply");
-    objrevolucion = new ObjRevolucion("plys/peon.ply",10,true,true);
+    //tetraedro = new Tetraedro();
+    //cubo = new Cubo (50.0);
+    //ply = new ObjPLY("plys/beethoven.ply");
+    iluminacion = false;
+    peon_blanco = new ObjRevolucion("plys/peon.ply",100,true,true);
+    peon_negro= new ObjRevolucion("plys/peon.ply",100,true,true);
     cilindro = new Cilindro(100,100,100,50);
     cono = new Cono(100,100,100,50);
-    esfera = new Esfera(100,100,10);
+    esfera = new Esfera(100,100,1);
+    esfera_luz2 = new Esfera(100,100,1);
+    tetraedro = new Tetraedro();
+    cubo = new Cubo(100);
+    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , 128.0);
+    Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
+    Material material_esmeralda = Material ({0.0215, 0.1745, 0.0215, 1}, {0.07568, 0.61424, 0.07568, 1}, {0.633, 0.727811,0.633, 1}, 64.0);
+
+    peon_blanco->setMaterial(material_difuso);
+    peon_negro->setMaterial(material_especular);
+    cubo->setMaterial(material_esmeralda);
+
+    luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
+    luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
+    luz2 = new LuzPosicional({10, 10, 10},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
 
 
 }
@@ -46,7 +62,6 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 
 	glEnable( GL_DEPTH_TEST );	// se habilita el z-bufer
    glEnable(GL_CULL_FACE);
-   glEnable(GL_NORMALIZE);
 
 	Width  = UI_window_width/10;
 	Height = UI_window_height/10;
@@ -99,31 +114,78 @@ void Escena::dibujar()
          break;
    }
 
-   glPushMatrix();
-      glTranslatef(50,50,0);
-      glScalef(5,5,5);
+   if (iluminacion){
+      glEnable(GL_NORMALIZE);
+      glEnable(GL_LIGHTING);
+      glShadeModel(GL_SMOOTH);
+   }
 
-      ply->draw(modo_dibujado_escogido,ajedrez);
+   glPushMatrix();
+     glTranslatef(-100,1,1);
+      glScalef(50,50,50);
+
+      peon_negro->draw(modo_dibujado_escogido,ajedrez,true);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(-50,50,0);
-      glScalef(4,4,4);
+      glTranslatef(100,1,1);
+      glScalef(50,50,50);
 
-      esfera->draw(modo_dibujado_escogido,ajedrez,tapas);
+      peon_blanco->draw(modo_dibujado_escogido,ajedrez,true);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(-90,-110,0);
-
-      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+      glTranslatef(0,0,-100);
+      cubo->draw(modo_dibujado_escogido,ajedrez,iluminacion);
    glPopMatrix();
 
-   glPushMatrix();
-      glTranslatef(80,-110,0);
+   if(activar_luz1){
+      glPushMatrix();
+         glTranslatef(20,100,-300);
+         glScalef(4,4,4);
+         esfera->draw(modo_dibujado_escogido,ajedrez,true);
+      glPopMatrix();
+   }
 
-      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
+   if (activar_luz2){
+      glPushMatrix();
+         glTranslatef(10,10,10);
+         esfera_luz2->draw(modo_dibujado_escogido,ajedrez,true);
+      glPopMatrix();
+   }
+
+   if(activar_luz0){
+      glPushMatrix();
+         luz0->activar();
+      glPopMatrix();
+   }
+   else{
+      if(luz0->estaActivada()){
+         luz0->desactivar();
+      }
+   }
+
+   if (activar_luz1){
+      glPushMatrix();
+         luz1->activar();
+      glPopMatrix();
+   }
+   else{
+      if(luz1->estaActivada()){
+         luz1->desactivar();
+         std::cout << "Desactivada" << std::endl;
+      }
+   }
+
+   if (activar_luz2){
+      glPushMatrix();
+         luz2->activar();
+      glPopMatrix();
+   }
+   else{
+      if(luz2->estaActivada())
+         luz2->desactivar();
+   }
 }
 
 //**************************************************************************
@@ -170,6 +232,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          cout << "Presione 'L' para la visualización modo líneas" << endl;
          cout << "Presione 'S' para la visualización modo sólido" << endl;
          cout << "Presione 'A' para la visualización modo ajedrez" << endl;
+         cout << "Presione 'T' para la visualizaicón con ilumnación" << endl;
          cout << "Presione 'Q' para salir de este modo" << endl;
          break ;
        case 'D' :
@@ -199,11 +262,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
          case 'T' :
+          if (modoMenu ==SELVISUALIZACION)
+            iluminacion = true;
 
-          if (objeto_a_pintar != TETRAEDRO)
-            objeto_a_pintar=TETRAEDRO;
-          else
-            objeto_a_pintar=NINGUNO;
+          if (modoMenu == SELOBJETO){
+            if (objeto_a_pintar != TETRAEDRO)
+               objeto_a_pintar=TETRAEDRO;
+            else
+               objeto_a_pintar=NINGUNO;
+          }
 
           break;
 
@@ -239,20 +306,49 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           
          break;
 
+         case '0' :
+            if (iluminacion){
+               if (activar_luz0)
+                  activar_luz0 = false;
+               else
+                  activar_luz0 = true;
+            }
+         break;
+
          case '1'  :
-            cout << "Ha escogido pintar en modo inmediato" << endl;
-            modo_dibujado_escogido = INMEDIATO;
+
+            if (modoMenu == SELDIBUJADO){
+               cout << "Ha escogido pintar en modo inmediato" << endl;
+               modo_dibujado_escogido = INMEDIATO;
+            }
+
+            if (iluminacion){
+               if (activar_luz1)
+                  activar_luz1 = false;
+               else
+                  activar_luz1 = true;
+            }
+
           break;
          
          case '2'  :
             cout << "Ha escogido pintar en modo diferido" << endl;
             modo_dibujado_escogido = DIFERIDO;
-          break; 
+            
+            if (iluminacion){
+               if (activar_luz2)
+                  activar_luz2 = false;
+               else
+                  activar_luz2 = true;
+            }
+         break; 
 
          case 'P'  :
             cout << "Ha escogido pintar en modo puntos" << endl;
-            if (modo_visualizacion_escogido != PUNTOS)
+            if (modo_visualizacion_escogido != PUNTOS){
                modo_visualizacion_escogido = PUNTOS;
+               iluminacion = false;
+            }
 
           break;
 
@@ -264,15 +360,19 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          case 'S'  :
             cout << "Ha escogido pintar en modo solido" << endl;
-            if (modo_visualizacion_escogido != SOLIDO)
+            if (modo_visualizacion_escogido != SOLIDO){
                modo_visualizacion_escogido = SOLIDO;
-
+               iluminacion = false;
+            }
+            
           break;
 
          case 'A'  :
             cout << "Ha escogido pintar en modo ajedrez" << endl;
-            if (modo_visualizacion_escogido != AJEDREZ)
+            if (modo_visualizacion_escogido != AJEDREZ){
                modo_visualizacion_escogido = AJEDREZ;
+               iluminacion = false;
+            }
           break;
 
          case 'Y' :
@@ -285,6 +385,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
    }
    return salir;
 }
+
 //**************************************************************************
 
 void Escena::teclaEspecial( int Tecla1, int x, int y )

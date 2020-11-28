@@ -28,9 +28,13 @@ class Cubo : public Malla3D
    void inicializarVertices(float lado);
    void inicializarCaras();
    void inicializarColores();
+   void inicializarNormalesVertices();
+   void inicializarNormalesCaras();
    
    public:
    Cubo(float l=1) ;
+
+   Tupla4f getMaterial();
 
 } ;
 
