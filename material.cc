@@ -21,8 +21,6 @@ void Material::operator = (const Material & otro){
     this->difuso = otro.difuso;
     this->especular = otro.especular;
     this->brillo = otro.brillo;
-
-    std::cout << "Aplico operator = " << std::endl;
 }
 
 Tupla4f Material::getDifuso(){

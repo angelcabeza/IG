@@ -118,15 +118,5 @@ Tetraedro::Tetraedro()
    inicializarNormalesCaras();
    inicializarNormalesVertices();
 
-   std::cout << "NORMALES CARAS" << std::endl;
-   for (int i = 0; i < nf.size(); i++){
-      std::cout << nf[i](0) << " , " << nf[i](1) << " , " << nf[i](2) << std::endl;
-   }
-
-   std::cout << "NOMRALES VERTICES" << std::endl;
-    for (int i = 0; i < nv.size(); i++){
-      std::cout << nv[i](0) << " , " << nv[i](1) << " , " << nv[i](2) << std::endl;
-   }
-
 }
 

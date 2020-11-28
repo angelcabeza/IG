@@ -25,11 +25,6 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
    crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
    inicializarNormalesCaras();
-
-   for (int i = 0; i < nf.size(); i++){
-      if (nf[i](0) == 0 && nf[i](1) == 0 && nf[i](2) == 0)
-         std::cout << nf[i](0) << " , " << nf[i](1) << " , " << nf[i](2) << std::endl;
-   }
    inicializarNormalesVertices();
 }
 
