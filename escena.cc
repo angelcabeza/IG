@@ -17,24 +17,18 @@ Escena::Escena()
     Observer_angle_y  = 0.0 ;
 
     ejes.changeAxisSize( 5000 );
-    
 
-    // crear los objetos de la escena....
-    // .......completar: ...
-    // .....
 
-    //tetraedro = new Tetraedro();
-    //cubo = new Cubo (50.0);
-    //ply = new ObjPLY("plys/beethoven.ply");
+   // OBJETOS EN LA ESCENA
     iluminacion = false;
     peon_blanco = new ObjRevolucion("plys/peon.ply",100,true,true);
     peon_negro= new ObjRevolucion("plys/peon.ply",100,true,true);
-    cilindro = new Cilindro(100,100,100,50);
-    cono = new Cono(100,100,100,50);
     esfera = new Esfera(100,100,1);
     esfera_luz2 = new Esfera(100,100,1);
-    tetraedro = new Tetraedro();
     cubo = new Cubo(100);
+   /////////////////////////////////////////////////////////////////////
+
+    //Declaro y aplico materiales
     Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , 128.0);
     Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
     Material material_esmeralda = Material ({0.0215, 0.1745, 0.0215, 1}, {0.07568, 0.61424, 0.07568, 1}, {0.633, 0.727811,0.633, 1}, 64.0);
@@ -42,11 +36,13 @@ Escena::Escena()
     peon_blanco->setMaterial(material_difuso);
     peon_negro->setMaterial(material_especular);
     cubo->setMaterial(material_esmeralda);
+   //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+   // CREO LAS LUCES DE LA ESCENA
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
     luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
     luz2 = new LuzPosicional({10, 10, 10},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
-
+   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
@@ -83,7 +79,18 @@ void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
 	change_observer();
-   ejes.draw();
+
+
+   //PROTEJO A LOS EJES DE LA ILUMINACIÓN PARA QUE SE DIBUJEN SIEMPRE DEL MISMO COLOR
+   if (iluminacion){
+      glDisable(GL_LIGHTING);
+      ejes.draw();
+      glEnable(GL_LIGHTING);
+   }
+   else{
+      ejes.draw();
+   }
+   
    bool ajedrez = false;
    bool tapas = true;
 
@@ -117,7 +124,11 @@ void Escena::dibujar()
    if (iluminacion){
       glEnable(GL_NORMALIZE);
       glEnable(GL_LIGHTING);
-      glShadeModel(GL_SMOOTH);
+
+      if (modo_sombreado_escogido == SUAVE)
+         glShadeModel(GL_SMOOTH);
+      else
+         glShadeModel (GL_FLAT);
    }
 
    glPushMatrix();
@@ -262,8 +273,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
          case 'T' :
-          if (modoMenu ==SELVISUALIZACION)
+          if (modoMenu ==SELVISUALIZACION){
             iluminacion = true;
+            modo_visualizacion_escogido = ILUMINACION;
+          }
 
           if (modoMenu == SELOBJETO){
             if (objeto_a_pintar != TETRAEDRO)
@@ -332,8 +345,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
          
          case '2'  :
-            cout << "Ha escogido pintar en modo diferido" << endl;
-            modo_dibujado_escogido = DIFERIDO;
+
+            if (modoMenu == SELDIBUJADO){
+               cout << "Ha escogido pintar en modo diferido" << endl;
+               modo_dibujado_escogido = DIFERIDO;
+            }
             
             if (iluminacion){
                if (activar_luz2)
@@ -344,10 +360,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break; 
 
          case 'P'  :
-            cout << "Ha escogido pintar en modo puntos" << endl;
-            if (modo_visualizacion_escogido != PUNTOS){
+            if (modo_visualizacion_escogido != PUNTOS && modo_visualizacion_escogido != ILUMINACION){
+               cout << "Ha escogido pintar en modo puntos" << endl;
                modo_visualizacion_escogido = PUNTOS;
                iluminacion = false;
+            }
+
+            if (modo_visualizacion_escogido == ILUMINACION){
+               cout << "Ha escogido pintar con sombreado plano (GL_PLANE)" << endl;
+               modo_sombreado_escogido = PLANO;
             }
 
           break;
@@ -359,20 +380,30 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
          case 'S'  :
-            cout << "Ha escogido pintar en modo solido" << endl;
-            if (modo_visualizacion_escogido != SOLIDO){
+            if (modo_visualizacion_escogido != SOLIDO && modo_visualizacion_escogido != ILUMINACION){
+               cout << "Ha escogido pintar en modo solido" << endl;
                modo_visualizacion_escogido = SOLIDO;
                iluminacion = false;
+            }
+
+            if (modo_visualizacion_escogido == ILUMINACION){
+               cout << "Ha escogido pintar con sombreado suave (GL_SMOOTH)" << endl;
+               modo_sombreado_escogido = SUAVE;
             }
             
           break;
 
          case 'A'  :
-            cout << "Ha escogido pintar en modo ajedrez" << endl;
-            if (modo_visualizacion_escogido != AJEDREZ){
+            if (modo_visualizacion_escogido != AJEDREZ && modo_visualizacion_escogido != ILUMINACION){
+               cout << "Ha escogido pintar en modo ajedrez" << endl;
                modo_visualizacion_escogido = AJEDREZ;
                iluminacion = false;
             }
+
+            if(modo_visualizacion_escogido == ILUMINACION){
+               variacion_direccional = ALPHA;
+            }
+
           break;
 
          case 'Y' :
@@ -381,6 +412,42 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          case 'N' :
             modo_visualizacion_escogido = SINTAPAS;
+         break;
+
+         case 'B' :
+            if (modo_visualizacion_escogido == ILUMINACION){
+               variacion_direccional = BETA;
+            }
+         break;
+
+         case '<' :
+
+            if (modo_visualizacion_escogido == ILUMINACION){
+
+               if (variacion_direccional == ALPHA){
+                  luz0->variarAnguloAlpha(-20.0);                  
+               }
+
+               if (variacion_direccional == BETA){
+                  luz0->variarAnguloBeta(-20);
+               }
+            }
+
+         break;
+
+         case '>' :
+
+            if (modo_visualizacion_escogido == ILUMINACION){
+
+               if (variacion_direccional == ALPHA){
+                  luz0->variarAnguloAlpha(20.0);                  
+               }
+
+               if (variacion_direccional == BETA){
+                  luz0->variarAnguloBeta(20.0);
+               }
+            }
+
          break;
    }
    return salir;

@@ -25,7 +25,6 @@ void LuzDireccional::variarAnguloBeta (float incremento){
     actualizarPosicion();
 }
 
-// Esto no se si está bien porque no se como se inicializa la posicion :(
 void LuzDireccional::actualizarPosicion(){
     float x;
     float y;

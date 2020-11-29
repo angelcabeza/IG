@@ -18,7 +18,9 @@
 
 typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
 typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
-typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS} modo_visualizacion;
+typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS,ILUMINACION} modo_visualizacion;
+typedef enum {ALPHA,BETA} variacion_luz_direccional;
+typedef enum {SUAVE,PLANO} modo_sombreado;
 
 class Escena
 {
@@ -45,14 +47,21 @@ class Escena
 
    void clear_window();
 
+   // DECLARACION DE LOS DISTINTOS ENUMS NECESARIOS PARA EL MENU
    menu modoMenu=NADA;
    objeto_seleccionado objeto_a_pintar = NINGUNO;
    modo_dibujado modo_dibujado_escogido = DEFAULT;
    modo_visualizacion modo_visualizacion_escogido = SOLIDO;
+   variacion_luz_direccional variacion_direccional;
+   modo_sombreado modo_sombreado_escogido;
+   ////////////////////////////////////////////////////////////////
+
+   // DECLARACION DE VARIABLES BOOLEANAS NECESARIAS PARA LUCES
    bool iluminacion;
    bool activar_luz0;
    bool activar_luz1;
    bool activar_luz2;
+   //////////////////////////////////////////////////////////////
 
    // Objetos de la escena
    Ejes ejes;
