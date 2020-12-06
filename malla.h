@@ -43,6 +43,9 @@ class Malla3D
 
    protected:
 
+   void inicializarNormalesVertices();
+   void inicializarNormalesCaras();
+
    Material  m;
          
    GLuint id_vbo_ver = 0;

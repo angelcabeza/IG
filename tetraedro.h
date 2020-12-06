@@ -27,8 +27,6 @@ class Tetraedro: public Malla3D
       void inicializarVertices();
       void inicializarCaras();
       void inicializarColores();
-      void inicializarNormalesVertices();
-      void inicializarNormalesCaras();
    public:
       Tetraedro();
 

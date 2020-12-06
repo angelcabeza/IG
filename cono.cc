@@ -20,6 +20,8 @@ Cono::Cono(const int num_vert_perfil,const int num_instancias_perf, const float 
     crearMalla(perfil,num_instancias_perf,true,true);
 
     inicializarColores();
+    inicializarNormalesCaras();
+    inicializarNormalesVertices();
 }
 
 void Cono::inicializarColores(){

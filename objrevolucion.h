@@ -40,9 +40,6 @@ private:
     void inicializarColores();
     void inicializarVertices(int num_instancias_perfil, std::vector<Tupla3f> & perfil, int eje_rotacion=1);
     void inicializarCaras(int num_instancias_perfil, std::vector<Tupla3f> & perfil);
-    void inicializarNormalesCaras();
-    void inicializarNormalesVertices();
-
 protected:
     int num_instancias;
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_inf, bool tapa_sup,int eje_rotacion=1);

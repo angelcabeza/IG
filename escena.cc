@@ -26,22 +26,26 @@ Escena::Escena()
     esfera = new Esfera(100,100,1);
     esfera_luz2 = new Esfera(100,100,1);
     cubo = new Cubo(100);
+    cono = new Cono (100,100,40,40);
+    cilindro = new Cilindro(100,100,50,50);
    /////////////////////////////////////////////////////////////////////
 
     //Declaro y aplico materiales
-    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , 128.0);
-    Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
-    Material material_esmeralda = Material ({0.0215, 0.1745, 0.0215, 1}, {0.07568, 0.61424, 0.07568, 1}, {0.633, 0.727811,0.633, 1}, 64.0);
+    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
+    Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
+    Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
+    Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
 
     peon_blanco->setMaterial(material_difuso);
     peon_negro->setMaterial(material_especular);
-    cubo->setMaterial(material_esmeralda);
+    cono->setMaterial(material_esmeralda);
+    cilindro->setMaterial(material_anaranjado);
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
-    luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
-    luz2 = new LuzPosicional({10, 10, 10},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,0.0,0.0,1}, {1.0,1.0,1.0,1.0});
+    luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz2 = new LuzPosicional({10, 10, 10},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
@@ -131,26 +135,7 @@ void Escena::dibujar()
          glShadeModel (GL_FLAT);
    }
 
-   glPushMatrix();
-     glTranslatef(-100,1,1);
-      glScalef(50,50,50);
-
-      peon_negro->draw(modo_dibujado_escogido,ajedrez,true);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(100,1,1);
-      glScalef(50,50,50);
-
-      peon_blanco->draw(modo_dibujado_escogido,ajedrez,true);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0,0,-100);
-      cubo->draw(modo_dibujado_escogido,ajedrez,iluminacion);
-   glPopMatrix();
-
-   if(activar_luz1){
+      if(activar_luz1){
       glPushMatrix();
          glTranslatef(20,100,-300);
          glScalef(4,4,4);
@@ -161,6 +146,7 @@ void Escena::dibujar()
    if (activar_luz2){
       glPushMatrix();
          glTranslatef(10,10,10);
+         glScalef(4,4,4);
          esfera_luz2->draw(modo_dibujado_escogido,ajedrez,true);
       glPopMatrix();
    }
@@ -184,7 +170,6 @@ void Escena::dibujar()
    else{
       if(luz1->estaActivada()){
          luz1->desactivar();
-         std::cout << "Desactivada" << std::endl;
       }
    }
 
@@ -197,6 +182,30 @@ void Escena::dibujar()
       if(luz2->estaActivada())
          luz2->desactivar();
    }
+
+   glPushMatrix();
+     glTranslatef(-100,1,1);
+      glScalef(50,50,50);
+
+      peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(100,1,1);
+      glScalef(50,50,50);
+
+      peon_blanco->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0,0,-100);
+      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef (150 ,0,-50);
+      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
 }
 
 //**************************************************************************

@@ -159,3 +159,56 @@ void Malla3D::draw(modo_dibujado modo, bool ajedrez,bool iluminacion)
    }
    
 }
+
+void Malla3D::inicializarNormalesCaras(){
+   Tupla3f p;
+   Tupla3f q;
+   Tupla3f r;
+   Tupla3f vector_a;
+   Tupla3f vector_b;
+   Tupla3f vector_perpendicular;
+   Tupla3f vector_normal;
+
+   for (int i = 0; i < f.size(); i++){
+      p = v[f[i](0)];
+      q = v[f[i](1)];
+      r = v[f[i](2)];
+
+      //std::cout << "p = " << p[0] << "," << p[1] << "," << p[2] << std::endl;
+      //std::cout << "q = " << q[0] << "," << q[1] << "," << q[2] << std::endl;
+      //std::cout << "r = " << r[0] << "," << r[1] << "," << r[2] << std::endl;
+
+      vector_a = q - p;
+      vector_b = r - p;
+
+      //std::cout << "vector_a = " << vector_a[0] << "," << vector_a[1] << "," << vector_a[2] << std::endl;
+      //std::cout << "vector_b = " << vector_b[0] << "," << vector_b[1] << "," << vector_b[2] << std::endl;
+      
+
+      vector_perpendicular = vector_a.cross(vector_b);
+
+      //std::cout << "Llamo a nomralized en normalesCaras" << std::endl;
+      //std::cout << "x: " << vector_perpendicular[0] << "\ny: " << vector_perpendicular[1] << "\nz: " << vector_perpendicular[2] << std::endl << std::endl;
+      //std::cout << "ERROR OCURRE EN LA CARA: " << i << std::endl;
+      vector_normal = vector_perpendicular.normalized();
+
+      nf.push_back(vector_normal);
+   }
+}
+
+void Malla3D::inicializarNormalesVertices(){
+
+   nv.resize(v.size());
+   for (int i = 0; i < f.size(); i++){
+      nv[f[i](0)] = (nv[f[i](0)] + nf[i]);
+      nv[f[i](1)] = (nv[f[i](1)] + nf[i]);
+      nv[f[i](2)] = (nv[f[i](2)] + nf[i]);
+
+      nv[f[i](0)].normalized();
+      nv[f[i](1)].normalized();
+
+      if (nv[f[i](2)].lengthSq() > 0)
+         nv[f[i](2)].normalized();
+
+   }
+}
