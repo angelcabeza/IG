@@ -28,24 +28,28 @@ Escena::Escena()
     cubo = new Cubo(100);
     cono = new Cono (100,100,40,40);
     cilindro = new Cilindro(100,100,50,50);
+    prisma = new Prisma();
+    cilindro_tumbado = new Cilindro(100,100,20,10);
+    tren = new Tren();
    /////////////////////////////////////////////////////////////////////
 
     //Declaro y aplico materiales
-    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
-    Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
-    Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
-    Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
+    //Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
+    //Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
+    //Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
+    //Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
 
-    peon_blanco->setMaterial(material_difuso);
-    peon_negro->setMaterial(material_especular);
-    cono->setMaterial(material_esmeralda);
-    cilindro->setMaterial(material_anaranjado);
+    //peon_blanco->setMaterial(material_difuso);
+    //peon_negro->setMaterial(material_especular);
+    //cono->setMaterial(material_esmeralda);
+    //cilindro->setMaterial(material_anaranjado);*/
+    //prisma->setMaterial(material_anaranjado);
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
     luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
-    luz2 = new LuzPosicional({10, 10, 10},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz2 = new LuzPosicional({30, 30, 70},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
@@ -124,6 +128,7 @@ void Escena::dibujar()
       default:
          break;
    }
+   
 
    if (iluminacion){
       glEnable(GL_NORMALIZE);
@@ -145,7 +150,7 @@ void Escena::dibujar()
 
    if (activar_luz2){
       glPushMatrix();
-         glTranslatef(10,10,10);
+         glTranslatef(30,30,70);
          glScalef(4,4,4);
          esfera_luz2->draw(modo_dibujado_escogido,ajedrez,true);
       glPopMatrix();
@@ -183,6 +188,7 @@ void Escena::dibujar()
          luz2->desactivar();
    }
 
+   /* ESTO ES EL ESCENARIO PARA LA P3
    glPushMatrix();
      glTranslatef(-100,1,1);
       glScalef(50,50,50);
@@ -205,7 +211,11 @@ void Escena::dibujar()
    glPushMatrix();
       glTranslatef (150 ,0,-50);
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
+   glPopMatrix();*/
+
+   //tren->draw(modo_dibujado_escogido,ajedrez,tapas);
+
+   tren->draw(modo_dibujado_escogido,ajedrez,tapas);
 }
 
 //**************************************************************************
@@ -264,6 +274,18 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          cout << "Presione '2' para la visualización con Vertex Buffer Objetcts (VBOs)" << endl;
          cout << "Presione 'Q' para salir de este modo" << endl;
          break ;
+
+       case 'M' :
+         modoMenu=ANIMACIONMANUAL;
+
+         cout << "Ha entrado en el modo de animacion manual" << endl;
+         cout << "Presione '+' para aumentar el valor del grado de libertad seleccionado" << endl;
+         cout << "Presione '-' para disminuir el valor del grado de libertad seleccionado" << endl;
+         cout << "Presione 0 para modificar el humo del tren" << endl;
+         cout << "Presione 1 para modificar las ruedas del tren" << endl;
+         cout << "Presione 2 para modificar los conectores del tren" << endl; 
+         cout << "Presione 3 para modificar los vagones del tren" << endl;
+       break;
 
        case 'X' :
          cout << "Has entrado en el menú de selección de tapas" << endl;
@@ -335,6 +357,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                else
                   activar_luz0 = true;
             }
+
+            if (modoMenu==ANIMACIONMANUAL){
+               objeto=HUMO;
+            }
+
          break;
 
          case '1'  :
@@ -349,6 +376,10 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                   activar_luz1 = false;
                else
                   activar_luz1 = true;
+            }
+
+            if (modoMenu == ANIMACIONMANUAL){
+               objeto=RUEDAS;
             }
 
           break;
@@ -366,7 +397,17 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                else
                   activar_luz2 = true;
             }
-         break; 
+
+            if (modoMenu == ANIMACIONMANUAL){
+               objeto=CONECTORES;
+            }
+         break;
+
+         case '3' :
+            if (modoMenu == ANIMACIONMANUAL){
+               objeto=VAGONES;
+            }
+         break;
 
          case 'P'  :
             if (modo_visualizacion_escogido != PUNTOS && modo_visualizacion_escogido != ILUMINACION){
@@ -403,10 +444,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           break;
 
          case 'A'  :
-            if (modo_visualizacion_escogido != AJEDREZ && modo_visualizacion_escogido != ILUMINACION){
-               cout << "Ha escogido pintar en modo ajedrez" << endl;
-               modo_visualizacion_escogido = AJEDREZ;
-               iluminacion = false;
+
+            modoMenu = ANIMACIONAUTOMATICA;
+
+            if (modoMenu == SELVISUALIZACION){
+               if (modo_visualizacion_escogido != AJEDREZ && modo_visualizacion_escogido != ILUMINACION){
+                  cout << "Ha escogido pintar en modo ajedrez" << endl;
+                  modo_visualizacion_escogido = AJEDREZ;
+                  iluminacion = false;
+               }
             }
 
             if(modo_visualizacion_escogido == ILUMINACION){
@@ -457,6 +503,33 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                }
             }
 
+         break;
+
+         case '+' :
+            if (modoMenu == ANIMACIONMANUAL){
+               if (objeto == HUMO)
+                  tren->modificarGradosLibertadHumo(10);
+               else if (objeto == RUEDAS)
+                  tren->modificarGradosLibertadRuedas(10);
+               else if (objeto == CONECTORES)
+                  tren->modificarGradosLibertadConectores(10);
+               else if (objeto == VAGONES)
+                  tren->modificarGradosLibertadVagones(10);
+            }
+
+         break;
+
+         case '-' :
+            if (modoMenu == ANIMACIONMANUAL){
+               if (objeto == HUMO)
+                  tren->modificarGradosLibertadHumo(-10);
+               else if (objeto == RUEDAS)
+                  tren->modificarGradosLibertadRuedas(-10);
+               else if (objeto == CONECTORES)
+                  tren->modificarGradosLibertadConectores(-10);
+               else if (objeto == VAGONES)
+                  tren->modificarGradosLibertadVagones(10);
+            }
          break;
    }
    return salir;
@@ -529,4 +602,13 @@ void Escena::change_observer()
    glTranslatef( 0.0, 0.0, -Observer_distance );
    glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
    glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+}
+
+void Escena::animar(){
+   if (modoMenu == ANIMACIONAUTOMATICA){
+      tren->modificarGradosLibertadHumo(1);
+      tren->modificarGradosLibertadConectores(1);
+      tren->modificarGradosLibertadRuedas(1);
+      tren->modificarGradosLibertadVagones(1);
+   }
 }

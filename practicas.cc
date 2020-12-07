@@ -41,9 +41,24 @@ void change_window_size( int newWidth, int newHeight )
 {
 	if ( escena != nullptr )
       escena->redimensionar(newWidth,newHeight);
+
 	glutPostRedisplay();
 }
 
+//***************************************************************************
+// Funcion llamada cuando el gestor de eventos no tiene nada que hacer
+//
+//
+//
+//
+//***************************************************************************
+
+void  funcion_idle () {
+   if (escena !=0)
+      escena ->animar();
+      
+      glutPostRedisplay ();
+}
 
 //***************************************************************************
 // Funcion llamada cuando se produce aprieta una tecla normal
@@ -127,6 +142,9 @@ int main( int argc, char **argv )
 
    // asignación de la funcion llamada "dibujar" al evento de dibujo
    glutDisplayFunc( draw_scene );
+
+   // Cuando el gestor de eventos está desocupado se llama a esto que animará el modelo jerárquico
+   glutIdleFunc(funcion_idle);
 
    // asignación de la funcion llamada "cambiar_tamanio_ventana" al evento correspondiente
    glutReshapeFunc( change_window_size );

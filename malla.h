@@ -26,10 +26,10 @@ class Malla3D
    public:
 
    // dibuja el objeto en modo inmediato
-   void draw_ModoInmediato(bool ajedrez,bool iluminacion);
+   void draw_ModoInmediato(bool ajedrez);
 
    // dibuja el objeto en modo diferido (usando VBOs)
-   void draw_ModoDiferido(bool iluminacion);
+   void draw_ModoDiferido();
 
    void setMaterial (const Material & mat);
 
@@ -38,7 +38,7 @@ class Malla3D
    // función que redibuja el objeto
    // está función llama a 'draw_ModoInmediato' (modo inmediato)
    // o bien a 'draw_ModoDiferido' (modo diferido, VBOs)
-   void draw(modo_dibujado modo,bool ajedrez,bool iluminacion) ;
+   void draw(modo_dibujado modo,bool ajedrez) ;
 
 
    protected:

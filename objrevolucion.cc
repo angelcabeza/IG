@@ -42,7 +42,6 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_sup, bool tapa_inf, int eje_rotacion) {
 
-
    // Si el perfil viene dado een orden descendente lo pongo en orden ascendente
    if (ordenDescendente(perfil_original)){
       cambiarOrden(perfil_original);
@@ -70,7 +69,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    }
 
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE VÉRTICES
-   inicializarVertices(num_instancias,perfil_original);
+   inicializarVertices(num_instancias,perfil_original,eje_rotacion);
 
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE CARAS (TRIANGULOS)
    inicializarCaras(num_instancias,perfil_original);
@@ -321,8 +320,10 @@ void ObjRevolucion::inicializarVertices(int num_instancias_perfil, std::vector<T
    for (int i = 0; i < num_instancias_perfil; i++){
       for (int j = 0; j < perfil.size(); j++){
 
-         if (eje_rotacion == 0)                                                     // ROTAMOS EJE X
+         if (eje_rotacion == 0){                                                     // ROTAMOS EJE X
             v_aux = RotarEjeX(v_aux,num_instancias_perfil,perfil,i,j);
+            std::cout << "Eje rotacion = " << eje_rotacion << std::endl;
+         }
          else if (eje_rotacion == 1)                                                // ROTAMOS EJE Y
             v_aux = RotarEjeY(v_aux,num_instancias_perfil,perfil,i,j);
          else                                                                       // ROTAMOS EJE Z

@@ -14,13 +14,17 @@
 #include "luzdireccional.h"
 #include "luzposicional.h"
 #include "material.h"
+#include "prisma.h"
+#include "tren.h"
 
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO} menu;
+
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,ANIMACIONMANUAL,ANIMACIONAUTOMATICA} menu;
 typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
 typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS,ILUMINACION} modo_visualizacion;
 typedef enum {ALPHA,BETA} variacion_luz_direccional;
 typedef enum {SUAVE,PLANO} modo_sombreado;
+typedef enum {HUMO,RUEDAS,CONECTORES,VAGONES} objeto_a_animar;
 
 class Escena
 {
@@ -54,6 +58,7 @@ class Escena
    modo_visualizacion modo_visualizacion_escogido = SOLIDO;
    variacion_luz_direccional variacion_direccional;
    modo_sombreado modo_sombreado_escogido;
+   objeto_a_animar objeto;
    ////////////////////////////////////////////////////////////////
 
    // DECLARACION DE VARIABLES BOOLEANAS NECESARIAS PARA LUCES
@@ -67,16 +72,19 @@ class Escena
    Ejes ejes;
    Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
    Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
+   Prisma * prisma = nullptr;
    ObjPLY * ply = nullptr;
    ObjRevolucion * peon_negro = nullptr;
    ObjRevolucion * peon_blanco = nullptr;
    Cilindro * cilindro = nullptr;
+   Cilindro * cilindro_tumbado = nullptr;
    Cono * cono = nullptr;
    Esfera * esfera = nullptr;
    Esfera * esfera_luz2 = nullptr;
    LuzPosicional * luz1 = nullptr;
    LuzDireccional * luz0 = nullptr;
    LuzPosicional * luz2 = nullptr;
+   Tren * tren = nullptr;
 
    
    public:
@@ -91,6 +99,7 @@ class Escena
 	// Interacción con la escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
+    void animar();
 
 };
 #endif
