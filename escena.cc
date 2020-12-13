@@ -213,7 +213,7 @@ void Escena::dibujar()
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();*/
 
-   vagon->draw(modo_dibujado_escogido,ajedrez,tapas);
+   tren->draw(modo_dibujado_escogido,ajedrez,tapas);
 }
 
 //**************************************************************************
@@ -280,9 +280,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          cout << "Presione '+' para aumentar el valor del grado de libertad seleccionado" << endl;
          cout << "Presione '-' para disminuir el valor del grado de libertad seleccionado" << endl;
          cout << "Presione 0 para modificar el humo del tren" << endl;
-         cout << "Presione 1 para modificar las ruedas del tren" << endl;
-         cout << "Presione 2 para modificar los conectores del tren" << endl; 
-         cout << "Presione 3 para modificar los vagones del tren" << endl;
+         cout << "Presione 1 para modificar el primer vagon del tren" << endl;
+         cout << "Presione 2 para modificar el segundo vagon del tren" << endl;
+         cout << "Presione 3 para modificar el tercer vagon del tren" << endl;
+         cout << "Presione 4 para modificar el cuarto vagon del tren" << endl;
+         cout << "Presione 5 para modificar las ruedas del tren" << endl;
        break;
 
        case 'X' :
@@ -377,7 +379,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             }
 
             if (modoMenu == ANIMACIONMANUAL){
-               objeto=RUEDAS;
+               objeto=VAGON1;
             }
 
           break;
@@ -397,13 +399,25 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             }
 
             if (modoMenu == ANIMACIONMANUAL){
-               objeto=CONECTORES;
+               objeto=VAGON2;
             }
          break;
 
          case '3' :
             if (modoMenu == ANIMACIONMANUAL){
-               objeto=VAGONES;
+               objeto=VAGON3;
+            }
+         break;
+
+         case '4' :
+            if (modoMenu == ANIMACIONMANUAL){
+               objeto=VAGON4;
+            }
+         break;
+
+         case '5' :
+            if (modoMenu == ANIMACIONMANUAL){
+               objeto=RUEDAS;
             }
          break;
 
@@ -506,32 +520,41 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          break;
 
-         /*case '+' :
+         case '+' :
             if (modoMenu == ANIMACIONMANUAL){
                if (objeto == HUMO)
-                  tren->modificarGradosLibertadHumo(10);
+                  tren->modificarGradosLibertadHumoManual(10);
+               else if (objeto == VAGON1)
+                  tren->modificarGradosLibertadVagon1Manual(10);
+               else if (objeto == VAGON2)
+                  tren->modificarGradosLibertadVagon2Manual(10);
+               else if (objeto == VAGON3)
+                  tren->modificarGradosLibertadVagon3Manual(10);
+               else if (objeto == VAGON4)
+                  tren->modificarGradosLibertadVagon4Manual(10);
                else if (objeto == RUEDAS)
-                  tren->modificarGradosLibertadRuedas(10);
-               else if (objeto == CONECTORES)
-                  tren->modificarGradosLibertadConectores(10);
-               else if (objeto == VAGONES)
-                  tren->modificarGradosLibertadVagones(10);
+                  tren->modificarGradosLibertadRuedasManual(10);
             }
 
          break;
 
          case '-' :
+
             if (modoMenu == ANIMACIONMANUAL){
                if (objeto == HUMO)
-                  tren->modificarGradosLibertadHumo(-10);
+                  tren->modificarGradosLibertadHumoManual(-10);
+               else if (objeto == VAGON1)
+                  tren->modificarGradosLibertadVagon1Manual(-10);
+               else if (objeto == VAGON2)
+                  tren->modificarGradosLibertadVagon2Manual(-10);
+               else if (objeto == VAGON3)
+                  tren->modificarGradosLibertadVagon3Manual(-10);
+               else if (objeto == VAGON4)
+                  tren->modificarGradosLibertadVagon4Manual(-10);
                else if (objeto == RUEDAS)
-                  tren->modificarGradosLibertadRuedas(-10);
-               else if (objeto == CONECTORES)
-                  tren->modificarGradosLibertadConectores(-10);
-               else if (objeto == VAGONES)
-                  tren->modificarGradosLibertadVagones(10);
+                  tren->modificarGradosLibertadRuedasManual(10);
             }
-         break;*/
+         break;
    }
    return salir;
 }
@@ -605,11 +628,12 @@ void Escena::change_observer()
    glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
 }
 
-/*void Escena::animar(){
+void Escena::animar(){
    if (modoMenu == ANIMACIONAUTOMATICA){
-      tren->modificarGradosLibertadHumo(1);
-      tren->modificarGradosLibertadConectores(1);
-      tren->modificarGradosLibertadRuedas(1);
-      tren->modificarGradosLibertadVagones(1);
+      tren->modificarGradosLibertadVagon4Automatico(1);
+      tren->modificarGradosLibertadVagon3Automatico(1);
+      tren->modificarGradosLibertadVagon2Automatico(1);
+      //tren->modificarGradosLibertadVagon1Automatico(1);
+      tren->modificarGradosLibertadHumoAutomatico(1);
    }
-}*/
+}

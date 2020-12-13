@@ -23,6 +23,7 @@ class Vagon : public Malla3D
         void draw(modo_dibujado modo, bool ajedrez, bool tapas);
         void modificarGradosLibertadRuedasManual(float valor);
         void modificarGradosLibertadVagon(float valor);
+        void modificarGradosLibertadRuedasAutomatico(float valor);
 };
 
 #endif

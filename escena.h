@@ -24,7 +24,7 @@ typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_selecciona
 typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS,ILUMINACION} modo_visualizacion;
 typedef enum {ALPHA,BETA} variacion_luz_direccional;
 typedef enum {SUAVE,PLANO} modo_sombreado;
-typedef enum {HUMO,RUEDAS,CONECTORES,VAGONES} objeto_a_animar;
+typedef enum {HUMO,RUEDAS,VAGON1,VAGON2,VAGON3,VAGON4} objeto_a_animar;
 
 class Escena
 {

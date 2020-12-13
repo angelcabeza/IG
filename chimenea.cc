@@ -20,6 +20,10 @@ void Chimenea::draw(modo_dibujado modo, bool ajedrez,bool tapas){
     glPopMatrix();
 }
 
-void Chimenea::modificarGradosLibertadHumo(float valor){
-    humo->modificarGradosLibertadHumo(valor);
+void Chimenea::modificarGradosLibertadHumoAutomatico(float valor){
+    humo->modificarGradosLibertadHumoAutomatico(valor);
+}
+
+void Chimenea::modificarGradosLibertadHumoManual(float valor){
+    humo->modificarGradosLibertadHumoManual(valor);
 }

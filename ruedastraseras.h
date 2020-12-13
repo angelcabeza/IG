@@ -1,13 +1,13 @@
-#ifndef RUEDASTRASERAS_H_INLCUDED
+#ifndef RUEDASTRASERAS_H_INCLUDED
 #define RUEDASTRASERAS_H_INCLUDED
 
 #include "malla.h"
-#include "esfera.h"
+#include "cilindro.h"
 
-class RuedasTraseras : public Malla3D{
+class RuedasTraseras : public Malla3D {
     private:
-        Esfera * rueda1 = nullptr;
-        Esfera * rueda2 = nullptr;
+        Cilindro * rueda1 = nullptr;
+        Cilindro * rueda2 = nullptr;
         float grados_rotacion;
     public:
         RuedasTraseras();

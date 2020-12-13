@@ -11,10 +11,15 @@ class DosVagonesConectados : public Malla3D{
         Vagon * vagon2 = nullptr;
         ConectorVagones * conectorvagones = nullptr;
         float grados_libertad;
+        bool maximo_giro;
+        bool minimo_giro;
     public:
         DosVagonesConectados();
         void draw (modo_dibujado modo, bool ajedrez, bool tapas);
-        void modificarGradosLibertadVagonesManual(float valor);
+        void modificarGradosLibertadVagon4Manual(float valor);
+        void modificarGradosLibertadRuedasManual(float valor);
+        void modificarGradosLibertadRuedasAutomatico(float valor);
+        void modificarGradosLibertadVagon4Automatico(float valor);
 };
 
 #endif

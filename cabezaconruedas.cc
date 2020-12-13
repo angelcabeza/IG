@@ -2,10 +2,8 @@
 
 CabezaConRuedas::CabezaConRuedas(){
     cabeza = new CabezaSinRuedas();
-    rueda_delantera1 = new Rueda();
-    rueda_delantera2 = new Rueda();
-    rueda_trasera1 = new Rueda();
-    rueda_trasera2 = new Rueda();
+    ruedasdelanteras = new RuedasDelanteras();
+    ruedastraseras = new RuedasTraseras();
     maximo_giro = false;
     minimo_giro = false;
     grados_libertad_vagon = 0;
@@ -34,13 +32,13 @@ void CabezaConRuedas::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPopMatrix();
 }
 
-void CabezaConRuedas::modificarGradosLibertadHumo(float valor){
-    cabeza->modificarGradosLibertadHumo(valor);
+void CabezaConRuedas::modificarGradosLibertadHumoAutomatico(float valor){
+    cabeza->modificarGradosLibertadHumoAutomatico(valor);
 }
 
 void CabezaConRuedas::modificarGradosLibertadRuedasManual(float valor){
     ruedasdelanteras->modificarGradosLibertadRuedasManual(valor);
-    ruedastraseras->modificarGradosLibertadRuedasManual(valor)
+    ruedastraseras->modificarGradosLibertadRuedasManual(valor);
 }
 
 void CabezaConRuedas::modificarGradosLibertadVagon(float valor){
@@ -58,4 +56,13 @@ void CabezaConRuedas::modificarGradosLibertadVagon(float valor){
         maximo_giro = false;
         minimo_giro = true;
     }
+}
+
+void CabezaConRuedas::modificarGradosLibertadHumoManual(float valor){
+    cabeza->modificarGradosLibertadHumoManual(valor);
+}
+
+void CabezaConRuedas::modificarGradosLibertadRuedasAutomatico(float valor){
+    ruedasdelanteras->modificarGradosLibertadRuedasManual(valor);
+    ruedastraseras->modificarGradosLibertadRuedasManual(valor);
 }

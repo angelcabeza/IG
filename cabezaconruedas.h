@@ -21,9 +21,12 @@ class CabezaConRuedas : public Malla3D{
     public:
         CabezaConRuedas();
         void draw(modo_dibujado modo, bool ajedrez,bool tapas);
-        void modificarGradosLibertadHumo(float valor);
+        void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadRuedasManual(float valor);
         void modificarGradosLibertadVagon(float valor);
+        void modificarGradosLibertadHumoManual(float valor);
+        void modificarGradosLibertadRuedasAutomatico(float valor);
+
 };
 
 #endif

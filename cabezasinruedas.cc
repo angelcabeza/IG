@@ -23,6 +23,10 @@ void CabezaSinRuedas::draw(modo_dibujado modo, bool ajedrez,bool tapas){
     glPopMatrix();
 }
 
-void CabezaSinRuedas::modificarGradosLibertadHumo(float valor){
-    chimenea->modificarGradosLibertadHumo(valor);
+void CabezaSinRuedas::modificarGradosLibertadHumoAutomatico(float valor){
+    chimenea->modificarGradosLibertadHumoAutomatico(valor);
+}
+
+void CabezaSinRuedas::modificarGradosLibertadHumoManual(float valor){
+    chimenea->modificarGradosLibertadHumoManual(valor);
 }

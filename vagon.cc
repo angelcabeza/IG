@@ -55,3 +55,8 @@ void Vagon::modificarGradosLibertadVagon(float valor){
         minimo_giro = true;
     }
 }
+
+void Vagon::modificarGradosLibertadRuedasAutomatico(float valor){
+    ruedasdelanteras->modificarGradosLibertadRuedasManual(valor);
+    ruedastraseras->modificarGradosLibertadRuedasManual(valor);
+}

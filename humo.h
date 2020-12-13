@@ -15,7 +15,7 @@ class Humo : public Malla3D{
         Humo();
 
         void draw(modo_dibujado modo, bool ajedrez,bool tapas);
-        void modificarGradosLibertadHumo(float valor);
+        void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadHumoManual(float valor);
 };
 

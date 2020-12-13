@@ -16,8 +16,9 @@ class CabezaSinRuedas : public Malla3D{
     public:
         CabezaSinRuedas();
         void draw(modo_dibujado modo, bool ajedrez,bool tapas);
-        void modificarGradosLibertadHumo(float valor);
+        void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadVagon(float valor);
+        void modificarGradosLibertadHumoManual(float valor);
 };
 
 #endif

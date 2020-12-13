@@ -3,12 +3,12 @@
 
 
 #include "malla.h"
-#include "esfera.h"
+#include "cilindro.h"
 
 class RuedasDelanteras : public Malla3D{
     private:
-        Esfera * rueda1 = nullptr;
-        Esfera * rueda2 = nullptr;
+        Cilindro * rueda1 = nullptr;
+        Cilindro * rueda2 = nullptr;
         float grados_rotacion;
 
     public:

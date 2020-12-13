@@ -19,7 +19,7 @@ void Humo::draw(modo_dibujado modo, bool ajedrez,bool tapas){
     glPopMatrix();
 }
 
-void Humo::modificarGradosLibertadHumo(float valor){
+void Humo::modificarGradosLibertadHumoAutomatico(float valor){
 
     if ( (maxima_altura && valor > 0) || (minima_altura && valor < 0)){
         valor = -valor;
