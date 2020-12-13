@@ -3,6 +3,7 @@
 
 #include "malla.h"
 #include "cilindro.h"
+#include "esfera.h"
 
 class ConectorVagones : public Malla3D
 {
@@ -11,6 +12,8 @@ class ConectorVagones : public Malla3D
         bool minimo_giro;
         float grados_libertad_conector;
         Cilindro * cilindro = nullptr;
+        Esfera * esferaExtrIzq = nullptr;
+        Esfera * esferaExtDcha = nullptr;
 
     public:
         ConectorVagones();

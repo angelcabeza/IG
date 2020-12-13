@@ -34,16 +34,16 @@ Escena::Escena()
    /////////////////////////////////////////////////////////////////////
 
     //Declaro y aplico materiales
-    //Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
-    //Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
-    //Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
-    //Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
+    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
+    Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
+    Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
+    Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
 
-    //peon_blanco->setMaterial(material_difuso);
-    //peon_negro->setMaterial(material_especular);
-    //cono->setMaterial(material_esmeralda);
-    //cilindro->setMaterial(material_anaranjado);*/
-    //prisma->setMaterial(material_anaranjado);
+    peon_blanco->setMaterial(material_difuso);
+    peon_negro->setMaterial(material_especular);
+    cono->setMaterial(material_esmeralda);
+    cilindro->setMaterial(material_anaranjado);
+    prisma->setMaterial(material_anaranjado);
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
@@ -188,8 +188,8 @@ void Escena::dibujar()
          luz2->desactivar();
    }
 
-   /* ESTO ES EL ESCENARIO PARA LA P3
-   glPushMatrix();
+   // ESTO ES EL ESCENARIO PARA LA P3
+   /*glPushMatrix();
      glTranslatef(-100,1,1);
       glScalef(50,50,50);
 
@@ -213,9 +213,7 @@ void Escena::dibujar()
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();*/
 
-   //tren->draw(modo_dibujado_escogido,ajedrez,tapas);
-
-   tren->draw(modo_dibujado_escogido,ajedrez,tapas);
+   vagon->draw(modo_dibujado_escogido,ajedrez,tapas);
 }
 
 //**************************************************************************
@@ -445,7 +443,8 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          case 'A'  :
 
-            modoMenu = ANIMACIONAUTOMATICA;
+            if (modoMenu != SELVISUALIZACION)
+               modoMenu = ANIMACIONAUTOMATICA;
 
             if (modoMenu == SELVISUALIZACION){
                if (modo_visualizacion_escogido != AJEDREZ && modo_visualizacion_escogido != ILUMINACION){
@@ -457,6 +456,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
             if(modo_visualizacion_escogido == ILUMINACION){
                variacion_direccional = ALPHA;
+               cout << "Ha escogido variar la componente alpha de la luz direccional" << endl;
             }
 
           break;
@@ -472,6 +472,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          case 'B' :
             if (modo_visualizacion_escogido == ILUMINACION){
                variacion_direccional = BETA;
+               cout << "Va a variar la componente beta de la luz direccional" << endl;
             }
          break;
 
@@ -505,7 +506,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
 
          break;
 
-         case '+' :
+         /*case '+' :
             if (modoMenu == ANIMACIONMANUAL){
                if (objeto == HUMO)
                   tren->modificarGradosLibertadHumo(10);
@@ -530,7 +531,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                else if (objeto == VAGONES)
                   tren->modificarGradosLibertadVagones(10);
             }
-         break;
+         break;*/
    }
    return salir;
 }
@@ -604,11 +605,11 @@ void Escena::change_observer()
    glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
 }
 
-void Escena::animar(){
+/*void Escena::animar(){
    if (modoMenu == ANIMACIONAUTOMATICA){
       tren->modificarGradosLibertadHumo(1);
       tren->modificarGradosLibertadConectores(1);
       tren->modificarGradosLibertadRuedas(1);
       tren->modificarGradosLibertadVagones(1);
    }
-}
+}*/

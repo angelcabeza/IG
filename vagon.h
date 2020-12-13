@@ -3,7 +3,9 @@
 
 #include "malla.h"
 #include "prisma.h"
-#include "rueda.h"
+#include "ruedasdelanteras.h"
+#include "ruedastraseras.h"
+#include "esfera.h"
 
 class Vagon : public Malla3D
 {
@@ -11,16 +13,15 @@ class Vagon : public Malla3D
         bool maximo_giro;
         bool minimo_giro;
         Prisma * prisma = nullptr;
-        Rueda * rueda_delantera1 = nullptr;
-        Rueda * rueda_delantera2 = nullptr;
-        Rueda * rueda_trasera1 = nullptr;
-        Rueda * rueda_trasera2 = nullptr;
+        RuedasDelanteras * ruedasdelanteras = nullptr;
+        RuedasTraseras * ruedastraseras = nullptr;
         float grados_libertad_vagon;
+        Esfera * bisagra = nullptr;
 
     public:
         Vagon();
         void draw(modo_dibujado modo, bool ajedrez, bool tapas);
-        void modificarGradosLibertadRuedas(float valor);
+        void modificarGradosLibertadRuedasManual(float valor);
         void modificarGradosLibertadVagon(float valor);
 };
 
