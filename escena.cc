@@ -630,10 +630,9 @@ void Escena::change_observer()
 
 void Escena::animar(){
    if (modoMenu == ANIMACIONAUTOMATICA){
-      tren->modificarGradosLibertadVagon4Automatico(1);
-      tren->modificarGradosLibertadVagon3Automatico(1);
-      tren->modificarGradosLibertadVagon2Automatico(1);
-      //tren->modificarGradosLibertadVagon1Automatico(1);
-      tren->modificarGradosLibertadHumoAutomatico(1);
+      tren->modificarGradosLibertadVagon4Automatico(0.3);
+      tren->modificarGradosLibertadVagon3Automatico(0.3);
+      tren->modificarGradosLibertadVagon2Automatico(0.3);
+      tren->modificarGradosLibertadHumoAutomatico(0.3);
    }
 }

@@ -4,7 +4,7 @@ Vagon::Vagon(){
     prisma = new Prisma();
     ruedasdelanteras = new RuedasDelanteras();
     ruedastraseras = new RuedasTraseras();
-    bisagra = new Esfera(100,100,10);
+    bisagra = new Esfera(10,100,10);
     grados_libertad_vagon = 0;
     maximo_giro = false;
     minimo_giro = true;

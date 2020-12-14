@@ -3,7 +3,7 @@
 ConectorVagones::ConectorVagones(){
     grados_libertad_conector = 0;
     cilindro = new Cilindro (100,100,20,10);
-    esferaExtDcha = new Esfera (100,100,10);
+    esferaExtDcha = new Esfera (10,100,10);
     minimo_giro = false;
     maximo_giro = false;
 
