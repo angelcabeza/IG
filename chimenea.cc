@@ -4,9 +4,9 @@ Chimenea::Chimenea(){
     humo = new Humo();
     base_chimenea = new Cilindro(100,100,20,10);
 
-    Material material = Material({0.3,0.3,0.3,1.0},{0.3,0.3,0.3,1.0},{0.3,0.3,0.3,1.0},128);
+    Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
 
-    base_chimenea->setMaterial(material);
+    base_chimenea->setMaterial(silver);
 }
 
 void Chimenea::draw(modo_dibujado modo, bool ajedrez,bool tapas){

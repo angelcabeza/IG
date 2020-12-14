@@ -7,8 +7,9 @@ ConectorVagones::ConectorVagones(){
     minimo_giro = false;
     maximo_giro = false;
 
-    Material material = Material ({1.0,1.0,1.0,1.0},{1.0,1.0,1.0,1.0},{1.0,1.0,1.0,1.0},128);
-    cilindro->setMaterial(material);
+    Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
+    cilindro->setMaterial(silver);
+    esferaExtDcha->setMaterial(silver);
 }
 
 void ConectorVagones::draw(modo_dibujado modo, bool ajedrez, bool tapas){

@@ -9,8 +9,10 @@ Vagon::Vagon(){
     maximo_giro = false;
     minimo_giro = true;
 
-    Material material = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
-    prisma->setMaterial(material);
+    Material bronce = Material ({0.7038, 0.27048,0.0828, 1}, {0.256777, 0.137622,0.086014, 1},{0.019125, 0.0735, 0.0225, 1}, 12.8);
+    Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
+    prisma->setMaterial(bronce);
+    bisagra->setMaterial(silver);
 }
 
 void Vagon::draw(modo_dibujado modo, bool ajedrez, bool tapas){

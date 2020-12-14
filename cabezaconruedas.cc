@@ -8,6 +8,9 @@ CabezaConRuedas::CabezaConRuedas(){
     minimo_giro = false;
     grados_libertad_vagon = 0;
     bisagra = new Esfera(100,100,10);
+
+    Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
+    bisagra->setMaterial(silver);
 }
 
 void CabezaConRuedas::draw(modo_dibujado modo, bool ajedrez, bool tapas){
