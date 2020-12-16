@@ -24,6 +24,9 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
    crearMalla(perfil,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
    inicializarNormalesCaras();
+   for (int i = 0; i < v.size(); i++){
+      std::cout << v[i] << std::endl;
+   }
    inicializarNormalesVertices();
    calcularCoordTexturas();
 }
@@ -71,6 +74,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    }
 
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE VÉRTICES
+   num_instancias++;
    inicializarVertices(num_instancias,perfil_original,eje_rotacion);
 
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE CARAS (TRIANGULOS)
@@ -340,16 +344,21 @@ void ObjRevolucion::inicializarVertices(int num_instancias_perfil, std::vector<T
    for (int i = 0; i < num_instancias_perfil; i++){
       for (int j = 0; j < perfil.size(); j++){
 
-         if (eje_rotacion == 0){                                                     // ROTAMOS EJE X
-            v_aux = RotarEjeX(v_aux,num_instancias_perfil,perfil,i,j);
-            std::cout << "Eje rotacion = " << eje_rotacion << std::endl;
+         if (i == (num_instancias)){
+            v.push_back(v[j]);
+            std::cout << "AÑADO: " << v[perfil.size()-1-j] << std::endl; 
          }
-         else if (eje_rotacion == 1)                                                // ROTAMOS EJE Y
-            v_aux = RotarEjeY(v_aux,num_instancias_perfil,perfil,i,j);
-         else                                                                       // ROTAMOS EJE Z
-            v_aux = RotarEjeZ(v_aux,num_instancias_perfil,perfil,i,j);
-
-         v.push_back(v_aux);
+         else{
+            if (eje_rotacion == 0){                                                     // ROTAMOS EJE X
+               v_aux = RotarEjeX(v_aux,num_instancias_perfil,perfil,i,j);
+               std::cout << "Eje rotacion = " << eje_rotacion << std::endl;
+            }
+            else if (eje_rotacion == 1)                                                // ROTAMOS EJE Y
+               v_aux = RotarEjeY(v_aux,num_instancias_perfil,perfil,i,j);
+            else                                                                       // ROTAMOS EJE Z
+               v_aux = RotarEjeZ(v_aux,num_instancias_perfil,perfil,i,j);
+            v.push_back(v_aux);
+         }
       }
    }
 }
@@ -402,7 +411,7 @@ void ObjRevolucion::calcularCoordTexturas(){
 
    for (float i = 0; i < num_instancias ; i++){
       for (float j = 0; j < perfil.size(); j++){
-         s = i / (num_instancias -1);
+         s = i / (num_instancias -1 );
          t = distancias[j] / distancias[perfil.size()-1];
          aux.push_back({s,t});
       }

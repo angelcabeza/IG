@@ -27,7 +27,7 @@ Escena::Escena()
     cubo = new Cubo(100);
     cono = new Cono (100,100,40,40);*/
     //cilindro = new Cilindro(100,100,50,50);
-    peon_negro= new ObjRevolucion("plys/lata-pcue.ply",100,true,true);
+    peon_negro= new ObjRevolucion("plys/lata-pcue.ply",10,true,true);
     Textura tex("texturas/text-lata-1.jpg");
     //esfera = new Esfera(100,100,10);
     peon_negro->setTextura(tex);

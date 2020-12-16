@@ -197,7 +197,8 @@ void Malla3D::inicializarNormalesCaras(){
       //std::cout << "Llamo a nomralized en normalesCaras" << std::endl;
       //std::cout << "x: " << vector_perpendicular[0] << "\ny: " << vector_perpendicular[1] << "\nz: " << vector_perpendicular[2] << std::endl << std::endl;
       //std::cout << "ERROR OCURRE EN LA CARA: " << i << std::endl;
-      vector_normal = vector_perpendicular.normalized();
+      if (vector_perpendicular.lengthSq() > 0)
+         vector_normal = vector_perpendicular.normalized();
 
       nf.push_back(vector_normal);
    }
@@ -211,8 +212,11 @@ void Malla3D::inicializarNormalesVertices(){
       nv[f[i](1)] = (nv[f[i](1)] + nf[i]);
       nv[f[i](2)] = (nv[f[i](2)] + nf[i]);
 
-      nv[f[i](0)].normalized();
-      nv[f[i](1)].normalized();
+      if (nv[f[i](0)].lengthSq() > 0)
+         nv[f[i](0)].normalized();
+
+      if (nv[f[i](1)].lengthSq() > 0)
+         nv[f[i](1)].normalized();
 
       if (nv[f[i](2)].lengthSq() > 0)
          nv[f[i](2)].normalized();
