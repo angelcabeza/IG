@@ -98,7 +98,3 @@ Cubo::Cubo(float lado)
 Tupla4f Cubo::getMaterial(){
    return m.getDifuso();
 }
-
-
-
-

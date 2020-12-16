@@ -27,7 +27,7 @@ void Humo::modificarGradosLibertadHumoAutomatico(float valor){
 
     grados_libertad_humo += valor;
 
-    if (grados_libertad_humo == 0){
+    if (grados_libertad_humo <= 0){
         maxima_altura = false;
         minima_altura = true;
     }

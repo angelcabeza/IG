@@ -12,6 +12,7 @@
 
 #include "aux.h"
 #include "material.h"
+#include "textura.h"
 
 // *****************************************************************************
 //
@@ -32,6 +33,7 @@ class Malla3D
    void draw_ModoDiferido();
 
    void setMaterial (const Material & mat);
+   void setTextura(const Textura & tex);
 
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
@@ -47,6 +49,7 @@ class Malla3D
    void inicializarNormalesCaras();
 
    Material  m;
+   Textura * textura = nullptr;
          
    GLuint id_vbo_ver = 0;
    GLuint id_vbo_tri = 0;
@@ -61,6 +64,7 @@ class Malla3D
    std::vector<Tupla3i> caras_pares,caras_impares; // tabla de triángulos necesarias para pintar en modo ajedrez
    std::vector<Tupla3f> color_ajedrez_pares,color_ajedrez_impares;          // tabla de colores para el ajedrez
    std::vector<Tupla3f> color;                                              // tabla de colores para la figura
+   std::vector<Tupla2f> ct;                                                 // tabla de coordenadas de textura
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

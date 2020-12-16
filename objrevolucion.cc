@@ -20,12 +20,12 @@ ObjRevolucion::ObjRevolucion(){}
 ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, int eje_rotacion){
 
    this->num_instancias = num_instancias;
-   std::vector<Tupla3f> perfil_original;
-   ply::read_vertices(archivo,perfil_original);
-   crearMalla(perfil_original,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
+   ply::read_vertices(archivo,perfil);
+   crearMalla(perfil,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
    inicializarNormalesCaras();
    inicializarNormalesVertices();
+   calcularCoordTexturas();
 }
 
 // *****************************************************************************
@@ -34,10 +34,12 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
  
 ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf,int eje_rotacion) {
    this->num_instancias = num_instancias;
+   perfil = archivo;
    crearMalla(archivo,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
    inicializarColores();
    inicializarNormalesCaras();
    inicializarNormalesVertices();
+   calcularCoordTexturas();
 }
 
 void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_sup, bool tapa_inf, int eje_rotacion) {
@@ -129,6 +131,14 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
       m.aplicar();
    }
 
+   if (!ct.empty()){
+      glEnableClientState ( GL_TEXTURE_COORD_ARRAY);
+      glTexCoordPointer ( 2, GL_FLOAT, 0, ct.data());
+      //std::cout << "Voy a activar las texturas" << std::endl;
+      textura->activar();
+      //std::cout << "he activado la textura" << std::endl;
+   }
+
    if (ajedrez){
       if (!glIsEnabled(GL_LIGHTING))
          glColorPointer(3,GL_FLOAT,0,color_ajedrez_pares.data());
@@ -146,10 +156,15 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
       // visualizar, indicando tipo de primitiva, número de índices,
       // tipo de los índices y dirección de la tabla de índices
 
-      if (tapas)
+      if (tapas){
+         //std::cout << "Core al llamar a gl drawelements" << std::endl;
          glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
-      else
+         //std::cout << "Core al llamar a gl drawelements" << std::endl;
+      }else{
          glDrawElements (GL_TRIANGLES, (f.size()-2*num_instancias)*3, GL_UNSIGNED_INT, f.data());
+      }
+
+      //std::cout << "Core al llamar a gl drawelements" << std::endl;
    }
 
    //deshabilitar array de vértices
@@ -158,6 +173,11 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
 
    if (!glIsEnabled(GL_LIGHTING))
       glDisableClientState ( GL_NORMAL_ARRAY);
+
+   if(!ct.empty()){
+      glDisableClientState ( GL_TEXTURE_COORD_ARRAY);
+      glDisable(GL_TEXTURE_2D);
+   }
 
 }
 
@@ -299,7 +319,7 @@ Tupla3f ObjRevolucion::RotarEjeZ(Tupla3f vector, int num_instancias, std::vector
 void ObjRevolucion::inicializarColores(){
    Tupla3f c_rojo = {1.0,0.0,0.0};
    Tupla3f c_verde = {0.0,1.0,0.0};
-   Tupla3f c_naranja = {0.9,0.2,0.07};
+   Tupla3f c_naranja = {1.0,1.0,1.0};
 
    for (int i = 0; i < 3*f.size()/2; i++){
          color_ajedrez_pares.push_back(c_rojo);
@@ -362,4 +382,36 @@ int ObjRevolucion::getNumInstancias(){
 
 Tupla4f ObjRevolucion::getMaterial(){
    return m.getDifuso();
+}
+
+void ObjRevolucion::calcularCoordTexturas(){
+   float alpha, beta, h;
+
+	float s, t;
+   std::vector<float> distancias;
+   distancias.push_back(0);
+
+   //M = num_vertices_perfil
+   // N = num_instancias
+
+   for (int i = 1; i <= perfil.size(); i++){
+      distancias.push_back(distancias[i-1] + distanciasEntrePuntos(v[i-1],v[i]));
+   }
+
+   for (int i = 0; i < v.size(); i++){
+      for (int j = 0; j < perfil.size(); j++){
+         s = i / num_instancias -1;
+         t = distancias[i-1] / distancias[perfil.size()-1];
+         ct.push_back({s,t});
+      }
+   }
+}
+
+
+float ObjRevolucion::distanciasEntrePuntos(Tupla3f anterior, Tupla3f actual){
+   float x = pow(anterior(0)-actual(0),2);
+   float y = pow(anterior(1)-actual(1),2);
+   float z = pow(anterior(2)-actual(2),2);
+
+   return sqrt(x+y+z);
 }

@@ -21,20 +21,19 @@ Escena::Escena()
 
    // OBJETOS EN LA ESCENA
     iluminacion = false;
-    peon_blanco = new ObjRevolucion("plys/peon.ply",100,true,true);
-    peon_negro= new ObjRevolucion("plys/peon.ply",100,true,true);
+    /*peon_blanco = new ObjRevolucion("plys/peon.ply",100,true,true);
     esfera = new Esfera(100,100,1);
     esfera_luz2 = new Esfera(100,100,1);
     cubo = new Cubo(100);
-    cono = new Cono (100,100,40,40);
-    cilindro = new Cilindro(100,100,50,50);
-    prisma = new Prisma();
-    cilindro_tumbado = new Cilindro(100,100,20,10);
-    tren = new Tren();
+    cono = new Cono (100,100,40,40);*/
+    //cilindro = new Cilindro(100,100,50,50);
+    peon_negro= new ObjRevolucion("plys/lata-pcue.ply",100,true,true);
+    Textura tex("texturas/text-lata-1.jpg");
+    peon_negro->setTextura(tex);
    /////////////////////////////////////////////////////////////////////
 
     //Declaro y aplico materiales
-    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
+    /*Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
     Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
     Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
     Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
@@ -43,7 +42,7 @@ Escena::Escena()
     peon_negro->setMaterial(material_especular);
     cono->setMaterial(material_esmeralda);
     cilindro->setMaterial(material_anaranjado);
-    prisma->setMaterial(material_anaranjado);
+    prisma->setMaterial(material_anaranjado);*/
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
@@ -129,6 +128,7 @@ void Escena::dibujar()
          break;
    }
    
+   glEnable(GL_TEXTURE_2D);
 
    if (iluminacion){
       glEnable(GL_NORMALIZE);
@@ -213,7 +213,9 @@ void Escena::dibujar()
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();*/
 
-   tren->draw(modo_dibujado_escogido,ajedrez,tapas);
+   //std::cout << "voy a dibujar" << std::endl;
+   glScalef(100,100,100);
+   peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
 }
 
 //**************************************************************************

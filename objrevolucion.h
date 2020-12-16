@@ -40,8 +40,11 @@ private:
     void inicializarColores();
     void inicializarVertices(int num_instancias_perfil, std::vector<Tupla3f> & perfil, int eje_rotacion=1);
     void inicializarCaras(int num_instancias_perfil, std::vector<Tupla3f> & perfil);
+    float distanciasEntrePuntos(Tupla3f anterior, Tupla3f actual);
 protected:
+    std::vector<Tupla3f> perfil;
     int num_instancias;
+    void calcularCoordTexturas();
     void crearMalla(std::vector<Tupla3f> perfil_original, int num_instancias,bool tapa_inf, bool tapa_sup,int eje_rotacion=1);
 public:
     int getNumInstancias();

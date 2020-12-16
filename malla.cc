@@ -37,13 +37,19 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
    glVertexPointer( 3, GL_FLOAT, 0, v.data() );
 
    // habilitar uso de un array de colores
-   if (!glIsEnabled(GL_LIGHTING)){
+   if (!glIsEnabled(GL_LIGHTING) ){
       glEnableClientState ( GL_COLOR_ARRAY);
    }
    else{
       glEnableClientState( GL_NORMAL_ARRAY);
       glNormalPointer(GL_FLOAT,0,nv.data());
       m.aplicar();
+   }
+
+   if (!ct.empty()){
+      glEnableClientState ( GL_TEXTURE_COORD_ARRAY);
+      glTexCoordPointer ( 2, GL_FLOAT, 0, ct.data());
+      textura->activar();
    }
 
    if (ajedrez){
@@ -68,6 +74,11 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
 
    if (glIsEnabled(GL_LIGHTING))
       glDisableClientState(GL_NORMAL_ARRAY);
+
+   if(!ct.empty()){
+      glDisableClientState ( GL_TEXTURE_COORD_ARRAY);
+      glDisable(GL_TEXTURE_2D);
+   }
 
 }
 
@@ -207,4 +218,8 @@ void Malla3D::inicializarNormalesVertices(){
          nv[f[i](2)].normalized();
 
    }
+}
+
+void Malla3D::setTextura(const Textura & text){
+   this->textura = new Textura(text);
 }
