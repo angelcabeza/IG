@@ -3,7 +3,6 @@
 
 Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const float radio){
     this->num_instancias = num_instancias_perf;
-    std::vector<Tupla3f> perfil;
 
     Tupla3f vert_sup_esfera = {0,radio,0};
     Tupla3f vertice;
@@ -27,12 +26,13 @@ Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const fl
     crearMalla(perfil,num_instancias_perf,true,true);
 
     inicializarColores();
+    calcularCoordTexturas();
 }
 
 void Esfera::inicializarColores(){
     Tupla3f c_rojo = {1.0,0.0,0.0};
     Tupla3f c_verde = {0.0,1.0,0.0};
-    Tupla3f c_naranja = {0.9,0.2,0.07};
+    Tupla3f c_naranja = {1,1,1};
 
     for (int i = 0; i < 3*f.size()/2; i++){
             color_ajedrez_pares.push_back(c_rojo);

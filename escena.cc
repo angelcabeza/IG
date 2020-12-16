@@ -29,6 +29,7 @@ Escena::Escena()
     //cilindro = new Cilindro(100,100,50,50);
     peon_negro= new ObjRevolucion("plys/lata-pcue.ply",100,true,true);
     Textura tex("texturas/text-lata-1.jpg");
+    //esfera = new Esfera(100,100,10);
     peon_negro->setTextura(tex);
    /////////////////////////////////////////////////////////////////////
 
@@ -213,7 +214,6 @@ void Escena::dibujar()
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();*/
 
-   //std::cout << "voy a dibujar" << std::endl;
    glScalef(100,100,100);
    peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
 }

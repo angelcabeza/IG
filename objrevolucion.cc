@@ -389,22 +389,28 @@ void ObjRevolucion::calcularCoordTexturas(){
 
 	float s, t;
    std::vector<float> distancias;
+   std::vector<Tupla2f> aux;
+   distancias.resize(perfil.size()+1);
    distancias.push_back(0);
 
    //M = num_vertices_perfil
    // N = num_instancias
 
    for (int i = 1; i <= perfil.size(); i++){
-      distancias.push_back(distancias[i-1] + distanciasEntrePuntos(v[i-1],v[i]));
+      distancias[i] = distancias[i-1] + distanciasEntrePuntos(perfil[i-1], perfil[i]);
    }
 
-   for (int i = 0; i < v.size(); i++){
-      for (int j = 0; j < perfil.size(); j++){
-         s = i / num_instancias -1;
-         t = distancias[i-1] / distancias[perfil.size()-1];
-         ct.push_back({s,t});
+   for (float i = 0; i < num_instancias ; i++){
+      for (float j = 0; j < perfil.size(); j++){
+         s = i / (num_instancias -1);
+         t = distancias[j] / distancias[perfil.size()-1];
+         aux.push_back({s,t});
       }
    }
+
+   for (int i = aux.size(); i > 0; i--)
+      ct.push_back(aux[i]);
+
 }
 
 
