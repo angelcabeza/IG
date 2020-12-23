@@ -16,22 +16,17 @@ CabezaConRuedas::CabezaConRuedas(){
 void CabezaConRuedas::draw(modo_dibujado modo, bool ajedrez, bool tapas){
 
     glPushMatrix();
-        glRotatef(grados_libertad_vagon,0,1,0);
         cabeza->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();
+        glTranslatef(-45,0,0);
         ruedasdelanteras->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();
+        glTranslatef(-45,0,0);
         ruedastraseras->draw(modo,ajedrez,tapas);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(0,20,0);
-        glScalef(1,0.755,1);
-        bisagra->draw(modo,ajedrez,tapas);
     glPopMatrix();
 }
 

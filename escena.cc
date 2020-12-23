@@ -21,16 +21,11 @@ Escena::Escena()
 
    // OBJETOS EN LA ESCENA
     iluminacion = false;
-    /*peon_blanco = new ObjRevolucion("plys/peon.ply",100,true,true);
-    esfera = new Esfera(100,100,1);
-    esfera_luz2 = new Esfera(100,100,1);
-    cubo = new Cubo(100);
-    cono = new Cono (100,100,40,40);*/
-    //cilindro = new Cilindro(100,100,50,50);
-    peon_negro= new ObjRevolucion("plys/lata-pcue.ply",10,true,true);
-    Textura tex("texturas/text-lata-1.jpg");
-    //esfera = new Esfera(100,100,10);
-    peon_negro->setTextura(tex);
+    tren = new Tren();
+    cuadro = new Cuadro();
+    peon_negro = new ObjRevolucion("plys/lata-pcue.ply",100);
+    Textura text = Textura("texturas/text-lata-1.jpg");
+    peon_negro->setTextura(text);
    /////////////////////////////////////////////////////////////////////
 
     //Declaro y aplico materiales
@@ -141,21 +136,6 @@ void Escena::dibujar()
          glShadeModel (GL_FLAT);
    }
 
-      if(activar_luz1){
-      glPushMatrix();
-         glTranslatef(20,100,-300);
-         glScalef(4,4,4);
-         esfera->draw(modo_dibujado_escogido,ajedrez,true);
-      glPopMatrix();
-   }
-
-   if (activar_luz2){
-      glPushMatrix();
-         glTranslatef(30,30,70);
-         glScalef(4,4,4);
-         esfera_luz2->draw(modo_dibujado_escogido,ajedrez,true);
-      glPopMatrix();
-   }
 
    if(activar_luz0){
       glPushMatrix();
@@ -214,8 +194,14 @@ void Escena::dibujar()
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();*/
 
-   glScalef(100,100,100);
-   peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   //glScalef(100,100,100);
+   cuadro->draw(modo_dibujado_escogido,ajedrez);
+
+   glPushMatrix();
+      glTranslatef(-60,0,0);
+      glScalef(50,50,50);
+      peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
 }
 
 //**************************************************************************
@@ -636,5 +622,6 @@ void Escena::animar(){
       tren->modificarGradosLibertadVagon3Automatico(0.3);
       tren->modificarGradosLibertadVagon2Automatico(0.3);
       tren->modificarGradosLibertadHumoAutomatico(0.3);
+      tren->modificarGradosLibertadRuedasAutomatico(0.3);
    }
 }

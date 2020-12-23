@@ -33,7 +33,7 @@ class Malla3D
    void draw_ModoDiferido();
 
    void setMaterial (const Material & mat);
-   void setTextura(const Textura & tex);
+   void setTextura(const Textura & text);
 
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 

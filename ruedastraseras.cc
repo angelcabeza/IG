@@ -13,7 +13,7 @@ RuedasTraseras::RuedasTraseras(){
 
 void RuedasTraseras::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPushMatrix();
-        glTranslatef(-25,0,5);
+        glTranslatef(105,0,5);
         glRotatef(grados_rotacion,0,0,1);
         glRotatef(90,1,0,0);
         glScalef(1,0.5,1);
@@ -21,7 +21,7 @@ void RuedasTraseras::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-25,0,-15);
+        glTranslatef(105,0,-15);
         glRotatef(grados_rotacion,0,0,1);
         glRotatef(90,1,0,0);
         glScalef(1,0.5,1);

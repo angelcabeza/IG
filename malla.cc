@@ -46,7 +46,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
       m.aplicar();
    }
 
-   if (!ct.empty()){
+    if (!ct.empty()){
       glEnableClientState ( GL_TEXTURE_COORD_ARRAY);
       glTexCoordPointer ( 2, GL_FLOAT, 0, ct.data());
       textura->activar();

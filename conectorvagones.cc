@@ -4,12 +4,14 @@ ConectorVagones::ConectorVagones(){
     grados_libertad_conector = 0;
     cilindro = new Cilindro (100,100,20,10);
     esferaExtDcha = new Esfera (10,100,10);
+    esferaExtrIzq = new Esfera (10,100,10);
     minimo_giro = false;
     maximo_giro = false;
 
     Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
     cilindro->setMaterial(silver);
     esferaExtDcha->setMaterial(silver);
+    esferaExtrIzq->setMaterial(silver);
 }
 
 void ConectorVagones::draw(modo_dibujado modo, bool ajedrez, bool tapas){
@@ -23,6 +25,12 @@ void ConectorVagones::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPushMatrix();
         glScalef(1,0.75,1);
         esferaExtDcha->draw(modo,ajedrez,tapas);
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslatef(-45,0,0);
+        glScalef(1,0.75,1);
+        esferaExtrIzq->draw(modo,ajedrez,tapas);
     glPopMatrix();
 }
 

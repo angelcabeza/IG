@@ -13,12 +13,12 @@ CabezaSinRuedas::CabezaSinRuedas(){
 
 void CabezaSinRuedas::draw(modo_dibujado modo, bool ajedrez,bool tapas){
     glPushMatrix();
-        glTranslatef(-60,50,5);
+        glTranslatef(30,50,5);
         chimenea->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-45,10,20);
+        glTranslatef(40,10,20);
         prisma->draw(modo,ajedrez);
     glPopMatrix();
 }

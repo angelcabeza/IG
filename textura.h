@@ -8,6 +8,7 @@ class Textura{
         GLuint textura_id = 0;
         unsigned char * texels;
         int width,height;
+        std::vector<unsigned char> data;
 
     public:
         Textura();

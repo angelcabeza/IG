@@ -13,16 +13,16 @@ RuedasDelanteras::RuedasDelanteras(){
 
 void RuedasDelanteras::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPushMatrix();
-        glTranslatef(-70,0,-15);
-        glRotatef(grados_rotacion,0,0,90);
+        glTranslatef(70,0,-15);
+        glRotatef(grados_rotacion,0,0,1);
         glRotatef(90,1,0,0);
         glScalef(1,0.5,1);
         rueda1->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();
-        glTranslatef(-70,0,5);
-        glRotatef(grados_rotacion,0,0,90);
+        glTranslatef(70,0,5);
+        glRotatef(grados_rotacion,0,0,1);
         glRotatef(90,1,0,0);
         glScalef(1,0.5,1);
         rueda2->draw(modo,ajedrez,tapas);

@@ -16,7 +16,7 @@
 #include "material.h"
 #include "prisma.h"
 #include "tren.h"
-#include "textura.h"
+#include "cuadro.h"
 
 
 
@@ -87,8 +87,7 @@ class Escena
    LuzDireccional * luz0 = nullptr;
    LuzPosicional * luz2 = nullptr;
    Tren * tren = nullptr;
-   Textura * textura = nullptr;
-
+   Cuadro * cuadro = nullptr;
    
    public:
 

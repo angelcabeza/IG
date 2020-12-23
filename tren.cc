@@ -10,8 +10,8 @@ Tren::Tren(){
 void Tren::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     
     glPushMatrix();
-        glRotatef(grados_libertad,0,1,0);
         glTranslatef(-160,0,0);
+        glRotatef(grados_libertad,0,1,0);
         tren->draw(modo,ajedrez,tapas);
     glPopMatrix();
 }

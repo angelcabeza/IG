@@ -11,14 +11,9 @@ TodosLosVagonesConectados::TodosLosVagonesConectados(){
 
 void TodosLosVagonesConectados::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPushMatrix();
+        glTranslatef(90,0,0);
         glRotatef(grados_libertad,0,1,0);
-        glTranslatef(145,0,0);
         tresvagones->draw(modo,ajedrez,tapas);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(55,20,0);
-        conector->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();

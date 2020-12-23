@@ -9,6 +9,20 @@ Textura::Textura(const std::string & archivo){
     height = pimg->tamY();
 	texels = pimg->leerPixels();
 
+	unsigned char * leido;
+
+	//Esta forma las lee mal, las lee como tumbadas
+	/*for (int i = 0; i < width; i++){
+		for (int j = 0; j < height; j++){
+			leido = pimg->leerPixel(i,height-j-1);
+			data.push_back(*(leido));
+			leido++;
+			data.push_back(*(leido));
+			leido++;
+			data.push_back(*(leido));
+		}
+	}*/
+
 }
 
 Textura::Textura(const Textura & t){

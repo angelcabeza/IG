@@ -6,6 +6,7 @@
 #include "ruedasdelanteras.h"
 #include "ruedastraseras.h"
 #include "esfera.h"
+#include "conectorvagones.h"
 
 class Vagon : public Malla3D
 {
@@ -17,6 +18,7 @@ class Vagon : public Malla3D
         RuedasTraseras * ruedastraseras = nullptr;
         float grados_libertad_vagon;
         Esfera * bisagra = nullptr;
+        ConectorVagones * conector = nullptr;
 
     public:
         Vagon();

@@ -3,7 +3,6 @@
 DosVagonesConectados::DosVagonesConectados(){
     vagon1 = new Vagon();
     vagon2 = new Vagon();
-    conectorvagones = new ConectorVagones();
     grados_libertad = 0;
     maximo_giro = false;
     minimo_giro = false;
@@ -11,14 +10,9 @@ DosVagonesConectados::DosVagonesConectados(){
 
 void DosVagonesConectados::draw(modo_dibujado modo, bool ajedrez, bool tapas){
     glPushMatrix();
-        glTranslatef(145,0,0);
+        glTranslatef(135,0,0);
         glRotatef(grados_libertad,0,1,0);
         vagon1->draw(modo,ajedrez,tapas);
-    glPopMatrix();
-
-    glPushMatrix();
-        glTranslatef(55,20,0);
-        conectorvagones->draw(modo,ajedrez,tapas);
     glPopMatrix();
 
     glPushMatrix();
