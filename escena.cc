@@ -124,7 +124,6 @@ void Escena::dibujar()
 
 	change_observer();
 
-
    //PROTEJO A LOS EJES DE LA ILUMINACIÓN PARA QUE SE DIBUJEN SIEMPRE DEL MISMO COLOR
    if (iluminacion){
       glDisable(GL_LIGHTING);
@@ -164,8 +163,6 @@ void Escena::dibujar()
       default:
          break;
    }
-   
-   glEnable(GL_TEXTURE_2D);
 
    if (iluminacion){
       glEnable(GL_NORMALIZE);
@@ -213,6 +210,7 @@ void Escena::dibujar()
    //glScalef(100,100,100);
    //cuadro->draw(modo_dibujado_escogido,ajedrez);
 
+   glEnable(GL_TEXTURE_2D);
    glPushMatrix();
       //glTranslatef(-60,0,0);
       glTranslatef(120,0,200);
@@ -232,6 +230,13 @@ void Escena::dibujar()
    glPopMatrix();
 
    glPushMatrix();
+      glTranslatef(-400,0,0);
+      pared->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glDisable(GL_TEXTURE_2D);
+
+   glPushMatrix();
       glTranslatef(0,100,200);
       cubo->setPosicion({0,100,200});
       cubo->draw(modo_dibujado_escogido,ajedrez);
@@ -240,11 +245,6 @@ void Escena::dibujar()
    glPushMatrix();
       glTranslatef(128,128,200);
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(-400,0,0);
-      pared->draw(modo_dibujado_escogido,false);
    glPopMatrix();
 
    glPushMatrix();
@@ -750,17 +750,21 @@ void Escena::ratonMovido(int x, int y){
 void Escena::dibujaSeleccion(){
    glDisable(GL_DITHER);
    glDisable(GL_LIGHTING);
-   glDisable(GL_TEXTURE);
+   glDisable(GL_TEXTURE_2D);
 
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
    change_observer();
- glPushMatrix();
-      //glTranslatef(-60,0,0);
+
+   Tupla3f color_antes = peon_negro->getColor();
+   peon_negro->setColor({0,1,1});
+   peon_negro->setColorSeleccion({0,1,1});
+   glPushMatrix();
       glTranslatef(120,0,200);
       glScalef(70,70,70);
       peon_negro->draw(modo_dibujado_escogido,false,true);
    glPopMatrix();
+   peon_negro->setColor(color_antes);
 
    glPushMatrix();
       glTranslatef(-400,0,400);
@@ -768,10 +772,15 @@ void Escena::dibujaSeleccion(){
       suelo->draw(modo_dibujado_escogido,false);
    glPopMatrix();
 
+   color_antes = balonfutbol->getColor();
+   balonfutbol->setColor({1,1,0});
+   balonfutbol->setColorSeleccion({1,1,0});
    glPushMatrix();
       glTranslatef(0,20,200);
       balonfutbol->draw(modo_dibujado_escogido,false,true);
    glPopMatrix();
+
+   balonfutbol->setColor(color_antes);
 
    glPushMatrix();
       glTranslatef(0,100,200);
@@ -836,29 +845,14 @@ void Escena::procesarPick(int x, int y){
       std::cout << "Cono seleccionado" << std::endl;
    }
 
-   //else if (pixel_leido[0] == balonfutbol->getColor()[0] && pixel_leido[1] == balonfutbol->getColor()[1] && round(pixel_leido[2]) == round(balonfutbol->getColor()[2])){
-   //   std::cout << "Balon de futbol seleccionado" << std::endl;
-   //}
-
-   //else if (pixel_leido == cilindro->getColor()){
-   //   std::cout << "Lata de refresco seleccionada" << std::endl;
-   //}
+   else if (pixel_leido[0] == balonfutbol->getColorSeleccion()[0] && pixel_leido[1] == balonfutbol->getColorSeleccion()[1] && round(pixel_leido[2]) == round(balonfutbol->getColorSeleccion()[2])){
+      std::cout << "Balon de futbol seleccionado" << std::endl;
+   }
+   else if (pixel_leido[0] == peon_negro->getColorSeleccion()[0] && pixel_leido[1] == peon_negro->getColorSeleccion()[1] && round(pixel_leido[2]) == round(peon_negro->getColorSeleccion()[2])){
+      std::cout << "Lata de refresco seleccionada" << std::endl;
+   }
    else{
       std::cout << "No hay ningun objeto seleccionado" << std::endl;
       objetoSeleccionado = false;
    }
 }
-
-/*Tupla3f Escena::centroCamara(Tupla3f centro){
-   Tupla3f nuevoCentro;
-   GLfloat inv[16];
-   GLfloat mat[16];
-
-   invertMatrix(mat,inv);
-
-   nuevoCentro(0) = inv[0] * centro(0) + inv[4] * centro(1) + inv[8] * centro(2) + inv[12];
-	nuevoCentro(1) = inv[1] * centro(0) + inv[5] * centro(1) + inv[9] * centro(2) + inv[13];
-	nuevoCentro(2) = inv[2] * centro(0) + inv[6] * centro(1) + inv[10] * centro(2) + inv[14];
-
-   return nuevoCentro;
-}*/

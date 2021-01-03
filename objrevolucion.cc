@@ -136,7 +136,7 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
       m.aplicar();
    }
 
-   if (!ct.empty()){
+   if (!ct.empty() && glIsEnabled(GL_TEXTURE_2D)){
       glEnableClientState ( GL_TEXTURE_COORD_ARRAY);
       glTexCoordPointer ( 2, GL_FLOAT, 0, ct.data());
       textura->activar();
@@ -177,7 +177,7 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
 
    if(!ct.empty()){
       glDisableClientState ( GL_TEXTURE_COORD_ARRAY);
-      glDisable(GL_TEXTURE_2D);
+      //glDisable(GL_TEXTURE_2D);
    }
 
 }

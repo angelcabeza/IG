@@ -111,7 +111,6 @@ class Escena
     void ratonMovido(int x, int y);
     void dibujaSeleccion();
     void procesarPick(int x, int y);
-    Tupla3f centroCamara(Tupla3f centro);
 
 };
 #endif

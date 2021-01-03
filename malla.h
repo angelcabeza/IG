@@ -37,6 +37,8 @@ class Malla3D
    void setColor (Tupla3f color_solido);
    Tupla3f getColor ();
    Tupla3f getCentro();
+   Tupla3f getColorSeleccion();
+   void setColorSeleccion(Tupla3f colorsel);
    void calcularCentro();
    Tupla3f getPosicion();
    void setPosicion(Tupla3f pos);
@@ -76,6 +78,7 @@ class Malla3D
    std::vector<Tupla3f> color;                                              // tabla de colores para la figura
    std::vector<Tupla2f> ct;                                                 // tabla de coordenadas de textura
    Tupla3f colorSolido;
+   Tupla3f colorSeleccion;
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

@@ -46,7 +46,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
       m.aplicar();
    }
 
-    if (!ct.empty()){
+    if (!ct.empty() && glIsEnabled(GL_TEXTURE_2D)){
       glEnableClientState ( GL_TEXTURE_COORD_ARRAY);
       glTexCoordPointer ( 2, GL_FLOAT, 0, ct.data());
       textura->activar();
@@ -77,7 +77,7 @@ void Malla3D::draw_ModoInmediato(bool ajedrez)
 
    if(!ct.empty()){
       glDisableClientState ( GL_TEXTURE_COORD_ARRAY);
-      glDisable(GL_TEXTURE_2D);
+      //glDisable(GL_TEXTURE_2D);
    }
 
 }
@@ -246,8 +246,10 @@ void Malla3D::inicializarColores(){
             color_ajedrez_impares.push_back(c_verde);
     }
 
+   color.resize(v.size());
+
     for (int i = 0; i < v.size(); i++){
-        color.push_back(colorSolido);
+        color[i] = colorSolido;
     }
 }
 
@@ -269,4 +271,12 @@ void Malla3D::setPosicion(Tupla3f pos){
 
 Tupla3f Malla3D::getPosicion(){
    return this->posicion;
+}
+
+Tupla3f Malla3D::getColorSeleccion(){
+   return colorSeleccion;
+}
+
+void Malla3D::setColorSeleccion(Tupla3f colorSel){
+   colorSeleccion = colorSel;
 }

@@ -15,7 +15,7 @@ Textura::Textura(const Textura & t){
 }
 
 void Textura::activar(){
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 
 	if (textura_id == 0) {
 		glGenTextures( 1, &textura_id ); // idTex almacena el nuevo identificador
