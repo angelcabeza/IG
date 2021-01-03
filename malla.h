@@ -34,6 +34,13 @@ class Malla3D
 
    void setMaterial (const Material & mat);
    void setTextura(const Textura & text);
+   void setColor (Tupla3f color_solido);
+   Tupla3f getColor ();
+   Tupla3f getCentro();
+   void calcularCentro();
+   Tupla3f getPosicion();
+   void setPosicion(Tupla3f pos);
+   Tupla3f posicion;
 
    GLuint CrearVBO (GLuint tipo_vbo, GLuint tamanio_bytes, GLvoid * puntero_ram);
 
@@ -47,6 +54,9 @@ class Malla3D
 
    void inicializarNormalesVertices();
    void inicializarNormalesCaras();
+   void inicializarColores();
+
+   Tupla3f centro = {0,0,0};
 
    Material  m;
    Textura * textura = nullptr;
@@ -65,6 +75,7 @@ class Malla3D
    std::vector<Tupla3f> color_ajedrez_pares,color_ajedrez_impares;          // tabla de colores para el ajedrez
    std::vector<Tupla3f> color;                                              // tabla de colores para la figura
    std::vector<Tupla2f> ct;                                                 // tabla de coordenadas de textura
+   Tupla3f colorSolido;
 
    // completar: tabla de colores, tabla de normales de vértices
 } ;

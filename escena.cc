@@ -21,13 +21,33 @@ Escena::Escena()
 
    // OBJETOS EN LA ESCENA
     iluminacion = false;
-    tren = new Tren();
-    cuadro = new Cuadro();
-    peon_negro = new ObjRevolucion("plys/lata-pcue.ply",100);
+    suelo = new Cuadro(800);
+    suelo->setColor({1,1,1});
+    Textura text2 = Textura("texturas/text-madera.jpg");
+    suelo->setTextura(text2);
+    pared = new Cuadro(800);
+    pared->setColor({1,1,1});
+    pared->setTextura(text2);
+    cilindro = new Cilindro (10,100,10,5,true);
+    cilindro->setColor({1,1,1});
     Textura text = Textura("texturas/text-lata-1.jpg");
+    cilindro->setTextura(text);
+    peon_negro = new ObjRevolucion("plys/lata-pcue.ply",50,true);
     peon_negro->setTextura(text);
-   /////////////////////////////////////////////////////////////////////
+    peon_negro->setColor({1,1,1});
+    balonfutbol = new Esfera(10,100,20,true);
+    balonfutbol->setColor({1,1,1});
+    Textura text3 = Textura("texturas/text-balonfutbol.jpg");
+    balonfutbol->setTextura(text3);
+    cubo = new Cubo(50);
+    cubo->setColor({1.0,0.6,0.2});
+    cono = new Cono(10,100,20,20,false);
+    cono->setColor({0.6,0.6,0.5});
+    tren = new Tren();
 
+
+
+   /////////////////////////////////////////////////////////////////////
     //Declaro y aplico materiales
     /*Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
     Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
@@ -47,6 +67,26 @@ Escena::Escena()
     luz2 = new LuzPosicional({30, 30, 70},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+   // DECLARO LAS CAMARAS DE LA ESCENA
+   Tupla3f eye = {500,100,500};
+   Tupla3f at = {0 ,0 ,0};
+   Tupla3f up = {0,1,0};
+
+   camaras.push_back(Camara(eye,at,up,0,50.0,20000.0,100,100));
+
+   eye = {0,100,700};
+   at = {0,60,-115};
+
+   camaras.push_back(Camara(eye,at,up,0,50.0,20000.0,100,100));
+
+   eye = {-500,100,500};
+   at = {0,0,0};
+
+   camaras.push_back(Camara(eye,at,up,1,50.0,20000.0,50,100));
+
+   camaraActiva = 1;
+
+   ///////////////////////////////////////////////////////
 }
 
 //**************************************************************************
@@ -81,6 +121,7 @@ void Escena::inicializar( int UI_window_width, int UI_window_height )
 void Escena::dibujar()
 {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // Limpiar la pantalla
+
 	change_observer();
 
 
@@ -169,38 +210,47 @@ void Escena::dibujar()
          luz2->desactivar();
    }
 
-   // ESTO ES EL ESCENARIO PARA LA P3
-   /*glPushMatrix();
-     glTranslatef(-100,1,1);
-      glScalef(50,50,50);
-
-      peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(100,1,1);
-      glScalef(50,50,50);
-
-      peon_blanco->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef(0,0,-100);
-      cilindro->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();
-
-   glPushMatrix();
-      glTranslatef (150 ,0,-50);
-      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
-   glPopMatrix();*/
-
    //glScalef(100,100,100);
-   cuadro->draw(modo_dibujado_escogido,ajedrez);
+   //cuadro->draw(modo_dibujado_escogido,ajedrez);
 
    glPushMatrix();
-      glTranslatef(-60,0,0);
-      glScalef(50,50,50);
+      //glTranslatef(-60,0,0);
+      glTranslatef(120,0,200);
+      glScalef(70,70,70);
       peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-400,0,400);
+      glRotatef(-90,1,0,0);
+      suelo->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0,20,200);
+      balonfutbol->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0,100,200);
+      cubo->setPosicion({0,100,200});
+      cubo->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(128,128,200);
+      cono->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-400,0,0);
+      pared->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-200,10,100);
+      glScalef(0.75,0.75,0.75);
+      tren->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 }
 
@@ -282,12 +332,18 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
          // COMPLETAR con los diferentes opciones de teclado
          case 'C' :
-          if (objeto_a_pintar != CUBO){
-            objeto_a_pintar=CUBO;
-          }
-          else{
-             objeto_a_pintar=NINGUNO;
-          }
+            if (modoMenu == SELOBJETO){
+               if (objeto_a_pintar != CUBO){
+                  objeto_a_pintar=CUBO;
+               }
+               else{
+                  objeto_a_pintar=NINGUNO;
+               }
+            }
+            else {
+               cout << "MODO MENU = SELCAM";
+               modoMenu = SELCAM;
+            }
 
           break;
 
@@ -350,6 +406,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                objeto=HUMO;
             }
 
+            if (modoMenu == SELCAM){
+               cout << "Camara activa = 0" << endl;
+               camaraActiva = 0;
+            }
+
          break;
 
          case '1'  :
@@ -364,6 +425,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                   activar_luz1 = false;
                else
                   activar_luz1 = true;
+            }
+
+            if (modoMenu == SELCAM){
+               cout << "Camara activa = 1" << endl;
+               camaraActiva = 1;
             }
 
             if (modoMenu == ANIMACIONMANUAL){
@@ -384,6 +450,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                   activar_luz2 = false;
                else
                   activar_luz2 = true;
+            }
+
+            if (modoMenu == SELCAM){
+               cout << "Camara activa = 2" << endl;
+               camaraActiva = 2;
             }
 
             if (modoMenu == ANIMACIONMANUAL){
@@ -554,25 +625,26 @@ void Escena::teclaEspecial( int Tecla1, int x, int y )
    switch ( Tecla1 )
    {
 	   case GLUT_KEY_LEFT:
-         Observer_angle_y-- ;
+         camaras[camaraActiva].rotarYExaminar(-1*M_PI/180.0);
          break;
 	   case GLUT_KEY_RIGHT:
-         Observer_angle_y++ ;
+         camaras[camaraActiva].rotarYExaminar(1*M_PI/180.0);
          break;
 	   case GLUT_KEY_UP:
-         Observer_angle_x-- ;
+         camaras[camaraActiva].rotarXExaminar(-1*M_PI/180.0);
          break;
 	   case GLUT_KEY_DOWN:
-         Observer_angle_x++ ;
+         camaras[camaraActiva].rotarXExaminar(1*M_PI/180.0);
          break;
 	   case GLUT_KEY_PAGE_UP:
-         Observer_distance *=1.2 ;
+         camaras[camaraActiva].zoom(10.8);
          break;
 	   case GLUT_KEY_PAGE_DOWN:
-         Observer_distance /= 1.2 ;
+         camaras[camaraActiva].zoom(-10.8);
          break;
 	}
 
+   change_projection(1);
 	//std::cout << Observer_distance << std::endl;
 }
 
@@ -588,7 +660,9 @@ void Escena::change_projection( const float ratio_xy )
    glMatrixMode( GL_PROJECTION );
    glLoadIdentity();
    const float wx = float(Height)*ratio_xy ;
-   glFrustum( -wx, wx, -Height, Height, Front_plane, Back_plane );
+   //glFrustum( -wx, wx, -Height, Height, Front_plane, Back_plane );
+   camaras[camaraActiva].setProyeccion();
+
 }
 //**************************************************************************
 // Funcion que se invoca cuando cambia el tamaño de la ventana
@@ -611,9 +685,7 @@ void Escena::change_observer()
    // posicion del observador
    glMatrixMode(GL_MODELVIEW);
    glLoadIdentity();
-   glTranslatef( 0.0, 0.0, -Observer_distance );
-   glRotatef( Observer_angle_y, 0.0 ,1.0, 0.0 );
-   glRotatef( Observer_angle_x, 1.0, 0.0, 0.0 );
+   camaras[camaraActiva].setObserver();
 }
 
 void Escena::animar(){
@@ -625,3 +697,168 @@ void Escena::animar(){
       tren->modificarGradosLibertadRuedasAutomatico(0.3);
    }
 }
+
+void Escena::clickRaton(int boton, int estado, int x, int y){
+   xant = x;
+   yant = y;
+
+   if (boton == GLUT_RIGHT_BUTTON){
+      if (estado == GLUT_DOWN){
+         if (!objetoSeleccionado)
+            estadoRaton = MOVIENDO_CAMARA_FIRSTPERSON;
+         else{
+            estadoRaton = MOVIENDO_CAMARA_EXAMINAR;
+            std::cout << "Moviendo camara examinar" << std::endl;
+         }
+      }
+      else{
+         estadoRaton = DESACTIVADO;
+      }
+
+   }
+   else if (boton == 3){
+      camaras[camaraActiva].zoom(10.8);
+   }
+   else if (boton == 4){
+      camaras[camaraActiva].zoom(-10.8);
+   }
+   else if(boton == GLUT_LEFT_BUTTON){
+      std::cout << "Has pulsado el boton izquierdo del raton" << std::endl;
+      if (estado == GLUT_DOWN){
+         std::cout << "Llamo a dibujaSeleccion" << std::endl;
+         dibujaSeleccion();
+         procesarPick(x,y);
+      }
+   }
+
+   change_projection(1);
+} 
+
+void Escena::ratonMovido(int x, int y){
+
+   if (estadoRaton == MOVIENDO_CAMARA_FIRSTPERSON){
+      camaras[camaraActiva].girar(x-xant, y-yant);
+   }
+   else if (estadoRaton == MOVIENDO_CAMARA_EXAMINAR){
+      camaras[camaraActiva].girarEx(x-xant,y-yant);
+   }
+
+   xant = x;
+   yant = y;
+}
+
+void Escena::dibujaSeleccion(){
+   glDisable(GL_DITHER);
+   glDisable(GL_LIGHTING);
+   glDisable(GL_TEXTURE);
+
+   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+   change_observer();
+ glPushMatrix();
+      //glTranslatef(-60,0,0);
+      glTranslatef(120,0,200);
+      glScalef(70,70,70);
+      peon_negro->draw(modo_dibujado_escogido,false,true);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-400,0,400);
+      glRotatef(-90,1,0,0);
+      suelo->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0,20,200);
+      balonfutbol->draw(modo_dibujado_escogido,false,true);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(0,100,200);
+      cubo->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(128,128,200);
+      cono->draw(modo_dibujado_escogido,false,true);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-400,0,0);
+      pared->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-200,10,100);
+      glScalef(0.75,0.75,0.75);
+      tren->draw(modo_dibujado_escogido,false,true);
+   glPopMatrix();
+
+   glEnable(GL_DITHER);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_TEXTURE);
+}
+
+void Escena::procesarPick(int x, int y){
+   glDisable(GL_DITHER);
+	glDisable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
+   std::cout << "X = " << x << "Y = " << y << std::endl;
+   GLint viewport[4];
+   glGetIntegerv(GL_VIEWPORT,viewport);
+   GLfloat pixel[3];
+
+   pixel[0] = 500;
+   pixel[1] = 300;
+   pixel[2] = 23;
+
+   Tupla3f pixel_comparar = {1,1,1};
+
+   glReadPixels(x,viewport[3]-y,1,1,GL_RGB,GL_FLOAT, (void *) pixel);
+
+   std::cout << "Pixel contiene: " << pixel[0] << " " << pixel[1] << " " << pixel[2] << std::endl;
+
+   Tupla3f pixel_leido = {pixel[0],pixel[1],pixel[2]};
+
+   std::cout << "Pixel leido = " << pixel_leido << std::endl;
+
+   if (pixel_leido[0] == cubo->getColor()[0] && pixel_leido[1] == cubo->getColor()[1] && round(pixel_leido[2]) == round(cubo->getColor()[2])){
+      Tupla3f centro = cubo->getCentro();
+
+      centro = centro + cubo->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+
+   else if (pixel_leido[0] == cono->getColor()[0] && pixel_leido[1] == cono->getColor()[1] && round(pixel_leido[2]) == round(cono->getColor()[2])){
+      std::cout << "Cono seleccionado" << std::endl;
+   }
+
+   //else if (pixel_leido[0] == balonfutbol->getColor()[0] && pixel_leido[1] == balonfutbol->getColor()[1] && round(pixel_leido[2]) == round(balonfutbol->getColor()[2])){
+   //   std::cout << "Balon de futbol seleccionado" << std::endl;
+   //}
+
+   //else if (pixel_leido == cilindro->getColor()){
+   //   std::cout << "Lata de refresco seleccionada" << std::endl;
+   //}
+   else{
+      std::cout << "No hay ningun objeto seleccionado" << std::endl;
+      objetoSeleccionado = false;
+   }
+}
+
+/*Tupla3f Escena::centroCamara(Tupla3f centro){
+   Tupla3f nuevoCentro;
+   GLfloat inv[16];
+   GLfloat mat[16];
+
+   invertMatrix(mat,inv);
+
+   nuevoCentro(0) = inv[0] * centro(0) + inv[4] * centro(1) + inv[8] * centro(2) + inv[12];
+	nuevoCentro(1) = inv[1] * centro(0) + inv[5] * centro(1) + inv[9] * centro(2) + inv[13];
+	nuevoCentro(2) = inv[2] * centro(0) + inv[6] * centro(1) + inv[10] * centro(2) + inv[14];
+
+   return nuevoCentro;
+}*/

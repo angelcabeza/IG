@@ -2,9 +2,9 @@
 
 ConectorVagones::ConectorVagones(){
     grados_libertad_conector = 0;
-    cilindro = new Cilindro (100,100,20,10);
-    esferaExtDcha = new Esfera (10,100,10);
-    esferaExtrIzq = new Esfera (10,100,10);
+    cilindro = new Cilindro (100,100,20,10,false);
+    esferaExtDcha = new Esfera (10,100,10,false);
+    esferaExtrIzq = new Esfera (10,100,10,false);
     minimo_giro = false;
     maximo_giro = false;
 
@@ -12,6 +12,9 @@ ConectorVagones::ConectorVagones(){
     cilindro->setMaterial(silver);
     esferaExtDcha->setMaterial(silver);
     esferaExtrIzq->setMaterial(silver);
+    cilindro->setColor({0.5,0.5,0.5});
+    esferaExtDcha->setColor({0.5,0.5,0.5});
+    esferaExtrIzq->setColor({0.5,0.5,0.5});
 }
 
 void ConectorVagones::draw(modo_dibujado modo, bool ajedrez, bool tapas){

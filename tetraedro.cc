@@ -40,21 +40,6 @@ void Tetraedro::inicializarCaras(){
    }
 }
 
-void Tetraedro::inicializarColores(){
-   Tupla3f c_rojo = {1.0,0.0,0.0};
-   Tupla3f c_verde = {0.0,1.0,0.0};
-   Tupla3f c_naranja = {0.9,0.2,0.07};
-
-   for (int i = 0; i < 3*f.size()/2; i++){
-         color_ajedrez_pares.push_back(c_rojo);
-         color_ajedrez_impares.push_back(c_verde);
-   }
-
-   for (int i = 0; i < v.size(); i++){
-       color.push_back(c_naranja);
-   }
-}
-
 Tetraedro::Tetraedro()
 {
 
@@ -65,9 +50,6 @@ Tetraedro::Tetraedro()
    // (es importante en cada cara ordenar los vértices en sentido contrario
    //  de las agujas del reloj, cuando esa cara se observa desde el exterior del cubo)
    inicializarCaras();
-
-   //inicializar los distintos vectores de colores
-   inicializarColores();
 
    inicializarNormalesCaras();
    inicializarNormalesVertices();

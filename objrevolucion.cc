@@ -5,6 +5,7 @@
 
 
 
+
 // *****************************************************************************
 //
 // Clase ObjRevolucion (práctica 2)
@@ -17,8 +18,8 @@
 
 ObjRevolucion::ObjRevolucion(){}
 
-ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool tapa_sup, bool tapa_inf, int eje_rotacion){
-
+ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bool textura,bool tapa_sup, bool tapa_inf, int eje_rotacion){
+   this->con_textura = textura;
    this->num_instancias = num_instancias;
    ply::read_vertices(archivo,perfil);
    crearMalla(perfil,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
@@ -32,7 +33,8 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
 // objeto de revolución obtenido a partir de un perfil (en un vector de puntos)
 
  
-ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool tapa_sup, bool tapa_inf,int eje_rotacion) {
+ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, bool textura,bool tapa_sup, bool tapa_inf,int eje_rotacion) {
+   this->con_textura = textura;
    this->num_instancias = num_instancias;
    perfil = archivo;
    crearMalla(archivo,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
@@ -70,12 +72,17 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
       polo_sup = {0.0,perfil_original[perfil_original.size()-1](1),0.0};
    }
 
+
+   if (con_textura && !esfera){
+      num_instancias++;
+   }
+
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE VÉRTICES
    inicializarVertices(num_instancias,perfil_original,eje_rotacion);
 
    // INSTRUCCIONES PARA RELLENAR LA TABLA DE CARAS (TRIANGULOS)
    inicializarCaras(num_instancias,perfil_original);
-   
+
    const int M = perfil_original.size();
 
    if (tapa_inf){
@@ -155,14 +162,11 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
       // tipo de los índices y dirección de la tabla de índices
 
       if (tapas){
-         //std::cout << "Core al llamar a gl drawelements" << std::endl;
          glDrawElements (GL_TRIANGLES, f.size()*3, GL_UNSIGNED_INT, f.data());
-         //std::cout << "Core al llamar a gl drawelements" << std::endl;
       }else{
          glDrawElements (GL_TRIANGLES, (f.size()-2*num_instancias)*3, GL_UNSIGNED_INT, f.data());
       }
 
-      //std::cout << "Core al llamar a gl drawelements" << std::endl;
    }
 
    //deshabilitar array de vértices
@@ -314,7 +318,7 @@ Tupla3f ObjRevolucion::RotarEjeZ(Tupla3f vector, int num_instancias, std::vector
 
 
 
-void ObjRevolucion::inicializarColores(){
+/*void ObjRevolucion::inicializarColores(){
    Tupla3f c_rojo = {1.0,0.0,0.0};
    Tupla3f c_verde = {0.0,1.0,0.0};
    Tupla3f c_naranja = {1.0,1.0,1.0};
@@ -327,27 +331,33 @@ void ObjRevolucion::inicializarColores(){
    for (int i = 0; i < v.size(); i++){
       color.push_back(c_naranja);
    }
-}
+}*/
 
 
 
 void ObjRevolucion::inicializarVertices(int num_instancias_perfil, std::vector<Tupla3f> & perfil,int eje_rotacion){
    v.clear();
    Tupla3f v_aux;
+   int contador = 0;
    
    for (int i = 0; i < num_instancias_perfil; i++){
       for (int j = 0; j < perfil.size(); j++){
-            if (eje_rotacion == 0){                                                     // ROTAMOS EJE X
-               v_aux = RotarEjeX(v_aux,num_instancias_perfil,perfil,i,j);
-               std::cout << "Eje rotacion = " << eje_rotacion << std::endl;
+            if (i == num_instancias_perfil-1 && con_textura){
+               v.push_back(v[contador]);
+               contador++;
             }
-            else if (eje_rotacion == 1)                                                // ROTAMOS EJE Y
-               v_aux = RotarEjeY(v_aux,num_instancias_perfil,perfil,i,j);
-            else                                                                       // ROTAMOS EJE Z
-               v_aux = RotarEjeZ(v_aux,num_instancias_perfil,perfil,i,j);
-            v.push_back(v_aux);
-         }
+            else{
+               if (eje_rotacion == 0){                                                     // ROTAMOS EJE X
+                  v_aux = RotarEjeX(v_aux,num_instancias_perfil,perfil,i,j);
+               }
+               else if (eje_rotacion == 1)                                                // ROTAMOS EJE Y
+                  v_aux = RotarEjeY(v_aux,num_instancias_perfil,perfil,i,j);
+               else                                                                       // ROTAMOS EJE Z
+                  v_aux = RotarEjeZ(v_aux,num_instancias_perfil,perfil,i,j);
+               v.push_back(v_aux);
+            }
       }
+   }
 }
 
 
@@ -381,33 +391,73 @@ Tupla4f ObjRevolucion::getMaterial(){
 }
 
 void ObjRevolucion::calcularCoordTexturas(){
-   float alpha, beta, h;
+   ct.resize(v.size());
 
-	float s, t;
-   std::vector<float> distancias;
-   std::vector<Tupla2f> aux;
-   distancias.resize(perfil.size()+1);
-   distancias.push_back(0);
 
-   //M = num_vertices_perfil
-   // N = num_instancias
+   if (!esfera){
+      float alpha, beta, h;
 
-   for (int i = 1; i <= perfil.size(); i++){
-      distancias[i] = distancias[i-1] + distanciasEntrePuntos(perfil[i-1], perfil[i]);
-   }
+      float s, t;
+      std::vector<float> distancias;
+      std::vector<Tupla2f> aux;
+      distancias.resize(perfil.size());
+      distancias[0] = 0.0;
 
-   ct.resize(num_instancias*perfil.size());
+      //M = num_vertices_perfil
+      // N = num_instancias
+      for (float i = 1; i < perfil.size(); i++){
+         distancias[i] = distancias[i-1] - distanciasEntrePuntos(perfil[i], perfil[i-1]);
+      }
 
-   for (float i = 0; i < num_instancias ; i++){
-      for (float j = 0; j < perfil.size(); j++){
-         s = i / (num_instancias - 1 );
+      float i = 0;
+      float j = perfil.size()-1;
+      int contador = 0;
+
+      ct.resize(v.size());
+
+      for (int k = 0; k < ct.size()-2 ; k++){
+         s = i / (num_instancias + 1);
          t = distancias[j] / distancias[perfil.size()-1];
-         ct[i+j] = {s,t};
+
+         ct[k] = {s,t};
+
+         if (j == 0){
+            i++;
+            j = perfil.size()-1;
+         } else{
+            j--;
+         }
+
       }
    }
+   else{
+      float alpha;
+      float beta;
+      float aux;
+      float t;
+      float s;
+      float x;
+      float y;
+      float z;
 
-   //for (int i = aux.size(); i > 0; i--)
-   //   ct.push_back(aux[i]);
+      for (int i = 0; i < ct.size(); i++){
+         x = v[i](0);
+         y = v[i](1);
+         z = v[i](2);
+
+         alpha = atan2(z,x);
+
+         aux = sqrt(pow(x,2)+pow(z,2));
+         beta = atan2(y,aux);
+
+         s = 1- (0.5 + (alpha/(2*M_PI)));
+         s+= 0.5;
+         s= fmod(s,1.0);
+         t = 0.5 + (beta/M_PI);
+
+         ct[i] = {s,t};
+      }
+   }
 
 }
 
@@ -418,4 +468,9 @@ float ObjRevolucion::distanciasEntrePuntos(Tupla3f anterior, Tupla3f actual){
    float z = pow(anterior(2)-actual(2),2);
 
    return sqrt(x+y+z);
+}
+
+void ObjRevolucion::setTextura(const Textura & text){
+   this->textura = new Textura(text);
+   calcularCoordTexturas();
 }

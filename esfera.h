@@ -7,10 +7,7 @@
 class Esfera : public ObjRevolucion
 {
     public:
-        Esfera( const int num_vert_perfil,const int num_instancias_perf, const float radio);
-
-    private:
-        void inicializarColores();
+        Esfera( const int num_vert_perfil,const int num_instancias_perf, const float radio,bool textura);
 };
 
 #endif

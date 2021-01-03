@@ -8,21 +8,6 @@ Textura::Textura(const std::string & archivo){
     width = pimg->tamX();
     height = pimg->tamY();
 	texels = pimg->leerPixels();
-
-	unsigned char * leido;
-
-	//Esta forma las lee mal, las lee como tumbadas
-	/*for (int i = 0; i < width; i++){
-		for (int j = 0; j < height; j++){
-			leido = pimg->leerPixel(i,height-j-1);
-			data.push_back(*(leido));
-			leido++;
-			data.push_back(*(leido));
-			leido++;
-			data.push_back(*(leido));
-		}
-	}*/
-
 }
 
 Textura::Textura(const Textura & t){
@@ -41,11 +26,11 @@ void Textura::activar(){
 		gluBuild2DMipmaps( GL_TEXTURE_2D ,GL_RGB ,// formato interno
 							width ,// núm. de columnas (arbitrario)
 							height ,// núm de filas (arbitrario)
-							GL_RGB ,// formato y orden de los texelsen RAM
+							GL_RGB ,// formato y orden de los texels en RAM
 							GL_UNSIGNED_BYTE ,// tipo de cada te-xel
 							texels// puntero a los bytes con texels(void *)
 						 );
-	} else {
+ 	} else {
       //Cambiar el identificador de textura activa
       glBindTexture(GL_TEXTURE_2D,textura_id);
 	}

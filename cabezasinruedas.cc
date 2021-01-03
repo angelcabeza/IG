@@ -9,6 +9,7 @@ CabezaSinRuedas::CabezaSinRuedas(){
 
     Material bronce = Material ({0.7038, 0.27048,0.0828, 1}, {0.256777, 0.137622,0.086014, 1},{0.019125, 0.0735, 0.0225, 1}, 12.8);
     prisma->setMaterial(bronce);
+    prisma->setColor({1,0,0});
 }
 
 void CabezaSinRuedas::draw(modo_dibujado modo, bool ajedrez,bool tapas){

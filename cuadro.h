@@ -5,12 +5,11 @@
 
 class Cuadro : public Malla3D {
     private:
-        void inicializarVertices();
+        void inicializarVertices(float lado);
         void inicializarCaras();
-        void inicializarColores();
         void inicializarTexturas();
    public:
-        Cuadro() ;
+        Cuadro(float lado=50.0) ;
 };
 
 #endif

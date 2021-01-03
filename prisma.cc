@@ -6,7 +6,6 @@
 Prisma::Prisma(float lado,float ancho){
     inicializarVertices(lado,ancho);
     inicializarCaras();
-    inicializarColores();
     inicializarNormalesCaras();
     inicializarNormalesVertices();
 }
@@ -78,20 +77,5 @@ void Prisma::inicializarCaras(){
             caras_pares.push_back(f[i]);
         else
             caras_impares.push_back(f[i]);
-    }
-}
-
-void Prisma::inicializarColores(){
-    Tupla3f c_rojo = {1.0,0.0,0.0};
-    Tupla3f c_verde = {0.0,1.0,0.0};
-    Tupla3f c_naranja = {0.9,0.2,0.07};
-
-    for (int i = 0; i < 3*f.size()/2; i++){
-            color_ajedrez_pares.push_back(c_rojo);
-            color_ajedrez_impares.push_back(c_verde);
-    }
-
-    for (int i = 0; i < v.size(); i++){
-        color.push_back(c_naranja);
     }
 }

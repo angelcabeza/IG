@@ -1,8 +1,9 @@
 #include "aux.h"
 #include "cilindro.h"
 
-Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,const float altura, const float radio){
+Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,const float altura, const float radio,bool textura){
    this->num_instancias = num_instancias_perf;
+   this->con_textura = textura;
 
    Tupla3f vert_sup = {0,altura,0};
 
@@ -13,25 +14,9 @@ Cilindro::Cilindro(const int num_vert_perfil,const int num_instancias_perf,const
 
         perfil.push_back(vertice);
    }
-
+   
    crearMalla(perfil,num_instancias_perf,true,true,1);
-
-   inicializarColores();
+   
    inicializarNormalesCaras();
    inicializarNormalesVertices();
-}
-
-void Cilindro::inicializarColores(){
-   Tupla3f c_rojo = {1.0,0.0,0.0};
-   Tupla3f c_verde = {0.0,1.0,0.0};
-   Tupla3f c_naranja = {0.9,0.2,0.07};
-
-   for (int i = 0; i < 3*f.size()/2; i++){
-         color_ajedrez_pares.push_back(c_rojo);
-         color_ajedrez_impares.push_back(c_verde);
-   }
-
-   for (int i = 0; i < v.size(); i++){
-      color.push_back(c_naranja);
-   }
 }

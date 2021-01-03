@@ -7,6 +7,8 @@ TodosLosVagonesConectados::TodosLosVagonesConectados(){
     grados_libertad = 0;
     maximo_giro = false;
     minimo_giro = false;
+
+    conector->setColor({0.0,1.0,0.0});
 }
 
 void TodosLosVagonesConectados::draw(modo_dibujado modo, bool ajedrez, bool tapas){

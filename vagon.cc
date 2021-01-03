@@ -13,6 +13,7 @@ Vagon::Vagon(){
     Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
     prisma->setMaterial(bronce);
     conector->setMaterial(silver);
+    prisma->setColor({1.0,0.0,0.0});
 }
 
 void Vagon::draw(modo_dibujado modo, bool ajedrez, bool tapas){

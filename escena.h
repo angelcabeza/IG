@@ -17,16 +17,20 @@
 #include "prisma.h"
 #include "tren.h"
 #include "cuadro.h"
+#include "camara.h"
+
+#include <utility>
 
 
 
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,ANIMACIONMANUAL,ANIMACIONAUTOMATICA} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,ANIMACIONMANUAL,ANIMACIONAUTOMATICA,SELCAM} menu;
 typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
 typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS,ILUMINACION} modo_visualizacion;
 typedef enum {ALPHA,BETA} variacion_luz_direccional;
 typedef enum {SUAVE,PLANO} modo_sombreado;
 typedef enum {HUMO,RUEDAS,VAGON1,VAGON2,VAGON3,VAGON4} objeto_a_animar;
+typedef enum {MOVIENDO_CAMARA_FIRSTPERSON,MOVIENDO_CAMARA_EXAMINAR,DESACTIVADO} estado_raton;
 
 class Escena
 {
@@ -55,6 +59,7 @@ class Escena
 
    // DECLARACION DE LOS DISTINTOS ENUMS NECESARIOS PARA EL MENU
    menu modoMenu=NADA;
+   estado_raton estadoRaton = DESACTIVADO;
    objeto_seleccionado objeto_a_pintar = NINGUNO;
    modo_dibujado modo_dibujado_escogido = DEFAULT;
    modo_visualizacion modo_visualizacion_escogido = SOLIDO;
@@ -68,26 +73,26 @@ class Escena
    bool activar_luz0;
    bool activar_luz1;
    bool activar_luz2;
+   bool objetoSeleccionado = false;
    //////////////////////////////////////////////////////////////
 
    // Objetos de la escena
    Ejes ejes;
-   Cubo * cubo = nullptr ; // es importante inicializarlo a 'nullptr'
-   Tetraedro * tetraedro= nullptr ; // es importante inicializarlo a 'nullptr'
-   Prisma * prisma = nullptr;
-   ObjPLY * ply = nullptr;
    ObjRevolucion * peon_negro = nullptr;
-   ObjRevolucion * peon_blanco = nullptr;
    Cilindro * cilindro = nullptr;
-   Cilindro * cilindro_tumbado = nullptr;
-   Cono * cono = nullptr;
-   Esfera * esfera = nullptr;
-   Esfera * esfera_luz2 = nullptr;
+   Esfera * balonfutbol = nullptr;
    LuzPosicional * luz1 = nullptr;
    LuzDireccional * luz0 = nullptr;
    LuzPosicional * luz2 = nullptr;
    Tren * tren = nullptr;
-   Cuadro * cuadro = nullptr;
+   Cuadro * suelo = nullptr;
+   Cuadro * pared = nullptr;
+   Cubo * cubo = nullptr;
+   Cono * cono = nullptr;
+   std::vector<Camara> camaras;
+   int camaraActiva = 0;
+   int xant = 0;
+   int yant = 0;
    
    public:
 
@@ -102,6 +107,11 @@ class Escena
 	bool teclaPulsada( unsigned char Tecla1, int x, int y ) ;
 	void teclaEspecial( int Tecla1, int x, int y );
     void animar();
+    void clickRaton(int boton, int estado, int x, int y);
+    void ratonMovido(int x, int y);
+    void dibujaSeleccion();
+    void procesarPick(int x, int y);
+    Tupla3f centroCamara(Tupla3f centro);
 
 };
 #endif

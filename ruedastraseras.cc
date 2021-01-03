@@ -1,14 +1,16 @@
 #include "ruedastraseras.h"
 
 RuedasTraseras::RuedasTraseras(){
-    rueda1 = new Cilindro (100,100,20,10);
-    rueda2 = new Cilindro (100,100,20,10);
+    rueda1 = new Cilindro (100,100,20,10,false);
+    rueda2 = new Cilindro (100,100,20,10,false);
     grados_rotacion = 0;
 
     Material black_plastic = Material({0.01, 0.01 ,0.01, 1}, {0.5, 0.5, 0.5, 1}, {0.0 ,0.0 ,0.0, 1.0}, 32);
 
     rueda1->setMaterial(black_plastic);
     rueda2->setMaterial(black_plastic);
+    rueda1->setColor({0.0,0.0,0.0});
+    rueda2->setColor({0.0,0.0,0.0});
 }
 
 void RuedasTraseras::draw(modo_dibujado modo, bool ajedrez, bool tapas){

@@ -2,13 +2,14 @@
 
 Humo::Humo(){
     grados_libertad_humo = 0;
-    esfera = new Esfera(100,100,10);
+    esfera = new Esfera(100,100,10,false);
     maxima_altura = false;
     minima_altura = true;
 
     Material material = Material ({0.0,0.0,0.0,1.0},{0.0,0.0,0.0,1.0},{0.0,0.0,0.0,1.0},128);
 
     esfera->setMaterial(material);
+    esfera->setColor({0.0,0.0,0.0});
 }
 
 void Humo::draw(modo_dibujado modo, bool ajedrez,bool tapas){

@@ -227,3 +227,46 @@ void Malla3D::inicializarNormalesVertices(){
 void Malla3D::setTextura(const Textura & text){
    this->textura = new Textura(text);
 }
+
+void Malla3D::setColor(Tupla3f color_solido){
+   this->colorSolido = color_solido;
+   inicializarColores();
+}
+
+Tupla3f Malla3D::getColor(){
+   return this->colorSolido;
+}
+
+void Malla3D::inicializarColores(){
+    Tupla3f c_rojo = {1.0,0.0,0.0};
+    Tupla3f c_verde = {0.0,1.0,0.0};
+
+    for (int i = 0; i < 3*f.size()/2; i++){
+            color_ajedrez_pares.push_back(c_rojo);
+            color_ajedrez_impares.push_back(c_verde);
+    }
+
+    for (int i = 0; i < v.size(); i++){
+        color.push_back(colorSolido);
+    }
+}
+
+void Malla3D::calcularCentro(){
+   for (int i = 0; i < v.size(); i++){
+      centro = centro + v[i];
+   }
+
+   centro = centro / v.size();
+}
+
+Tupla3f Malla3D::getCentro(){
+   return centro;
+}
+
+void Malla3D::setPosicion(Tupla3f pos){
+   posicion = pos;
+}
+
+Tupla3f Malla3D::getPosicion(){
+   return this->posicion;
+}

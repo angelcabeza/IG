@@ -8,10 +8,7 @@ class Cilindro : public ObjRevolucion
 {
     public:
         Cilindro( const int num_vert_perfil,const int num_instancias_perf,
-                  const float altura, const float radio);
-
-    private:
-        void inicializarColores();
+                  const float altura, const float radio,bool con_textura);
 };
 
 #endif

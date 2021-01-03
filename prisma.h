@@ -8,7 +8,6 @@ class Prisma : public Malla3D
     private:
         void inicializarVertices(float lado,float ancho);
         void inicializarCaras();
-        void inicializarColores();
 
     public:
         Prisma(float lado=40, float ancho=80);

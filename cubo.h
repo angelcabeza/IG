@@ -27,7 +27,6 @@ class Cubo : public Malla3D
    private:
    void inicializarVertices(float lado);
    void inicializarCaras();
-   void inicializarColores();
 
    public:
    Cubo(float l=1) ;
