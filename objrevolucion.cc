@@ -23,7 +23,6 @@ ObjRevolucion::ObjRevolucion(const std::string & archivo, int num_instancias, bo
    this->num_instancias = num_instancias;
    ply::read_vertices(archivo,perfil);
    crearMalla(perfil,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
-   inicializarColores();
    inicializarNormalesCaras();
    inicializarNormalesVertices();
    calcularCoordTexturas();
@@ -38,7 +37,6 @@ ObjRevolucion::ObjRevolucion(std::vector<Tupla3f> archivo, int num_instancias, b
    this->num_instancias = num_instancias;
    perfil = archivo;
    crearMalla(archivo,num_instancias,tapa_sup,tapa_inf,eje_rotacion);
-   inicializarColores();
    inicializarNormalesCaras();
    inicializarNormalesVertices();
    calcularCoordTexturas();
@@ -156,8 +154,9 @@ void ObjRevolucion::draw_ModoInmediato(bool ajedrez,bool tapas)
       glDrawElements(GL_TRIANGLES,caras_impares.size()*3, GL_UNSIGNED_INT,caras_impares.data());
    }
    else{
-      if (!glIsEnabled(GL_LIGHTING))
+      if (!glIsEnabled(GL_LIGHTING)){
          glColorPointer(3,GL_FLOAT,0,color.data());
+      }
       // visualizar, indicando tipo de primitiva, número de índices,
       // tipo de los índices y dirección de la tabla de índices
 
@@ -395,6 +394,7 @@ void ObjRevolucion::calcularCoordTexturas(){
 
 
    if (!esfera){
+      std::cout << "Calculando coords textura cilidro " << std::endl;
       float alpha, beta, h;
 
       float s, t;

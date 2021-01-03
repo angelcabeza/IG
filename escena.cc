@@ -33,8 +33,8 @@ Escena::Escena()
     Textura text = Textura("texturas/text-lata-1.jpg");
     cilindro->setTextura(text);
     peon_negro = new ObjRevolucion("plys/lata-pcue.ply",50,true);
-    peon_negro->setTextura(text);
     peon_negro->setColor({1,1,1});
+    peon_negro->setTextura(text);
     balonfutbol = new Esfera(10,100,20,true);
     balonfutbol->setColor({1,1,1});
     Textura text3 = Textura("texturas/text-balonfutbol.jpg");
