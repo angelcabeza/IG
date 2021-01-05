@@ -76,3 +76,24 @@ void Tren::modificarGradosLibertadVagon3Automatico(float valor){
 void Tren::modificarGradosLibertadVagon4Automatico(float valor){
     tren->modificarGradosLibertadVagon4Automatico(valor);
 }
+
+void Tren::setColorSeleccion(Tupla3f color){
+    tren->setColorSeleccion(color);
+    colorSeleccion = color;
+}
+
+Tupla3f Tren::getColorSeleccion(){
+    return colorSeleccion;
+}
+
+void Tren::restaurarColorVagones(){
+    tren->restaurarColorVagones();
+}
+
+void Tren::restaurarColorConectoresChimenea(){
+    tren->restaurarColorConectoresChimenea();
+}
+
+void Tren::restaurarColorRuedasHumo(){
+    tren->restaurarColorRuedasHumo();
+}

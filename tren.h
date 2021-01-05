@@ -26,6 +26,11 @@ class Tren : public Malla3D
         void modificarGradosLibertadVagon4Automatico(float valor);
         void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadRuedasAutomatico(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorVagones();
+        void restaurarColorRuedasHumo();
+        void restaurarColorConectoresChimenea();
+        Tupla3f getColorSeleccion();
 };
 
 #endif

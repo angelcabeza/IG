@@ -13,6 +13,8 @@ class RuedasTraseras : public Malla3D {
         RuedasTraseras();
         void draw(modo_dibujado modo, bool ajedrez, bool tapas);
         void modificarGradosLibertadRuedasManual(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorRuedasHumo();
 };
 
 #endif

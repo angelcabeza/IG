@@ -106,6 +106,10 @@ void Malla3D::draw_ModoDiferido()
       id_vbo_normal_vertex = CrearVBO(GL_ARRAY_BUFFER, 3 * sizeof(float)*nv.size(),nv.data());
    }
 
+   if (id_vbo_coord == 0 && !ct.empty()){
+      id_vbo_coord = CrearVBO(GL_ARRAY_BUFFER, ct.size()*2*sizeof(float),ct.data());
+   }
+
    glBindBuffer ( GL_ARRAY_BUFFER, id_vbo_ver);    //activar VBO de vértices
    glVertexPointer (3, GL_FLOAT,0,0);              // especifica formato y off-set (=0)
    glBindBuffer ( GL_ARRAY_BUFFER,0);              // desactivar VBO de vértices.
@@ -125,12 +129,19 @@ void Malla3D::draw_ModoDiferido()
       m.aplicar();
    }
 
+  if (!ct.empty() && glIsEnabled(GL_TEXTURE_2D)){
+      textura->activar();
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glBindBuffer(GL_ARRAY_BUFFER,id_vbo_coord);
+      glTexCoordPointer(2,GL_FLOAT,0,0);
+      glBindBuffer(GL_ARRAY_BUFFER,0);
+   }
    // visualizar triángulos con glDrawElements(puntero a tabla == 0)
    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, id_vbo_tri);                  // activar VBO de triángulos
       
    glDrawElements (GL_TRIANGLES, 3*f.size(), GL_UNSIGNED_INT, 0);
    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER,0);                            // desactivar VBO de triángulos
-
+   glBindBuffer(GL_TEXTURE_2D,0);
 
    // desactivar uso de array de vértices y de colores
    glDisableClientState( GL_VERTEX_ARRAY);
@@ -138,6 +149,11 @@ void Malla3D::draw_ModoDiferido()
 
    if (glIsEnabled(GL_LIGHTING))
       glDisableClientState( GL_NORMAL_ARRAY);
+
+   if(!ct.empty()){
+      glDisableClientState ( GL_TEXTURE_COORD_ARRAY);
+      //glDisable(GL_TEXTURE_2D);
+   }
 
 }
 

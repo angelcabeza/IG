@@ -16,6 +16,9 @@ class Chimenea : public Malla3D{
         void draw(modo_dibujado modo, bool ajedrez,bool tapas);
         void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadHumoManual(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorConectoresChimenea();
+        void restaurarColorRuedasHumo();
 };
 
 #endif

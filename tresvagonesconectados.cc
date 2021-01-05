@@ -58,3 +58,23 @@ void TresVagonesConectados::modificarGradosLibertadVagon3Automatico(float valor)
 void TresVagonesConectados::modificarGradosLibertadVagon4Automatico(float valor){
     dosvagones->modificarGradosLibertadVagon4Automatico(valor);
 }
+
+void TresVagonesConectados::setColorSeleccion(Tupla3f color){
+    dosvagones->setColorSeleccion(color);
+    vagon->setColorSeleccion(color);
+}
+
+void TresVagonesConectados::restaurarColorVagones(){
+    dosvagones->restaurarColorVagones();
+    vagon->restaurarColorVagones();
+}
+
+void TresVagonesConectados::restaurarColorConectoresChimenea(){
+    dosvagones->restaurarColorConectoresChimenea();
+    vagon->restaurarColorConectoresChimenea();
+}
+
+void TresVagonesConectados::restaurarColorRuedasHumo(){
+    dosvagones->restaurarColorRuedasHumo();
+    vagon->restaurarColorRuedasHumo();
+}

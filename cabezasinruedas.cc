@@ -31,3 +31,20 @@ void CabezaSinRuedas::modificarGradosLibertadHumoAutomatico(float valor){
 void CabezaSinRuedas::modificarGradosLibertadHumoManual(float valor){
     chimenea->modificarGradosLibertadHumoManual(valor);
 }
+
+void CabezaSinRuedas::setColorSeleccion(Tupla3f color){
+    chimenea->setColorSeleccion(color);
+    prisma->setColorSeleccion(color);
+}
+
+void CabezaSinRuedas::restaurarColorVagones(){
+    prisma->setColor({1,0,0});
+}
+
+void CabezaSinRuedas::restaurarColorConectoresChimenea(){
+    chimenea->restaurarColorConectoresChimenea();
+}
+
+void CabezaSinRuedas::restaurarColorRuedasHumo(){
+    chimenea->restaurarColorRuedasHumo();
+}

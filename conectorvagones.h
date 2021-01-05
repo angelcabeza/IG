@@ -20,6 +20,8 @@ class ConectorVagones : public Malla3D
         void draw (modo_dibujado modo, bool ajedrez, bool tapas);
         void modificarGradosLibertadConectores(float valor);
         float getGradosLibertad();
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorConectoresChimenea();
 };
 
 #endif

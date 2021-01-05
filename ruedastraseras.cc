@@ -34,3 +34,13 @@ void RuedasTraseras::draw(modo_dibujado modo, bool ajedrez, bool tapas){
 void RuedasTraseras::modificarGradosLibertadRuedasManual(float valor){
     grados_rotacion += valor;
 }
+
+void RuedasTraseras::setColorSeleccion(Tupla3f color){
+    rueda1->setColorSeleccion(color);
+    rueda2->setColorSeleccion(color);
+}
+
+void RuedasTraseras::restaurarColorRuedasHumo(){
+    rueda1->setColor({0,0,0});
+    rueda2->setColor({0,0,0});
+}

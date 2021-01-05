@@ -15,6 +15,8 @@ class RuedasDelanteras : public Malla3D{
         RuedasDelanteras();
         void draw(modo_dibujado modo, bool ajedrez, bool tapas);
         void modificarGradosLibertadRuedasManual(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorRuedasHumo();
 };
 
 #endif

@@ -42,3 +42,12 @@ void Humo::modificarGradosLibertadHumoAutomatico(float valor){
 void Humo::modificarGradosLibertadHumoManual(float valor){
     grados_libertad_humo += valor;
 }
+
+void Humo::setColorSeleccion(Tupla3f color){
+    esfera->setColorSeleccion(color);
+    esfera->setColor(color);
+}
+
+void Humo::restaurarColorRuedasHumo(){
+    esfera->setColor({0,0,0});
+}

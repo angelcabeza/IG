@@ -7,11 +7,6 @@ CabezaConRuedas::CabezaConRuedas(){
     maximo_giro = false;
     minimo_giro = false;
     grados_libertad_vagon = 0;
-    bisagra = new Esfera(10,100,10,false);
-
-    Material silver = Material({0.50754,0.50754,0.50754,1.0}, {0.508273,0.508273,0.508273,1.0}, {0.19225,0.19225,0.19225,1.0}, 51.2);
-    bisagra->setMaterial(silver);
-    bisagra->setColor({0.5,0.5,0.5});
 }
 
 void CabezaConRuedas::draw(modo_dibujado modo, bool ajedrez, bool tapas){
@@ -64,4 +59,24 @@ void CabezaConRuedas::modificarGradosLibertadHumoManual(float valor){
 void CabezaConRuedas::modificarGradosLibertadRuedasAutomatico(float valor){
     ruedasdelanteras->modificarGradosLibertadRuedasManual(valor);
     ruedastraseras->modificarGradosLibertadRuedasManual(valor);
+}
+
+void CabezaConRuedas::setColorSeleccion(Tupla3f color){
+    ruedasdelanteras->setColorSeleccion(color);
+    ruedastraseras->setColorSeleccion(color);
+    cabeza->setColorSeleccion(color);
+}
+
+void CabezaConRuedas::restaurarColorVagones(){
+    cabeza->restaurarColorVagones();
+}
+
+void CabezaConRuedas::restaurarColorConectoresChimenea(){
+    cabeza->restaurarColorConectoresChimenea();
+}
+
+void CabezaConRuedas::restaurarColorRuedasHumo(){
+    cabeza->restaurarColorRuedasHumo();
+    ruedasdelanteras->restaurarColorRuedasHumo();
+    ruedastraseras->restaurarColorRuedasHumo();
 }

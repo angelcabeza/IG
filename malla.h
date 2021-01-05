@@ -67,7 +67,7 @@ class Malla3D
    GLuint id_vbo_tri = 0;
    GLuint id_vbo_col = 0;
    GLuint id_vbo_normal_vertex = 0;
-   GLuint id_vbo_normal_faces = 0;
+   GLuint id_vbo_coord = 0;
 
    std::vector<Tupla3f> v ;   // tabla de coordenadas de vértices (una tupla por vértice, con tres floats)
    std::vector<Tupla3i> f ; // una terna de 3 enteros por cada cara o triángulo

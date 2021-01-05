@@ -62,3 +62,24 @@ void Vagon::modificarGradosLibertadRuedasAutomatico(float valor){
     ruedasdelanteras->modificarGradosLibertadRuedasManual(valor);
     ruedastraseras->modificarGradosLibertadRuedasManual(valor);
 }
+
+void Vagon::setColorSeleccion(Tupla3f color){
+    prisma->setColorSeleccion(color);
+    ruedasdelanteras->setColorSeleccion(color);
+    ruedastraseras->setColorSeleccion(color);
+    conector->setColorSeleccion(color);
+}
+
+void Vagon::restaurarColorVagones(){
+    prisma->setColor({1,0,0});
+}
+
+void Vagon::restaurarColorConectoresChimenea(){
+    conector->restaurarColorConectoresChimenea();
+}
+
+void Vagon::restaurarColorRuedasHumo(){
+    ruedasdelanteras->restaurarColorRuedasHumo();
+    ruedastraseras->restaurarColorRuedasHumo();
+
+}

@@ -8,7 +8,6 @@
 class TodosLosVagonesConectados : public Malla3D{
     private:
         TresVagonesConectados * tresvagones = nullptr;
-        ConectorVagones * conector = nullptr;
         CabezaConRuedas * cabeza = nullptr;
         float grados_libertad;
         bool maximo_giro;
@@ -27,6 +26,10 @@ class TodosLosVagonesConectados : public Malla3D{
         void modificarGradosLibertadVagon4Automatico(float valor);
         void modificarGradosLibertadHumoAutomatico(float valor);
         void modificarGradosLibertadRuedasAutomatico(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorVagones();
+        void restaurarColorConectoresChimenea();
+        void restaurarColorRuedasHumo();
 };
 
 #endif

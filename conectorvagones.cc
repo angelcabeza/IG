@@ -58,3 +58,18 @@ void ConectorVagones::modificarGradosLibertadConectores(float valor){
 float ConectorVagones::getGradosLibertad(){
     return grados_libertad_conector;
 }
+
+void ConectorVagones::setColorSeleccion(Tupla3f color){
+    cilindro->setColorSeleccion(color);
+    esferaExtDcha->setColorSeleccion(color);
+    esferaExtrIzq->setColorSeleccion(color);
+    cilindro->setColor(color);
+    esferaExtDcha->setColor(color);
+    esferaExtrIzq->setColor(color);
+}
+
+void ConectorVagones::restaurarColorConectoresChimenea(){
+    cilindro->setColor({0.5,0.5,0.5});
+    esferaExtDcha->setColor({0.5,0.5,0.5});
+    esferaExtrIzq->setColor({0.5,0.5,0.5});
+}

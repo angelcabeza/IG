@@ -26,6 +26,10 @@ class Vagon : public Malla3D
         void modificarGradosLibertadRuedasManual(float valor);
         void modificarGradosLibertadVagon(float valor);
         void modificarGradosLibertadRuedasAutomatico(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorVagones();
+        void restaurarColorConectoresChimenea();
+        void restaurarColorRuedasHumo();
 };
 
 #endif

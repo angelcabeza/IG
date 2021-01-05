@@ -203,6 +203,9 @@ void ObjRevolucion::draw_ModoDiferido(bool tapas)
    if (id_vbo_normal_vertex == 0){
       id_vbo_normal_vertex = CrearVBO( GL_ARRAY_BUFFER, 3*sizeof(float) * nv.size(), nv.data());
    }
+   if (id_vbo_coord == 0){
+      id_vbo_coord = CrearVBO( GL_ARRAY_BUFFER, 2*sizeof(float)*ct.size(), ct.data());
+   }
 
    glBindBuffer ( GL_ARRAY_BUFFER, id_vbo_ver);    //activar VBO de vértices
    glVertexPointer (3, GL_FLOAT,0,0);              // especifica formato y off-set (=0)
@@ -221,6 +224,14 @@ void ObjRevolucion::draw_ModoDiferido(bool tapas)
       glNormalPointer(GL_FLOAT,0,0);
       glBindBuffer(GL_ARRAY_BUFFER,0);
       m.aplicar();
+   }
+
+   if (!ct.empty() && glIsEnabled(GL_TEXTURE_2D)){
+      textura->activar();
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+      glBindBuffer(GL_ARRAY_BUFFER,id_vbo_coord);
+      glTexCoordPointer(2,GL_FLOAT,0,0);
+      glBindBuffer(GL_ARRAY_BUFFER,0);
    }
 
    // visualizar triángulos con glDrawElements(puntero a tabla == 0)

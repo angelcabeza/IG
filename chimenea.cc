@@ -28,3 +28,17 @@ void Chimenea::modificarGradosLibertadHumoAutomatico(float valor){
 void Chimenea::modificarGradosLibertadHumoManual(float valor){
     humo->modificarGradosLibertadHumoManual(valor);
 }
+
+void Chimenea::setColorSeleccion(Tupla3f color){
+    humo->setColorSeleccion(color);
+    base_chimenea->setColorSeleccion(color);
+    base_chimenea->setColor(color);
+}
+
+void Chimenea::restaurarColorConectoresChimenea(){
+    base_chimenea->setColor({0.5,0.5,0.5});
+}
+
+void Chimenea::restaurarColorRuedasHumo(){
+    humo->restaurarColorRuedasHumo();
+}

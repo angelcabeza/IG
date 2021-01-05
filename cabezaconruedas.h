@@ -26,6 +26,10 @@ class CabezaConRuedas : public Malla3D{
         void modificarGradosLibertadVagon(float valor);
         void modificarGradosLibertadHumoManual(float valor);
         void modificarGradosLibertadRuedasAutomatico(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorVagones();
+        void restaurarColorConectoresChimenea();
+        void restaurarColorRuedasHumo();
 
 };
 

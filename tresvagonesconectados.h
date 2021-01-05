@@ -22,6 +22,10 @@ class TresVagonesConectados : public Malla3D{
         void modificarGradosLibertadRuedasAutomatico(float valor);
         void modificarGradosLibertadVagon3Automatico(float valor);
         void modificarGradosLibertadVagon4Automatico(float valor);
+        void setColorSeleccion(Tupla3f color);
+        void restaurarColorVagones();
+        void restaurarColorConectoresChimenea();
+        void restaurarColorRuedasHumo();
 };
 
 #endif

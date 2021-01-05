@@ -49,16 +49,20 @@ Escena::Escena()
 
    /////////////////////////////////////////////////////////////////////
     //Declaro y aplico materiales
-    /*Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
+    Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
     Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
     Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
     Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
+    Material white_plastic = Material ({0.55,0.55,0.55,1}, {0.7,0.7,0.7,1}, {0.0,0.0,0.0,1}, 0.25*128);
 
-    peon_blanco->setMaterial(material_difuso);
-    peon_negro->setMaterial(material_especular);
-    cono->setMaterial(material_esmeralda);
-    cilindro->setMaterial(material_anaranjado);
-    prisma->setMaterial(material_anaranjado);*/
+    suelo->setMaterial(white_plastic);
+    pared->setMaterial(white_plastic);
+    peon_negro->setMaterial(white_plastic);
+    balonfutbol->setMaterial(white_plastic);
+
+    cubo->setMaterial(material_esmeralda);
+    cono->setMaterial(material_anaranjado);
+    
    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
@@ -212,8 +216,8 @@ void Escena::dibujar()
 
    glEnable(GL_TEXTURE_2D);
    glPushMatrix();
-      //glTranslatef(-60,0,0);
       glTranslatef(120,0,200);
+      peon_negro->setPosicion({120,0,200});
       glScalef(70,70,70);
       peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
@@ -226,6 +230,7 @@ void Escena::dibujar()
 
    glPushMatrix();
       glTranslatef(0,20,200);
+      balonfutbol->setPosicion({0,20,200});
       balonfutbol->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 
@@ -244,12 +249,14 @@ void Escena::dibujar()
 
    glPushMatrix();
       glTranslatef(128,128,200);
+      cono->setPosicion({128,128,200});
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 
    glPushMatrix();
       glTranslatef(-200,10,100);
       glScalef(0.75,0.75,0.75);
+      tren->setPosicion({-200/2,10/2,100/2});
       tren->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 }
@@ -409,6 +416,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if (modoMenu == SELCAM){
                cout << "Camara activa = 0" << endl;
                camaraActiva = 0;
+               change_projection(1);
             }
 
          break;
@@ -430,6 +438,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if (modoMenu == SELCAM){
                cout << "Camara activa = 1" << endl;
                camaraActiva = 1;
+               change_projection(1);
             }
 
             if (modoMenu == ANIMACIONMANUAL){
@@ -455,6 +464,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if (modoMenu == SELCAM){
                cout << "Camara activa = 2" << endl;
                camaraActiva = 2;
+               change_projection(1);
             }
 
             if (modoMenu == ANIMACIONMANUAL){
@@ -797,11 +807,15 @@ void Escena::dibujaSeleccion(){
       pared->draw(modo_dibujado_escogido,false);
    glPopMatrix();
 
+   tren->setColorSeleccion({1,0,0});
    glPushMatrix();
       glTranslatef(-200,10,100);
       glScalef(0.75,0.75,0.75);
       tren->draw(modo_dibujado_escogido,false,true);
    glPopMatrix();
+   tren->restaurarColorConectoresChimenea();
+   tren->restaurarColorRuedasHumo();
+   tren->restaurarColorVagones();
 
    glEnable(GL_DITHER);
 	glEnable(GL_LIGHTING);
@@ -833,6 +847,7 @@ void Escena::procesarPick(int x, int y){
    std::cout << "Pixel leido = " << pixel_leido << std::endl;
 
    if (pixel_leido[0] == cubo->getColor()[0] && pixel_leido[1] == cubo->getColor()[1] && round(pixel_leido[2]) == round(cubo->getColor()[2])){
+      std::cout << "Cubo seleccionado" << std::endl;
       Tupla3f centro = cubo->getCentro();
 
       centro = centro + cubo->getPosicion();
@@ -842,14 +857,38 @@ void Escena::procesarPick(int x, int y){
    }
 
    else if (pixel_leido[0] == cono->getColor()[0] && pixel_leido[1] == cono->getColor()[1] && round(pixel_leido[2]) == round(cono->getColor()[2])){
-      std::cout << "Cono seleccionado" << std::endl;
+      std::cout << "Cono seleccionado " << std::endl;
+      Tupla3f centro = cono->getCentro();
+
+      centro = centro + cubo->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
    }
 
    else if (pixel_leido[0] == balonfutbol->getColorSeleccion()[0] && pixel_leido[1] == balonfutbol->getColorSeleccion()[1] && round(pixel_leido[2]) == round(balonfutbol->getColorSeleccion()[2])){
       std::cout << "Balon de futbol seleccionado" << std::endl;
+      Tupla3f centro = balonfutbol->getCentro();
+
+      centro = centro + balonfutbol->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
    }
    else if (pixel_leido[0] == peon_negro->getColorSeleccion()[0] && pixel_leido[1] == peon_negro->getColorSeleccion()[1] && round(pixel_leido[2]) == round(peon_negro->getColorSeleccion()[2])){
-      std::cout << "Lata de refresco seleccionada" << std::endl;
+      std::cout << "Lata seleccionada" << std::endl;
+      Tupla3f centro = peon_negro->getCentro();
+
+      centro = centro + peon_negro->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == tren->getColorSeleccion()[0] && pixel_leido[1] == tren->getColorSeleccion()[1] && round(pixel_leido[2]) == round(tren->getColorSeleccion()[2])){
+      Tupla3f centro = tren->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
    }
    else{
       std::cout << "No hay ningun objeto seleccionado" << std::endl;

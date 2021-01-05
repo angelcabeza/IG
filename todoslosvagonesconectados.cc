@@ -2,13 +2,10 @@
 
 TodosLosVagonesConectados::TodosLosVagonesConectados(){
     tresvagones = new TresVagonesConectados();
-    conector = new ConectorVagones();
     cabeza = new CabezaConRuedas();
     grados_libertad = 0;
     maximo_giro = false;
     minimo_giro = false;
-
-    conector->setColor({0.0,1.0,0.0});
 }
 
 void TodosLosVagonesConectados::draw(modo_dibujado modo, bool ajedrez, bool tapas){
@@ -76,4 +73,24 @@ void TodosLosVagonesConectados::modificarGradosLibertadVagon3Automatico(float va
 
 void TodosLosVagonesConectados::modificarGradosLibertadVagon4Automatico(float valor){
     tresvagones->modificarGradosLibertadVagon4Automatico(valor);
+}
+
+void TodosLosVagonesConectados::setColorSeleccion(Tupla3f color){
+    tresvagones->setColorSeleccion(color);
+    cabeza->setColorSeleccion(color);
+}
+
+void TodosLosVagonesConectados::restaurarColorVagones(){
+    cabeza->restaurarColorVagones();
+    tresvagones->restaurarColorVagones();
+}
+
+void TodosLosVagonesConectados::restaurarColorConectoresChimenea(){
+    cabeza->restaurarColorConectoresChimenea();
+    tresvagones->restaurarColorConectoresChimenea();
+}
+
+void TodosLosVagonesConectados::restaurarColorRuedasHumo(){
+    cabeza->restaurarColorRuedasHumo();
+    tresvagones->restaurarColorRuedasHumo();
 }

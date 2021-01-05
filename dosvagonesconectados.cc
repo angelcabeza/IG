@@ -51,3 +51,24 @@ void DosVagonesConectados::modificarGradosLibertadVagon4Automatico(float valor){
         minimo_giro = true;
     }
 }
+
+
+void DosVagonesConectados::setColorSeleccion(Tupla3f color){
+    vagon1->setColorSeleccion(color);
+    vagon2->setColorSeleccion(color);
+}
+
+void DosVagonesConectados::restaurarColorVagones(){
+    vagon1->restaurarColorVagones();
+    vagon2->restaurarColorVagones();
+}
+
+void DosVagonesConectados::restaurarColorConectoresChimenea(){
+    vagon1->restaurarColorConectoresChimenea();
+    vagon2->restaurarColorConectoresChimenea();
+}
+
+void DosVagonesConectados::restaurarColorRuedasHumo(){
+    vagon1->restaurarColorRuedasHumo();
+    vagon2->restaurarColorRuedasHumo();
+}
