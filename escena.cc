@@ -35,7 +35,7 @@ Escena::Escena()
     peon_negro = new ObjRevolucion("plys/lata-pcue.ply",50,true);
     peon_negro->setColor({1,1,1});
     peon_negro->setTextura(text);
-    balonfutbol = new Esfera(10,100,20,true);
+    balonfutbol = new Esfera(100,100,20,true);
     balonfutbol->setColor({1,1,1});
     Textura text3 = Textura("texturas/text-balonfutbol.jpg");
     balonfutbol->setTextura(text3);
@@ -67,8 +67,8 @@ Escena::Escena()
 
    // CREO LAS LUCES DE LA ESCENA
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
-    luz1 = new LuzPosicional({20, 100, -300},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
-    luz2 = new LuzPosicional({30, 30, 70},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz1 = new LuzPosicional({20, 200, 50},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz2 = new LuzPosicional({0, 200, 900},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // DECLARO LAS CAMARAS DE LA ESCENA
@@ -705,6 +705,15 @@ void Escena::animar(){
       tren->modificarGradosLibertadVagon2Automatico(0.3);
       tren->modificarGradosLibertadHumoAutomatico(0.3);
       tren->modificarGradosLibertadRuedasAutomatico(0.3);
+   }
+
+   if (iluminacion){
+      if (luz1->estaActivada()){
+         luz1->cambiarPosicion(10,0,0);
+         std::cout << "Cambiando pos" << std::endl;
+      }
+      if (luz2->estaActivada())
+         luz2->cambiarPosicion(10,0,0);
    }
 }
 

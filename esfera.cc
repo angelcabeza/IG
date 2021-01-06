@@ -27,6 +27,9 @@ Esfera::Esfera(const int num_vert_perfil,const int num_instancias_perf, const fl
     perfil.push_back(vert_inf_esfera);
     crearMalla(perfil,num_instancias_perf,true,true);
 
+    inicializarNormalesCaras();
+    inicializarNormalesVertices();
+
     if (this->textura != nullptr)
         calcularCoordTexturas();
 }
