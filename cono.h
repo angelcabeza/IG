@@ -8,7 +8,7 @@ class Cono : public ObjRevolucion
 {
     public:
         Cono( const int num_vert_perfil,const int num_instancias_perf,
-                  const float altura, const float radio,bool textura);
+                  const float altura, const float radio,bool textura, bool tapa_inf, bool tapa_sup);
 };
 
 #endif

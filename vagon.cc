@@ -81,5 +81,4 @@ void Vagon::restaurarColorConectoresChimenea(){
 void Vagon::restaurarColorRuedasHumo(){
     ruedasdelanteras->restaurarColorRuedasHumo();
     ruedastraseras->restaurarColorRuedasHumo();
-
 }

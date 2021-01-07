@@ -21,6 +21,8 @@ Escena::Escena()
 
    // OBJETOS EN LA ESCENA
     iluminacion = false;
+
+    //INICIALIZAR SUELO
     suelo = new Cuadro(800);
     suelo->setColor({1,1,1});
     Textura text2 = Textura("texturas/text-madera.jpg");
@@ -28,47 +30,140 @@ Escena::Escena()
     pared = new Cuadro(800);
     pared->setColor({1,1,1});
     pared->setTextura(text2);
-    cilindro = new Cilindro (10,100,10,5,true);
-    cilindro->setColor({1,1,1});
+   //////////////////////////////////////////////////////
+
+   //INICIALIZAR LATA
     Textura text = Textura("texturas/text-lata-1.jpg");
-    cilindro->setTextura(text);
     peon_negro = new ObjRevolucion("plys/lata-pcue.ply",50,true);
     peon_negro->setColor({1,1,1});
     peon_negro->setTextura(text);
+    /////////////////////////////////////////////////////////////////////
+
+    ///INICIALIZAR BALONFUTBOL
     balonfutbol = new Esfera(100,100,20,true);
     balonfutbol->setColor({1,1,1});
     Textura text3 = Textura("texturas/text-balonfutbol.jpg");
     balonfutbol->setTextura(text3);
-    cubo = new Cubo(50);
-    cubo->setColor({1.0,0.6,0.2});
-    cono = new Cono(10,100,20,20,false);
-    cono->setColor({0.6,0.6,0.5});
+    ////////////////////////////////////////////////////////////////////
+
+    // INICIALIZAR TREN
     tren = new Tren();
+   /////////////////////////////////////////////////////////////////////
 
+   //INICIALIZAR CAMA
+    pata1 = new Prisma(10,50);
+    pata1->setColor({0.9,0.65,0.4});
+    pata2 = new Prisma(10,50);
+    pata2->setColor({0.9,0.65,0.4});
+    pata3 = new Prisma(10,50);
+    pata3->setColor({0.9,0.65,0.4});
+    pata4 = new Prisma(10,50);
+    pata4->setColor({0.9,0.65,0.4});
+    somier = new Prisma(100,200);
+    somier->setColor({0.9,0.65,0.4});
+    reposacabezas = new Prisma(100,10);
+    reposacabezas->setColor({0.9,0.65,0.4});
+    colchon = new Prisma(100,200);
+    colchon->setColor({1,0,0});
+    ///////////////////////////////////////////////////////////////////
 
+   // INICIALIZAR POSTER
+    poster = new Cuadro(20);
+    poster->setColor({1,1,1});
+    Textura text_cuadro = Textura("texturas/text-cuadro.jpg");
+    poster->setTextura(text_cuadro);
+   ////////////////////////////////////////////////////////////////////
+
+   //INICIALIZAR MESA
+    pataMesa1 = new Prisma (10,80);
+    pataMesa2 = new Prisma (10,80);
+    pataMesa3 = new Prisma (10,80);
+    pataMesa4 = new Prisma (10,80);
+    tablaMesa = new Prisma (10,80);
+    tablaMesa = new Prisma (100,200);
+    pataMesa1->setColor({0.9,0.65,0.4});
+    pataMesa2->setColor({0.9,0.65,0.4});
+    pataMesa3->setColor({0.9,0.65,0.4});
+    pataMesa4->setColor({0.9,0.65,0.4});
+    tablaMesa->setColor({0.9,0.65,0.4});
+   ////////////////////////////////////////////////////////////////////
+
+   // INICIALIZAR SILLA
+    pataSilla1 = new Prisma (10,80);
+    pataSilla2 = new Prisma (10,80);
+    pataSilla3 = new Prisma (10,80);
+    pataSilla4 = new Prisma (10,80);
+    baseSilla = new Prisma (40,50);
+    reposaEspaldas = new Prisma (60,30);
+    pataSilla1->setColor({0.9,0.65,0.4});
+    pataSilla2->setColor({0.9,0.65,0.4});
+    pataSilla3->setColor({0.9,0.65,0.4});
+    pataSilla4->setColor({0.9,0.65,0.4});
+    baseSilla->setColor({0.9,0.65,0.4});
+    reposaEspaldas->setColor({0.9,0.65,0.4});
+   ////////////////////////////////////////////////////////////////////
+
+   // INICIALIZAR LAMPARA
+    baseLampara = new Esfera(100,100,20,false);
+    baseLampara->setColor({0.6,0.6,0.5});
+    cono = new Cono(10,100,20,20,false,false,false);
+    cono->setColor({0.6,0.6,0.5});
 
    /////////////////////////////////////////////////////////////////////
-    //Declaro y aplico materiales
+    //Declaro y aplico materiales            DIFUSO               ESPECULAR        AMBIENTE     BRILLO
     Material material_difuso = Material( {1.0,1.0,1.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0,0,1.0} , 128.0);
     Material material_especular = Material ( {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , {0.0,0.0,0.0,1.0} , 128.0);
     Material material_esmeralda = Material ({0.9,0.2,0.07,1.0}, {0.9,0.2,0.07, 1}, {0.0, 0.0,0.0, 1}, 64.0);
     Material material_anaranjado = Material ({0.633, 0.727811,0.633, 1}, {0.633, 0.727811,0.633, 1},{0.0215, 0.1745, 0.0215, 1}, 64.0);
     Material white_plastic = Material ({0.55,0.55,0.55,1}, {0.7,0.7,0.7,1}, {0.0,0.0,0.0,1}, 0.25*128);
+    Material red_plastic = Material ({0.5,0.0,0.0,1}, {0.7,0.6,0.6,1}, {0,0,0,1}, 0.25*128);
+    Material bronce = Material ({0.7038, 0.27048,0.0828, 1}, {0.256777, 0.137622,0.086014, 1},{0.019125, 0.0735, 0.0225, 1}, 12.8);
+    Material plata = Material ({0.50754,0.50754,0.50754,1},{0.508273,0.508273,0.508273,1},{0.19225,0.19225,0.19225,1},0.4*128);
+    
+    //ASIGNACION DE MATERIALES PARA CAMA
+    pata1->setMaterial(bronce);
+    pata2->setMaterial(bronce);
+    pata3->setMaterial(bronce);
+    pata4->setMaterial(bronce);
+    somier->setMaterial(bronce);
+    colchon->setMaterial(red_plastic);
+    reposacabezas->setMaterial(bronce);
+    ///////////////////////////////////////////////////
 
+    // ASIGNACION DE MATERIALES PARA MESA
+    pataMesa1->setMaterial(bronce);
+    pataMesa2->setMaterial(bronce);
+    pataMesa3->setMaterial(bronce);
+    pataMesa4->setMaterial(bronce);
+    tablaMesa->setMaterial(bronce);
+    //////////////////////////////////////////////////
+
+    // ASGINACION DE MATERIALES PARA SILLA
+    pataSilla1->setMaterial(bronce);
+    pataSilla2->setMaterial(bronce);
+    pataSilla3->setMaterial(bronce);
+    pataSilla4->setMaterial(bronce);
+    baseSilla->setMaterial(bronce);
+    reposaEspaldas->setMaterial(bronce);
+
+    // ASIGNACION DE MATERIALES PARA LAMPARA
+    cono->setMaterial(plata);
+    baseLampara->setMaterial(plata);
+    //////////////////////////////////////////////////
+
+    // ASIGNACION DE MATERIALES PARA POSTER, BALON DE FUTBOL, PARED, SUELO Y LATA
+    poster->setMaterial(white_plastic);
     suelo->setMaterial(white_plastic);
     pared->setMaterial(white_plastic);
     peon_negro->setMaterial(white_plastic);
     balonfutbol->setMaterial(white_plastic);
-
-    cubo->setMaterial(material_esmeralda);
-    cono->setMaterial(material_anaranjado);
-    
-   //////////////////////////////////////////////////////////////////////////////////////////////////////
+   ///////////////////////////////////////////////////
 
    // CREO LAS LUCES DE LA ESCENA
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
     luz1 = new LuzPosicional({20, 200, 50},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
     luz2 = new LuzPosicional({0, 200, 900},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz3 = new LuzPosicional({118, 110, 120},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // DECLARO LAS CAMARAS DE LA ESCENA
@@ -168,6 +263,8 @@ void Escena::dibujar()
          break;
    }
 
+   // TROZO PARA LA ACTIVACION DE LUCES
+   //////////////////////////////////////////////////////////////////////////////
    if (iluminacion){
       glEnable(GL_NORMALIZE);
       glEnable(GL_LIGHTING);
@@ -211,14 +308,26 @@ void Escena::dibujar()
          luz2->desactivar();
    }
 
-   //glScalef(100,100,100);
-   //cuadro->draw(modo_dibujado_escogido,ajedrez);
+   if (activar_luz3){
+      glPushMatrix();
+         luz3->activar();
+      glPopMatrix();
+   }
+   else{
+      if(luz3->estaActivada())
+         luz3->desactivar();
+   }
+   ////////////////////////////////////////////////////////////////////////////
 
    glEnable(GL_TEXTURE_2D);
+
+   // DIBUJANDO OBJETOS CON TEXTURA
+   ////////////////////////////////////////////////////////////////////////////
    glPushMatrix();
-      glTranslatef(120,0,200);
-      peon_negro->setPosicion({120,0,200});
-      glScalef(70,70,70);
+      glTranslatef(220,75,100);
+      peon_negro->setPosicion({220,75,100});
+      glScalef(30,30,30);
+      glRotatef(90,0,1,0);
       peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 
@@ -229,36 +338,174 @@ void Escena::dibujar()
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(0,20,200);
-      balonfutbol->setPosicion({0,20,200});
+      glTranslatef(-200,20,200);
+      balonfutbol->setPosicion({-200,20,200});
       balonfutbol->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 
    glPushMatrix();
       glTranslatef(-400,0,0);
-      pared->draw(modo_dibujado_escogido,false);
+      pared->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-200,200,10);
+      glScalef(10,10,10);
+      poster->setPosicion({-200,200,10});
+      poster->draw(modo_dibujado_escogido,ajedrez);
    glPopMatrix();
 
    glDisable(GL_TEXTURE_2D);
 
+   // DIBUJANDO TREN
+   /////////////////////////////////////////////////////////////////////////////////////////////
    glPushMatrix();
-      glTranslatef(0,100,200);
-      cubo->setPosicion({0,100,200});
-      cubo->draw(modo_dibujado_escogido,ajedrez);
+      glTranslatef(-200,10,300);
+      glScalef(0.5,0.5,0.5);
+      tren->setPosicion({-200,10,300});
+      tren->draw(modo_dibujado_escogido,ajedrez,tapas);
+   glPopMatrix();
+   //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+   // Dibujando CAMA
+   ////////////////////////////////////////////////////////////////////////////////////////////
+   glPushMatrix();
+      glTranslatef(-300,20,50);
+      glRotatef(90,0,0,1);
+      pata1->draw(modo_dibujado_escogido,ajedrez);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(128,128,200);
+      glTranslatef(-230,20,50);
+      glRotatef(90,0,0,1);
+      pata2->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-300,20,160);
+      glRotatef(90,0,0,1);
+      pata3->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,20,160);
+      glRotatef(90,0,0,1);
+      pata4->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef (-230,40,100);
+      glRotatef(90,0,1,0);
+      glScalef(0.75,0.055,1);
+      somier->setPosicion({-230,40,100});
+      somier->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,40,30);
+      glRotatef(90,0,1,0);
+      glScalef(1,0.75,1);
+      reposacabezas->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,49,105);
+      glRotatef(90,0,1,0);
+      glScalef(0.68,0.3,1);
+      colchon->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+   //////////////////////////////////////////////////////////////////////////
+
+   ////////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO MESA
+   glPushMatrix();
+      glTranslatef(250,30,110);
+      glRotatef(90,0,0,1);
+      pataMesa1->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(250,30,160);
+      glRotatef(90,0,0,1);
+      pataMesa2->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(130,30,160);
+      glRotatef(90,0,0,1);
+      pataMesa3->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(130,30,110);
+      glRotatef(90,0,0,1);
+      pataMesa4->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(180,60,180);
+      glScalef(1,0.15,1);
+      tablaMesa->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+   /////////////////////////////////////////////////////////////////////////
+
+   /////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO SILLA
+   glPushMatrix();
+      glTranslatef(200,30,210);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla1->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(200,30,240);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla2->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(170,30,210);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla3->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(170,30,240);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla4->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(180,50,240);
+      glScalef(1,0.25,1);
+      baseSilla->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(200,60,240);
+      glScalef(0.25,1,0.67);
+      reposaEspaldas->draw(modo_dibujado_escogido,ajedrez);
+   glPopMatrix();
+   /////////////////////////////////////////////////////////////////////////
+
+   ////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO LAMPARA
+   glPushMatrix();
+      glTranslatef(118,110,120);
       cono->setPosicion({128,128,200});
       cono->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
 
    glPushMatrix();
-      glTranslatef(-200,10,100);
-      glScalef(0.75,0.75,0.75);
-      tren->setPosicion({-200/2,10/2,100/2});
-      tren->draw(modo_dibujado_escogido,ajedrez,tapas);
+      glTranslatef(118,95,120);
+      baseLampara->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
+   //////////////////////////////////////////////////////////////////////////7
 }
 
 //**************************************************************************
@@ -402,7 +649,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
 
          case '0' :
-            if (iluminacion){
+            if (iluminacion && modoMenu == SELVISUALIZACION){
                if (activar_luz0)
                   activar_luz0 = false;
                else
@@ -428,7 +675,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                modo_dibujado_escogido = INMEDIATO;
             }
 
-            if (iluminacion){
+            if (iluminacion && modoMenu == SELVISUALIZACION){
                if (activar_luz1)
                   activar_luz1 = false;
                else
@@ -454,7 +701,7 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                modo_dibujado_escogido = DIFERIDO;
             }
             
-            if (iluminacion){
+            if (iluminacion && modoMenu == SELVISUALIZACION){
                if (activar_luz2)
                   activar_luz2 = false;
                else
@@ -476,6 +723,14 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if (modoMenu == ANIMACIONMANUAL){
                objeto=VAGON3;
             }
+
+            if (iluminacion && modoMenu == SELVISUALIZACION){
+               if (activar_luz3)
+                  activar_luz3 = false;
+               else
+                  activar_luz3 = true;
+            }
+
          break;
 
          case '4' :

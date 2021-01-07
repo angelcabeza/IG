@@ -1,7 +1,7 @@
 #include "aux.h"
 #include "cono.h"
 
-Cono::Cono(const int num_vert_perfil,const int num_instancias_perf, const float altura, const float radio,bool textura){ 
+Cono::Cono(const int num_vert_perfil,const int num_instancias_perf, const float altura, const float radio,bool textura, bool tapa_inf, bool tapa_sup){ 
 
     this->num_instancias = num_instancias_perf;
     this->con_textura = textura;
@@ -18,7 +18,7 @@ Cono::Cono(const int num_vert_perfil,const int num_instancias_perf, const float 
         perfil.push_back(vertice);
     }
 
-    crearMalla(perfil,num_instancias_perf,true,true);
+    crearMalla(perfil,num_instancias_perf,tapa_inf,tapa_sup);
 
     inicializarNormalesCaras();
     inicializarNormalesVertices();

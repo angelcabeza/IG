@@ -73,6 +73,7 @@ class Escena
    bool activar_luz0;
    bool activar_luz1;
    bool activar_luz2;
+   bool activar_luz3;
    bool objetoSeleccionado = false;
    //////////////////////////////////////////////////////////////
 
@@ -84,11 +85,33 @@ class Escena
    LuzPosicional * luz1 = nullptr;
    LuzDireccional * luz0 = nullptr;
    LuzPosicional * luz2 = nullptr;
+   LuzPosicional * luz3 = nullptr;
    Tren * tren = nullptr;
    Cuadro * suelo = nullptr;
    Cuadro * pared = nullptr;
    Cubo * cubo = nullptr;
    Cono * cono = nullptr;
+   Prisma * pata1 = nullptr;
+   Prisma * pata2 = nullptr;
+   Prisma * pata3 = nullptr;
+   Prisma * pata4 = nullptr;
+   Prisma * pataMesa1 = nullptr;
+   Prisma * pataMesa2 = nullptr;
+   Prisma * pataMesa3 = nullptr;
+   Prisma * pataMesa4 = nullptr;
+   Prisma * tablaMesa = nullptr;
+   Prisma * somier = nullptr;
+   Prisma * reposacabezas = nullptr;
+   Prisma * colchon = nullptr;
+   Cuadro * poster = nullptr;
+   Prisma * pataSilla1 = nullptr;
+   Prisma * pataSilla2 = nullptr;
+   Prisma * pataSilla3 = nullptr;
+   Prisma * pataSilla4 = nullptr;
+   Prisma * reposaEspaldas = nullptr;
+   Prisma * baseSilla = nullptr;
+   Esfera * baseLampara = nullptr;
+
    std::vector<Camara> camaras;
    int camaraActiva = 0;
    int xant = 0;
