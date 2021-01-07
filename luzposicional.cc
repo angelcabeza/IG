@@ -18,20 +18,19 @@ LuzPosicional::LuzPosicional( const Tupla3f & posicion,GLenum idLuzOpenGL,Tupla4
 }
 
 void LuzPosicional::cambiarPosicion(float x, float y, float z){
-    if (posicion[0] >= 800){
+    if (posicion[0] >= 500){
         limite_dch_x = true;
         limite_izq_x = false;
     }
-    if (posicion[1] >= 800){
+    if (posicion[1] >= 500){
         limite_abajo_y = false;
         limite_arriba_y = true;
     }
-    if (posicion[2] >= 800){
+    if (posicion[2] >= 500){
         limite_z_neg = false;
         limite_z_pos = true;
     }
-    if (posicion[0] <= -800){
-        std::cout << "He llegado al limite por la izquierda" << std::endl;
+    if (posicion[0] <= -500){
         limite_izq_x = true;
         limite_dch_x = false;
     }
@@ -62,6 +61,4 @@ void LuzPosicional::cambiarPosicion(float x, float y, float z){
     posicion[0] += x;
     posicion[1] += y;
     posicion[2] += z;
-
-    std::cout << "Pos actual luz: " << posicion << std::endl;
 }

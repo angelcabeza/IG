@@ -163,7 +163,7 @@ Escena::Escena()
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
     luz1 = new LuzPosicional({20, 200, 50},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
     luz2 = new LuzPosicional({0, 200, 900},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
-    luz3 = new LuzPosicional({118, 110, 120},GL_LIGHT3,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz3 = new LuzPosicional({118, 110, 200},GL_LIGHT3,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // DECLARO LAS CAMARAS DE LA ESCENA
@@ -181,7 +181,7 @@ Escena::Escena()
    eye = {-500,100,500};
    at = {0,0,0};
 
-   camaras.push_back(Camara(eye,at,up,1,50.0,20000.0,50,100));
+   camaras.push_back(Camara(eye,at,up,1,50.0,20000.0,1000,1000));
 
    camaraActiva = 1;
 
@@ -968,7 +968,6 @@ void Escena::animar(){
    if (iluminacion){
       if (luz1->estaActivada()){
          luz1->cambiarPosicion(10,0,0);
-         std::cout << "Cambiando pos" << std::endl;
       }
       if (luz2->estaActivada())
          luz2->cambiarPosicion(10,0,0);
