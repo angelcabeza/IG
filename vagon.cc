@@ -65,6 +65,7 @@ void Vagon::modificarGradosLibertadRuedasAutomatico(float valor){
 
 void Vagon::setColorSeleccion(Tupla3f color){
     prisma->setColorSeleccion(color);
+    prisma->setColor(color);
     ruedasdelanteras->setColorSeleccion(color);
     ruedastraseras->setColorSeleccion(color);
     conector->setColorSeleccion(color);

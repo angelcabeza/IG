@@ -163,7 +163,7 @@ Escena::Escena()
     luz0 = new LuzDireccional({0,10},GL_LIGHT0,{1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0}, {1.0,1.0,1.0,1.0});
     luz1 = new LuzPosicional({20, 200, 50},GL_LIGHT1,  {0.239,0.239,0.239,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
     luz2 = new LuzPosicional({0, 200, 900},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
-    luz3 = new LuzPosicional({118, 110, 120},GL_LIGHT2,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
+    luz3 = new LuzPosicional({118, 110, 120},GL_LIGHT3,  {0.239,0.169,0.074,1.0}, {1.0,1.0,1.0,1}, {1.0,1.0,1.0,1.0});
    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    // DECLARO LAS CAMARAS DE LA ESCENA
@@ -446,6 +446,7 @@ void Escena::dibujar()
    glPushMatrix();
       glTranslatef(180,60,180);
       glScalef(1,0.15,1);
+      tablaMesa->setPosicion({180,60,180});
       tablaMesa->draw(modo_dibujado_escogido,ajedrez);
    glPopMatrix();
    /////////////////////////////////////////////////////////////////////////
@@ -483,6 +484,7 @@ void Escena::dibujar()
    glPushMatrix();
       glTranslatef(180,50,240);
       glScalef(1,0.25,1);
+      baseSilla->setPosicion({180,50,240});
       baseSilla->draw(modo_dibujado_escogido,ajedrez);
    glPopMatrix();
 
@@ -503,6 +505,7 @@ void Escena::dibujar()
 
    glPushMatrix();
       glTranslatef(118,95,120);
+      baseLampara->setPosicion({118,95,120});
       baseLampara->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
    //////////////////////////////////////////////////////////////////////////7
@@ -1022,6 +1025,7 @@ void Escena::ratonMovido(int x, int y){
 }
 
 void Escena::dibujaSeleccion(){
+   Tupla3f color_antes;
    glDisable(GL_DITHER);
    glDisable(GL_LIGHTING);
    glDisable(GL_TEXTURE_2D);
@@ -1029,57 +1033,249 @@ void Escena::dibujaSeleccion(){
    glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
    change_observer();
-
-   Tupla3f color_antes = peon_negro->getColor();
-   peon_negro->setColor({0,1,1});
-   peon_negro->setColorSeleccion({0,1,1});
+   // DIBUJANDO OBJETOS CON TEXTURA
+   ////////////////////////////////////////////////////////////////////////////
+   peon_negro->setColorSeleccion({1,0,0});
+   color_antes = peon_negro->getColor();
+   peon_negro->setColor({1,0,0});
    glPushMatrix();
-      glTranslatef(120,0,200);
-      glScalef(70,70,70);
-      peon_negro->draw(modo_dibujado_escogido,false,true);
+      glTranslatef(220,75,100);
+      glScalef(30,30,30);
+      glRotatef(90,0,1,0);
+      peon_negro->draw(modo_dibujado_escogido,false,false);
    glPopMatrix();
    peon_negro->setColor(color_antes);
 
-   glPushMatrix();
-      glTranslatef(-400,0,400);
-      glRotatef(-90,1,0,0);
-      suelo->draw(modo_dibujado_escogido,false);
-   glPopMatrix();
-
+   balonfutbol->setColorSeleccion({0,1,0});
    color_antes = balonfutbol->getColor();
-   balonfutbol->setColor({1,1,0});
-   balonfutbol->setColorSeleccion({1,1,0});
+   balonfutbol->setColor({0,1,0});
    glPushMatrix();
-      glTranslatef(0,20,200);
-      balonfutbol->draw(modo_dibujado_escogido,false,true);
+      glTranslatef(-200,20,200);
+      balonfutbol->draw(modo_dibujado_escogido,false,false);
    glPopMatrix();
-
    balonfutbol->setColor(color_antes);
 
+   poster->setColorSeleccion({0,0,1});
+   color_antes = poster->getColor();
+   poster->setColor({0,0,1});
    glPushMatrix();
-      glTranslatef(0,100,200);
-      cubo->draw(modo_dibujado_escogido,false);
+      glTranslatef(-200,200,10);
+      glScalef(10,10,10);
+      poster->draw(modo_dibujado_escogido,false);
    glPopMatrix();
+   poster->setColor(color_antes);
 
-   glPushMatrix();
-      glTranslatef(128,128,200);
-      cono->draw(modo_dibujado_escogido,false,true);
-   glPopMatrix();
+   glDisable(GL_TEXTURE_2D);
 
+   // DIBUJANDO TREN
+   /////////////////////////////////////////////////////////////////////////////////////////////
+   tren->setColorSeleccion({1,1,0});
+   color_antes = tren->getColor();
+   tren->setColor({1,1,0});
    glPushMatrix();
-      glTranslatef(-400,0,0);
-      pared->draw(modo_dibujado_escogido,false);
-   glPopMatrix();
-
-   tren->setColorSeleccion({1,0,0});
-   glPushMatrix();
-      glTranslatef(-200,10,100);
-      glScalef(0.75,0.75,0.75);
-      tren->draw(modo_dibujado_escogido,false,true);
+      glTranslatef(-200,10,300);
+      glScalef(0.5,0.5,0.5);
+      tren->setPosicion({-200,10,300});
+      tren->draw(modo_dibujado_escogido,false,false);
    glPopMatrix();
    tren->restaurarColorConectoresChimenea();
    tren->restaurarColorRuedasHumo();
    tren->restaurarColorVagones();
+   //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+   // Dibujando CAMA
+   ////////////////////////////////////////////////////////////////////////////////////////////
+   somier->setColorSeleccion({0,1,1});
+   color_antes = somier->getColor();
+   somier->setColor({0,1,1});
+   pata1->setColor({0,1,1});
+   pata2->setColor({0,1,1});
+   pata3->setColor({0,1,1});
+   pata4->setColor({0,1,1});
+   colchon->setColor({0,1,1});
+   reposacabezas->setColor({0,1,1});
+   glPushMatrix();
+      glTranslatef(-300,20,50);
+      glRotatef(90,0,0,1);
+      pata1->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,20,50);
+      glRotatef(90,0,0,1);
+      pata2->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-300,20,160);
+      glRotatef(90,0,0,1);
+      pata3->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,20,160);
+      glRotatef(90,0,0,1);
+      pata4->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef (-230,40,100);
+      glRotatef(90,0,1,0);
+      glScalef(0.75,0.055,1);
+      somier->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,40,30);
+      glRotatef(90,0,1,0);
+      glScalef(1,0.75,1);
+      reposacabezas->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(-230,49,105);
+      glRotatef(90,0,1,0);
+      glScalef(0.68,0.3,1);
+      colchon->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+   somier->setColor(color_antes);
+   pata1->setColor(color_antes);
+   pata2->setColor(color_antes);
+   pata3->setColor(color_antes);
+   pata4->setColor(color_antes);
+   colchon->setColor({1,0,0});
+   reposacabezas->setColor(color_antes);
+   //////////////////////////////////////////////////////////////////////////
+
+   ////////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO MESA
+   tablaMesa->setColorSeleccion({1,0,1});
+   color_antes = tablaMesa->getColor();
+   tablaMesa->setColor({1,0,1});
+   pataMesa1->setColor({1,0,1});
+   pataMesa2->setColor({1,0,1});
+   pataMesa3->setColor({1,0,1});
+   pataMesa4->setColor({1,0,1});
+
+   glPushMatrix();
+      glTranslatef(250,30,110);
+      glRotatef(90,0,0,1);
+      pataMesa1->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(250,30,160);
+      glRotatef(90,0,0,1);
+      pataMesa2->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(130,30,160);
+      glRotatef(90,0,0,1);
+      pataMesa3->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(130,30,110);
+      glRotatef(90,0,0,1);
+      pataMesa4->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(180,60,180);
+      glScalef(1,0.15,1);
+      tablaMesa->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   tablaMesa->setColor(color_antes);
+   pataMesa1->setColor(color_antes);
+   pataMesa2->setColor(color_antes);
+   pataMesa3->setColor(color_antes);
+   pataMesa4->setColor(color_antes);
+   /////////////////////////////////////////////////////////////////////////
+
+   /////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO SILLA
+   baseSilla->setColorSeleccion({1,0.5,1});
+   color_antes = baseSilla->getColor();
+   baseSilla->setColor({1,0.5,1});
+   pataSilla1->setColor({1,0.5,1});
+   pataSilla2->setColor({1,0.5,1});
+   pataSilla3->setColor({1,0.5,1});
+   pataSilla4->setColor({1,0.5,1});
+   reposaEspaldas->setColor({1,0.5,1});
+   glPushMatrix();
+      glTranslatef(200,30,210);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla1->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(200,30,240);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla2->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(170,30,210);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla3->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(170,30,240);
+      glRotatef(90,0,0,1);
+      glScalef(0.5,1,1);
+      pataSilla4->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(180,50,240);
+      glScalef(1,0.25,1);
+      baseSilla->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(200,60,240);
+      glScalef(0.25,1,0.67);
+      reposaEspaldas->draw(modo_dibujado_escogido,false);
+   glPopMatrix();
+
+   baseSilla->setColor(color_antes);
+   pataSilla1->setColor(color_antes);
+   pataSilla2->setColor(color_antes);
+   pataSilla3->setColor(color_antes);
+   pataSilla4->setColor(color_antes);
+   reposaEspaldas->setColor(color_antes);
+   /////////////////////////////////////////////////////////////////////////
+
+   ////////////////////////////////////////////////////////////////////////
+   // DIBUJANDO LAMPARA
+   cono->setColorSeleccion({0.2,0.2,0.2});
+   baseLampara->setColorSeleccion({0.2,0.2,0.2});
+   color_antes = cono->getColor();
+   cono->setColor({0.2,0.2,0.2});
+   baseLampara->setColor({0.2,0.2,0.2});
+
+   glPushMatrix();
+      glTranslatef(118,110,120);
+      cono->setPosicion({128,128,200});
+      cono->draw(modo_dibujado_escogido,false,false);
+   glPopMatrix();
+
+   glPushMatrix();
+      glTranslatef(118,95,120);
+      baseLampara->draw(modo_dibujado_escogido,false,false);
+   glPopMatrix();
+
+   cono->setColor(color_antes);
+   baseLampara->setColor(color_antes);
+   //////////////////////////////////////////////////////////////////////////7
+   
 
    glEnable(GL_DITHER);
 	glEnable(GL_LIGHTING);
@@ -1096,51 +1292,27 @@ void Escena::procesarPick(int x, int y){
    glGetIntegerv(GL_VIEWPORT,viewport);
    GLfloat pixel[3];
 
-   pixel[0] = 500;
-   pixel[1] = 300;
-   pixel[2] = 23;
-
-   Tupla3f pixel_comparar = {1,1,1};
-
    glReadPixels(x,viewport[3]-y,1,1,GL_RGB,GL_FLOAT, (void *) pixel);
 
    std::cout << "Pixel contiene: " << pixel[0] << " " << pixel[1] << " " << pixel[2] << std::endl;
 
    Tupla3f pixel_leido = {pixel[0],pixel[1],pixel[2]};
 
-   std::cout << "Pixel leido = " << pixel_leido << std::endl;
+   //Truncamos a un decimal todas las componentes del pixel
+   int valor_truncado = pixel_leido[0] * 10;
+   pixel_leido[0] = valor_truncado / 10.0;
+   valor_truncado = pixel_leido[1] * 10;
+   pixel_leido[1] = valor_truncado / 10.0;
+   valor_truncado = pixel_leido[2] * 10;
+   pixel_leido[2] = valor_truncado / 10.0;
+   std::cout << "Pixel despues de truncar  = " << pixel_leido << std::endl;
+   std::cout << "Color seleccion de lampara = " << baseLampara->getColorSeleccion() << std::endl;
 
-   if (pixel_leido[0] == cubo->getColor()[0] && pixel_leido[1] == cubo->getColor()[1] && round(pixel_leido[2]) == round(cubo->getColor()[2])){
-      std::cout << "Cubo seleccionado" << std::endl;
-      Tupla3f centro = cubo->getCentro();
+   if (pixel_leido[0] == peon_negro->getColorSeleccion()[0] && pixel_leido[1] == peon_negro->getColorSeleccion()[1] && pixel_leido[2] == peon_negro->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado la lata" << std::endl;
 
-      centro = centro + cubo->getPosicion();
+      peon_negro->calcularCentro();
 
-      camaras[camaraActiva].setAt(centro);
-      objetoSeleccionado = true;
-   }
-
-   else if (pixel_leido[0] == cono->getColor()[0] && pixel_leido[1] == cono->getColor()[1] && round(pixel_leido[2]) == round(cono->getColor()[2])){
-      std::cout << "Cono seleccionado " << std::endl;
-      Tupla3f centro = cono->getCentro();
-
-      centro = centro + cubo->getPosicion();
-
-      camaras[camaraActiva].setAt(centro);
-      objetoSeleccionado = true;
-   }
-
-   else if (pixel_leido[0] == balonfutbol->getColorSeleccion()[0] && pixel_leido[1] == balonfutbol->getColorSeleccion()[1] && round(pixel_leido[2]) == round(balonfutbol->getColorSeleccion()[2])){
-      std::cout << "Balon de futbol seleccionado" << std::endl;
-      Tupla3f centro = balonfutbol->getCentro();
-
-      centro = centro + balonfutbol->getPosicion();
-
-      camaras[camaraActiva].setAt(centro);
-      objetoSeleccionado = true;
-   }
-   else if (pixel_leido[0] == peon_negro->getColorSeleccion()[0] && pixel_leido[1] == peon_negro->getColorSeleccion()[1] && round(pixel_leido[2]) == round(peon_negro->getColorSeleccion()[2])){
-      std::cout << "Lata seleccionada" << std::endl;
       Tupla3f centro = peon_negro->getCentro();
 
       centro = centro + peon_negro->getPosicion();
@@ -1148,9 +1320,69 @@ void Escena::procesarPick(int x, int y){
       camaras[camaraActiva].setAt(centro);
       objetoSeleccionado = true;
    }
-   else if (pixel_leido[0] == tren->getColorSeleccion()[0] && pixel_leido[1] == tren->getColorSeleccion()[1] && round(pixel_leido[2]) == round(tren->getColorSeleccion()[2])){
+   else if (pixel_leido[0] == balonfutbol->getColorSeleccion()[0] && pixel_leido[1] == balonfutbol->getColorSeleccion()[1] && pixel_leido[2] == balonfutbol->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado el balon de futbol" << std::endl;
+
+      balonfutbol->calcularCentro();
+
+      Tupla3f centro = balonfutbol->getCentro() + balonfutbol->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == poster->getColorSeleccion()[0] && pixel_leido[1] == poster->getColorSeleccion()[1] && pixel_leido[2] == poster->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado el poster" << std::endl;
+
+      poster->calcularCentro();
+
+      Tupla3f centro = poster->getCentro() + poster->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == tren->getColorSeleccion()[0] && pixel_leido[1] == tren->getColorSeleccion()[1] && pixel_leido[2] == tren->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado el tren" << std::endl;
+
       Tupla3f centro = tren->getPosicion();
 
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == somier->getColorSeleccion()[0] && pixel_leido[1] == somier->getColorSeleccion()[1] && pixel_leido[2] == somier->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado la cama " << std::endl;
+
+      somier->calcularCentro();
+
+      Tupla3f centro = somier->getCentro()+ somier->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == tablaMesa->getColorSeleccion()[0] && pixel_leido[1] == tablaMesa->getColorSeleccion()[1] && pixel_leido[2] == tablaMesa->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado la mesa " << std::endl;
+
+      tablaMesa->calcularCentro();
+
+      Tupla3f centro = tablaMesa->getCentro() + tablaMesa->getPosicion();
+
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == baseSilla->getColorSeleccion()[0] && pixel_leido[1] == baseSilla->getColorSeleccion()[1] && pixel_leido[2] == baseSilla->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado la silla" << std::endl;
+
+      baseSilla->calcularCentro();
+
+      Tupla3f centro = baseSilla->getCentro() + baseSilla->getPosicion();
+      camaras[camaraActiva].setAt(centro);
+      objetoSeleccionado = true;
+   }
+   else if (pixel_leido[0] == baseLampara->getColorSeleccion()[0] && pixel_leido[1] == baseLampara->getColorSeleccion()[1] && pixel_leido[2] == baseLampara->getColorSeleccion()[2]){
+      std::cout << "Has seleccionado la lampara" << std::endl;
+
+      baseLampara->getCentro();
+
+      Tupla3f centro = baseLampara->getCentro() + baseLampara->getPosicion();
       camaras[camaraActiva].setAt(centro);
       objetoSeleccionado = true;
    }

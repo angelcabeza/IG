@@ -38,6 +38,8 @@ void RuedasTraseras::modificarGradosLibertadRuedasManual(float valor){
 void RuedasTraseras::setColorSeleccion(Tupla3f color){
     rueda1->setColorSeleccion(color);
     rueda2->setColorSeleccion(color);
+    rueda1->setColor(color);
+    rueda2->setColor(color);
 }
 
 void RuedasTraseras::restaurarColorRuedasHumo(){
