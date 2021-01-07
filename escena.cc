@@ -330,7 +330,7 @@ void Escena::dibujar()
       glRotatef(90,0,1,0);
       peon_negro->draw(modo_dibujado_escogido,ajedrez,tapas);
    glPopMatrix();
-
+   
    glPushMatrix();
       glTranslatef(-400,0,400);
       glRotatef(-90,1,0,0);
@@ -1286,7 +1286,7 @@ void Escena::procesarPick(int x, int y){
    glDisable(GL_DITHER);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
-   
+
    GLint viewport[4];
    glGetIntegerv(GL_VIEWPORT,viewport);
    GLfloat pixel[3];

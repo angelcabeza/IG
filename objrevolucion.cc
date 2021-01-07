@@ -405,7 +405,6 @@ void ObjRevolucion::calcularCoordTexturas(){
 
 
    if (!esfera){
-      std::cout << "Calculando coords textura cilidro " << std::endl;
       float alpha, beta, h;
 
       float s, t;

@@ -7,7 +7,6 @@ Camara::Camara( Tupla3f  ey, Tupla3f  at,  Tupla3f  up,
     this->at = at;
     this->up = up;
     this->tipo = tipo;
-    std::cout << "TIPO = " << tipo << std::endl;
     this->near = near;
     this->far = far;
     this->left = left;
@@ -124,10 +123,6 @@ void Camara::zoom(float factor){
 }
 
 void Camara::girar(int x, int y){
-
-    //if ( (at - eye)(2) > 0)
-     //   y = -y;
-
     rotarXFirstPerson( -y * M_PI/180.0 );
     rotarYFirstPerson( -x * M_PI/180.0 );
 }
