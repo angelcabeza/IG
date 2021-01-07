@@ -1286,15 +1286,12 @@ void Escena::procesarPick(int x, int y){
    glDisable(GL_DITHER);
 	glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
-
-   std::cout << "X = " << x << "Y = " << y << std::endl;
+   
    GLint viewport[4];
    glGetIntegerv(GL_VIEWPORT,viewport);
    GLfloat pixel[3];
 
    glReadPixels(x,viewport[3]-y,1,1,GL_RGB,GL_FLOAT, (void *) pixel);
-
-   std::cout << "Pixel contiene: " << pixel[0] << " " << pixel[1] << " " << pixel[2] << std::endl;
 
    Tupla3f pixel_leido = {pixel[0],pixel[1],pixel[2]};
 
@@ -1305,8 +1302,6 @@ void Escena::procesarPick(int x, int y){
    pixel_leido[1] = valor_truncado / 10.0;
    valor_truncado = pixel_leido[2] * 10;
    pixel_leido[2] = valor_truncado / 10.0;
-   std::cout << "Pixel despues de truncar  = " << pixel_leido << std::endl;
-   std::cout << "Color seleccion de lampara = " << baseLampara->getColorSeleccion() << std::endl;
 
    if (pixel_leido[0] == peon_negro->getColorSeleccion()[0] && pixel_leido[1] == peon_negro->getColorSeleccion()[1] && pixel_leido[2] == peon_negro->getColorSeleccion()[2]){
       std::cout << "Has seleccionado la lata" << std::endl;
