@@ -18,7 +18,6 @@ Escena::Escena()
 
     ejes.changeAxisSize( 5000 );
 
-
    // OBJETOS EN LA ESCENA
     iluminacion = false;
 
@@ -317,6 +316,7 @@ void Escena::dibujar()
       if(luz3->estaActivada())
          luz3->desactivar();
    }
+
    ////////////////////////////////////////////////////////////////////////////
 
    glEnable(GL_TEXTURE_2D);
@@ -560,12 +560,23 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break ;
        case 'D' :
          // ESTAMOS EN MODO SELECCION DE DIBUJADO
-         modoMenu=SELDIBUJADO;
 
-         cout << "Ha entrado en el modo de dibujado" << endl;
-         cout << "Presione '1' para la visualización con glDraElements" << endl;
-         cout << "Presione '2' para la visualización con Vertex Buffer Objetcts (VBOs)" << endl;
-         cout << "Presione 'Q' para salir de este modo" << endl;
+         if (modoMenu == MOVFPS){
+            Tupla3f direccion = camaras[camaraActiva].getAt() - camaras[camaraActiva].getEye();
+				direccion = direccion.normalized();
+
+				direccion = direccion.cross(camaras[camaraActiva].getUp())*10;
+ 				camaras[camaraActiva].mover(direccion(0), direccion(1), direccion(2));
+         }
+
+         if (modoMenu == NADA){
+            modoMenu=SELDIBUJADO;
+
+            cout << "Ha entrado en el modo de dibujado" << endl;
+            cout << "Presione '1' para la visualización con glDraElements" << endl;
+            cout << "Presione '2' para la visualización con Vertex Buffer Objetcts (VBOs)" << endl;
+            cout << "Presione 'Q' para salir de este modo" << endl;
+         }
          break ;
 
        case 'M' :
@@ -628,10 +639,16 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
          break;
 
          case 'E' :
-          if ( objeto_a_pintar != CONO)
+          if (modoMenu == SELOBJETO && objeto_a_pintar != CONO)
             objeto_a_pintar=CONO;
           else
             objeto_a_pintar=NINGUNO;
+
+            if (modoMenu == MOVFPS){
+               Tupla3f direccion = camaras[camaraActiva].getAt() - camaras[camaraActiva].getEye();
+               direccion = direccion.normalized() * 10;
+               camaras[camaraActiva].mover(direccion(0), direccion(1), direccion(2));
+            }
           
          break;
 
@@ -649,6 +666,11 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
           else
             objeto_a_pintar=NINGUNO;
           
+         break;
+
+         case 'U' :
+            cout << "Vas a mover la cámara en primera persona" << endl;
+            modoMenu = MOVFPS;
          break;
 
          case '0' :
@@ -779,12 +801,19 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
                cout << "Ha escogido pintar con sombreado suave (GL_SMOOTH)" << endl;
                modo_sombreado_escogido = SUAVE;
             }
+
+            if (modoMenu == MOVFPS){
+               Tupla3f direccion = camaras[camaraActiva].getAt() - camaras[camaraActiva].getEye();
+               direccion = -direccion.normalized()*10;
+
+               camaras[camaraActiva].mover(direccion(0), direccion(1), direccion(2));
+			   }
             
           break;
 
          case 'A'  :
 
-            if (modoMenu != SELVISUALIZACION)
+            if (modoMenu != SELVISUALIZACION && modoMenu != MOVFPS)
                modoMenu = ANIMACIONAUTOMATICA;
 
             if (modoMenu == SELVISUALIZACION){
@@ -798,6 +827,15 @@ bool Escena::teclaPulsada( unsigned char tecla, int x, int y )
             if(modo_visualizacion_escogido == ILUMINACION){
                variacion_direccional = ALPHA;
                cout << "Ha escogido variar la componente alpha de la luz direccional" << endl;
+            }
+
+            if (modoMenu == MOVFPS){
+               Tupla3f direccion = camaras[camaraActiva].getAt() - camaras[camaraActiva].getEye();
+				   direccion = direccion.normalized();
+
+				   direccion = -direccion.cross(camaras[camaraActiva].getUp())*10;
+
+				   camaras[camaraActiva].mover(direccion(0), direccion(1), direccion(2));
             }
 
           break;
@@ -940,7 +978,7 @@ void Escena::redimensionar( int newWidth, int newHeight )
 {
    Width  = newWidth/10;
    Height = newHeight/10;
-   change_projection( float(newHeight)/float(newWidth) );
+   change_projection( float(newWidth)/float(newHeight) );
    glViewport( 0, 0, newWidth, newHeight );
 }
 
@@ -1069,7 +1107,6 @@ void Escena::dibujaSeleccion(){
    // DIBUJANDO TREN
    /////////////////////////////////////////////////////////////////////////////////////////////
    tren->setColorSeleccion({1,1,0});
-   color_antes = tren->getColor();
    tren->setColor({1,1,0});
    glPushMatrix();
       glTranslatef(-200,10,300);

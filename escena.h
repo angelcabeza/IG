@@ -24,7 +24,7 @@
 
 
 
-typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,ANIMACIONMANUAL,ANIMACIONAUTOMATICA,SELCAM} menu;
+typedef enum {NADA, SELOBJETO,SELVISUALIZACION,SELDIBUJADO,ANIMACIONMANUAL,ANIMACIONAUTOMATICA,SELCAM,MOVFPS} menu;
 typedef enum {CUBO,TETRAEDRO,ESFERA,CILINDRO,CONO,PLY,NINGUNO} objeto_seleccionado;
 typedef enum {PUNTOS,LINEAS,SOLIDO,AJEDREZ,SINTAPAS,ILUMINACION} modo_visualizacion;
 typedef enum {ALPHA,BETA} variacion_luz_direccional;
@@ -111,6 +111,7 @@ class Escena
    Prisma * reposaEspaldas = nullptr;
    Prisma * baseSilla = nullptr;
    Esfera * baseLampara = nullptr;
+   ObjRevolucion * lataJulio = nullptr;
 
    std::vector<Camara> camaras;
    int camaraActiva = 0;

@@ -29,12 +29,9 @@ void Camara::setProyeccion(){
 }
 
 void Camara::rotarXExaminar(float angle){
-
     Tupla3f n = eye - at;
 
-    float modulo = sqrt(n.lengthSq());
-
-    //Vamos a rotar este vector ya que es la x
+    //Rotamos el vector en X
     n(1) = cos(angle) * n(1) - sin(angle) * n(2);
     n(2) = sin(angle) * n(1) + cos(angle) * n(2);
 
@@ -45,13 +42,9 @@ void Camara::rotarYExaminar(float angle){
     // Esto es el vector VPN
     Tupla3f n = eye - at;
 
-    float modulo = sqrt(n.lengthSq());
-
-    //Vamos a rotar este vector ya que es la x
+    //Rotamos el vector en y
     n(0) = cos(angle) * n(0) + sin(angle) * n(2);
     n(2) = -sin(angle) * n(0) + cos(angle) * n(2);
-
-    n = n.normalized() * modulo;
 
     eye = n + at;
 }
@@ -60,13 +53,9 @@ void Camara::rotarZExaminar(float angle){
     // Esto es el vector VPN
     Tupla3f n = eye - at;
 
-    float modulo = sqrt(n.lengthSq());
-
-    //Vamos a rotar este vector ya que es la x
+    //Rotamos el vector en Z
     n(0) = cos(angle) * n(0) - sin(angle) * n(1);
     n(1) = sin(angle) * n(0) + cos(angle) * n(1);
-
-    n = n.normalized() * modulo;
 
     eye = n + at;
 }
@@ -75,12 +64,8 @@ void Camara::rotarXFirstPerson(float angle){
 
 	Tupla3f n = at - eye;
 
-    float modulo = sqrt(n.lengthSq());
-
 	n(1) = cos(angle) * n(1) - sin(angle) * n(2);
     n(2) = sin(angle) * n(1) + cos(angle) * n(2);
-
-    n = n.normalized() * modulo;
 
 	at = n + eye;
 }
@@ -88,12 +73,8 @@ void Camara::rotarXFirstPerson(float angle){
 void Camara::rotarYFirstPerson(float angle){
     Tupla3f n = at - eye;
 
-    float modulo = sqrt(n.lengthSq());
-
     n(0) = cos(angle)*n(0) + sin(angle)*n(2);
     n(2) = -sin(angle)*n(0) + cos(angle)*n(2);
-
-    n = n.normalized() * modulo;
 
     at = n + eye;
 }
@@ -134,4 +115,16 @@ void Camara::girarEx(int x, int y){
 
 void Camara::setAt(Tupla3f nuevoat){
     at = nuevoat;
+}
+
+Tupla3f Camara::getAt(){
+    return at;
+}
+
+Tupla3f Camara::getEye(){
+    return eye;
+}
+
+Tupla3f Camara::getUp(){
+    return up;
 }

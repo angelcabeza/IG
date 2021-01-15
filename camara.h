@@ -26,6 +26,9 @@ class Camara{
         void girar(int x, int y);
         void girarEx(int x, int y);
         void setAt(Tupla3f nuevoAt);
+        Tupla3f getAt();
+        Tupla3f getEye();
+        Tupla3f getUp();
 };
 
 #endif

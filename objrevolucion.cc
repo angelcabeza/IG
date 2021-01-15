@@ -71,7 +71,7 @@ void ObjRevolucion::crearMalla(std::vector<Tupla3f> perfil_original, int num_ins
    }
 
 
-   if (con_textura && !esfera){
+   if (con_textura ){
       num_instancias++;
    }
 
@@ -402,6 +402,8 @@ Tupla4f ObjRevolucion::getMaterial(){
 
 void ObjRevolucion::calcularCoordTexturas(){
    ct.resize(v.size());
+   std::vector<Tupla2f> aux;
+   aux.resize(v.size()-num_instancias-2);
 
 
    if (!esfera){
@@ -426,7 +428,7 @@ void ObjRevolucion::calcularCoordTexturas(){
       ct.resize(v.size());
 
       for (int k = 0; k < ct.size()-2 ; k++){
-         s = i / (num_instancias + 1);
+         s = i / (num_instancias - 1);
          t = distancias[j] / distancias[perfil.size()-1];
 
          ct[k] = {s,t};
@@ -443,32 +445,35 @@ void ObjRevolucion::calcularCoordTexturas(){
    else{
       float alpha;
       float beta;
-      float aux;
+      float auxi;
       float t;
       float s;
       float x;
       float y;
       float z;
 
-      for (int i = 0; i < ct.size(); i++){
+      for (int i = 0; i < aux.size(); i++){
          x = v[i](0);
          y = v[i](1);
          z = v[i](2);
 
          alpha = atan2(z,x);
 
-         aux = sqrt(pow(x,2)+pow(z,2));
-         beta = atan2(y,aux);
+         auxi = sqrt(pow(x,2)+pow(z,2));
+         beta = atan2(y,auxi);
 
-         s = 1- (0.5 + (alpha/(2*M_PI)));
-         s+= 0.5;
-         s= fmod(s,1.0);
+         s = 0.5 + (alpha/(2*M_PI));
          t = 0.5 + (beta/M_PI);
 
-         ct[i] = {s,t};
+         aux[i] = {s,t};
+      }
+
+      int cont = 0;
+      for (int i = aux.size()-1; i >= 0; i--){
+         ct[cont] = aux[i];
+         cont++;
       }
    }
-
 }
 
 
